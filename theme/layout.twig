@@ -1,22 +1,45 @@
 <!doctype html>
-<html lang="">
+<html lang="{{ session.lang.code }}" dir="{{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %} | zid</title>
-    <meta name="description" content="">
+    {{ header_meta_tags | raw }}
+    <title>{{ store.name }} | {% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ assetUrl('zid-logo.svg') }}">
+    <link rel="shortcut icon" type="image/x-icon" href={{ store.icon }}>
     <link rel="stylesheet" href="{{ assetUrl('style.css') }}">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        @font-face {
+            font-family: "Avenir";
+            src: url('{{ asset_url ~ 'Avenir-Bold.otf' }}');
+            font-weight: 700;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: "Avenir";
+            src: url('{{ asset_url ~ 'Avenir-Regular.otf' }}');
+            font-weight: 400;
+            font-weight: bold;
+        }
 
-<body>
-    
-    {% if session.lang.code == 'ar' %}
-        {% set direction_rtl_class = ' rtl' %}
-    {% endif %}
+        .app.rtl{
+            font-family: Arial, sans-serif;
+        }
+        .app.ltr{
+            font-family: Avenir, sans-serif;
+        }
+    </style>
+</head>
+{% if session.lang.code == 'ar' %}
+    {% set direction_rtl_class = ' rtl' %}
+{% else %}
+    {% set direction_rtl_class = ' ltr' %}
+{% endif %}
+
+<body style="direction:{{ direction_rtl_class }}">
 
     <div class="app{{ direction_rtl_class }}">
         {% block header %}{% endblock %}
@@ -25,7 +48,9 @@
     </div>
 
     {{ zidapi_script|raw }}
-    <script type="text/javascript" src="{{ assetUrl('main.js') }}"></script>
+    {% block footer_scripts %}{% endblock %}
+    <script defer src="{{ assetUrl('app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 </body>
 
 </html>

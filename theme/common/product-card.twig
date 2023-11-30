@@ -1,0 +1,19 @@
+<div class="product p-2 h-full">
+  <div class="flex flex-col justify-center gap-2 h-full">
+    <a class="mb-auto h-full"  href="{{ product.html_url }}">
+      <img class="w-full h-full m-auto object-cover"
+      src="{{ imageUrl(product.images[0]['image']['large']) }}"
+      alt="{{ product.name }}" loading="lazy"/>
+    </a>
+    {% set productNameParts = product.name|split('.') %}
+    {% if  productNameParts|length > 1 %}
+      <h3 class="text-lg text-center text-primary font-bold">{{ productNameParts[0]}}</h3>
+      <p class="text-center">{{ productNameParts[1] }}</p>
+    {% else %}
+      <h3 class="text-lg text-center text-primary">{{ product.name }}</h3>
+    {% endif %}
+    <p class="text-center text-primary font-bold">
+      {{ product.formatted_sale_price is not null ? product.formatted_sale_price : product.formatted_price }}
+    </p>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<section section-id="{{ sectionId }}"
+  data-lg-scroll-offset="130"
+  data-md-scroll-offset="130"
+  data-sm-scroll-offset="94"
+  class="py-10 brands">
+  <div class="max-w-7xl  mx-auto px-2 pb-10">
+    <div class="splide" id="section-{{sectionId}}">
+      <div class="splide__track">
+        <ul class="splide__list h-auto">
+        {% for item in settings.brand_list %}
+          <li class="splide__slide">
+            <a href="{{ item.url ? settings.url : '/'}}" class="lg:p-8 p-4 flex justify-center items-center">
+              <img src="{{ item.image }}" alt="" loading="lazy" class="object-cover">
+            </a>
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .brands .splide__arrow {
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
+    border-radius: 50%;
+}
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new Splide(document.getElementById('section-{{sectionId}}'), {
+	    type   : 'loop',
+		  direction: 'rtl',
+		  perPage: 6,
+      autoplay: true,
+      perMove:1,
+		  arrows: true,
+		  pagination: false,
+		  breakpoints: {
+			720: {
+				perPage: 2,
+        arrows: false,
+			},
+      991: {
+				perPage: 3,
+			}
+		}
+  }).mount();
+  });
+</script>
+
+{% schema %}
+{
+  "name": {
+    "ar": "الماركات",
+    "en": "brands"
+  },
+  "icon": "fal fa-cabinet-filing",
+  "display": true,
+  "settings": {
+    "title": {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "text"
+      }
+    },
+    "brand": {
+      "type": "fieldset",
+      "label": {
+        "ar": "الماركة",
+        "en": "brand"
+      },
+      "settings": {
+        "list": {
+          "type": "list",
+          "noLabel": true,
+          "settings": {
+            "url": {
+              "type": "url",
+              "label": {
+                "ar": "الرابط",
+                "en": "link"
+              }
+            },
+            "image": {
+              "type": "image",
+              "label": {
+                "ar": "الصورة",
+                "en": "Image"
+              },
+              "info": {
+                "ar": "",
+                "en": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+{% endschema %}

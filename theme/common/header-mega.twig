@@ -1,0 +1,20 @@
+<div class="lg:block hidden bg-primary">
+    <ul class="main-nav flex flex-row-reverse flex-wrap justify-center max-w-5xl mx-auto relative">
+        {% for menu in main_navigation_menu.items %}
+            {% if menu.name != 'جميع المنتجات' or menu.name != 'الصفحة الرئيسية'%}
+                <li class="group py-2 px-3 uppercase hover:bg-white hover:text-primary transition border-b-2 border-b-primary hover:border-b-whiteColor-600 duration-300 ease-in-out text-white" >
+                    <a href="{{ menu.url }}" class="block h-full"><span>{{ menu.name }}</span></a>
+                    {% if menu.items | length > 0 %}
+                        <div class="absolute z-50 hidden top-full group-hover:lg:block w-full right-0">
+                          <ul class="bg-white border p-4 w-full grid grid-cols-3">
+                            {% for subitem in menu.items %}
+                              <li><a href="{{ subitem.url }}">{{ subitem.name }}</a></li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

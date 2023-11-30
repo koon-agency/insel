@@ -1,2 +1,218 @@
-<footer class='footer-section'>
-</footer>
+<footer class="footer bg-primary w-full lg:py-6">
+    <div class="max-w-[85rem] mx-auto px-4 pt-2">
+        <div class="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 items-baseline lg:gap-0 gap-4">
+            <div class="flex flex-col flex-grow w-full pt-4">
+            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                {{ settings.links_1_title }}
+            </h5>
+            <ul class="grid grid-cols-1 gap-2 py-3">
+                {% for link in settings.links_1_links %}
+                <li>
+                    <a class="text-white footer-item text-sm" href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div class="md:block hidden lg:col-span-2">
+            <div class="flex flex-col">
+                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                {{ settings.pages_title }}
+                </h5>
+                <ul class="grid grid-cols-2 gap-2 pt-3">
+                {% for link in settings.pages_links %}
+                    <li>
+                        <a class="text-white footer-item text-sm" href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            </div>
+            <div class="md:block hidden">
+            <div class="flex flex-col">
+                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                {{ locals.profile.my_account }}
+                </h5>
+                <ul class="grid grid-cols-1 gap-2 pt-3">
+                    <li>
+                    {% if customer %}
+                        <form action="/auth/logout" method="POST">
+                        <input type="hidden" name="_token" value="{{ csrf_token }}" />
+                        <button type="submit" class="text-white footer-item  text-sm">{{ locals.logout }}</button>
+                        </form>
+                    {% else %}
+                        <a href='/auth/login' class="text-white footer-item  text-sm">{{ locals.login }}</a>
+                    {% endif %}
+                    </li>
+                    <li>
+                        <a href={{ customer ? '/account-profile' : '/auth/login' }} class="text-white footer-item  text-sm">{{ locals.profile.orders.order }}</a>
+                    </li>
+                </ul>
+            </div>
+            </div>
+            <div class="flex flex-col">
+            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                {{ locals.contact }}
+            </h5>
+            <ul class="grid grid-cols-3 gap-2 md:pt-3 pt-6 items-stretch lg:px-0 px-6">
+                <li>
+                    <a href="tel:{{ store.phone }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
+                    <i class="fa-solid fa-phone"></i>
+                    <p class="text-white uppercase text-[10px]">call us</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://wa.me/{{ store.phone }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <p class="text-white uppercase text-[10px]">whatsapp</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:{{ store.email }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
+                        <i class="fa-regular fa-envelope text-lg"></i>
+                        <p class="text-white uppercase text-[10px]">email</p>
+                    </a>
+                </li>
+            </ul>
+            </div>
+        </div>
+        <div class="py-6">
+            <ul class="flex justify-center items-center gap-10">
+                <li><a href="https://pin.it/40DYynb" target="_blank" class="footer-icon w-full h-full block"><i class="text-2xl fa-brands fa-pinterest-p text-white"></i></a></li>
+                <li><a href="https://www.instagram.com/insel.sa/" target="_blank" class="footer-icon w-full h-full block"><i class="text-2xl fa-brands fa-instagram text-white"></i></a></li>
+                <li><a href="https://twitter.com/insel_sa" target="_blank" class="footer-icon w-full h-full block"><i class="text-2xl fab fa-twitter text-white"></i></a></li>
+                <li><a href="https://www.facebook.com/insel.sa1/" target="_blank" class="footer-icon w-full h-full block"><i class="text-2xl fab fa-facebook-f text-white"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-t-whiteColor-500 py-2.5">
+        <p class="text-white text-xs max-w-[85rem] mx-auto px-4 md:rtl:text-right md:text-left pb-2.5 text-center pt-1">.All rights reserved شركة الإختيار الداخلي التجارية Copyright 2023 ©</p>
+    </div>
+</footer>   
+<style>
+.app.rtl .footer-item:hover {
+    padding-right: 5px;
+    transition: .5s all ease;
+    color: #afb1b1!important;
+}
+.footer-item{
+    transition-duration: 0.5s;
+}
+.app.ltr .footer-item:hover {
+    padding-left: 5px;
+}
+.footer-icon{
+    transition: all .3s ease;
+}
+.footer-icon:hover{
+    transform: rotateZ(360deg);
+    transition: all .5s ease;
+}
+</style>
+{% schema %}
+{
+  "name": {
+    "ar": "اسفل الصفحة",
+    "en": "footer"
+  },
+  "icon": "fa fa-square",
+  "display": true,
+  "settings": {
+    "links_1": {
+      "type": "fieldset",
+      "label": {
+        "ar": "روابط مهمة",
+        "en": "Links"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": {
+        "hide": {
+          "type": "checkbox",
+          "label": {
+            "ar": " ",
+            "en": " "
+          },
+          "option": {
+            "ar": "إخفاء",
+            "en": "Hide"
+          },
+          "noLabel": true
+        },
+        "title": {
+          "type": "text",
+          "label": {
+            "ar": "العنوان",
+            "en": "Title"
+          }
+        },
+        "links": {
+          "type": "list",
+          "settings_label": {
+            "ar": "الرابط",
+            "en": "Link"
+          },
+          "noLabel": true,
+          "settings": {
+            "title": {
+              "type": "text",
+              "label": {
+                "ar": "العنوان",
+                "en": "text"
+              }
+            },
+            "url": {
+              "type": "url",
+              "label": {
+                "ar": "الرابط",
+                "en": "Link"
+              }
+            }
+          }
+        }
+      }
+    },
+    "pages": {
+      "type": "fieldset",
+      "label": {
+        "ar": "صفحات مهمة",
+        "en": "pages"
+      },
+      "icon": "font_awesome",
+      "expandable": true,
+      "settings": {
+        "title": {
+          "type": "text",
+          "label": {
+            "ar": "العنوان",
+            "en": "Title"
+          }
+        },
+        "links": {
+          "type": "list",
+          "settings_label": {
+            "ar": "الرابط",
+            "en": "Link"
+          },
+          "noLabel": true,
+          "settings": {
+            "title": {
+              "type": "text",
+              "label": {
+                "ar": "العنوان",
+                "en": "text"
+              }
+            },
+            "url": {
+              "type": "url",
+              "label": {
+                "ar": "الرابط",
+                "en": "Link"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+{% endschema %}

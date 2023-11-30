@@ -1,0 +1,68 @@
+<section class=" py-10">
+  <div class="mx-auto px-2 max-w-6xl">
+    <h2 class="text-primary lg:text-3xl text-xl text-center font-bold section-title">{{ settings.title }}</h2>
+    <div class="splide pt-6 px-4 products-slider" id="section-{{sectionId}}">
+      <div class="splide__track">
+        <ul class="splide__list h-auto">
+          {% for product in settings.products.products %}
+            <li class="splide__slide w-full">
+                {% include 'product-card.twig' with {'product' : product, 'index': key} %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    new Splide(document.getElementById('section-{{sectionId}}'), {
+      type   : 'slide',
+      direction: 'rtl',
+      perPage: 4,
+      perMove: 4,
+      autoplay: false,
+      arrows: false,
+      gap: '1em',
+      pagination: true,
+      breakpoints: {
+        720: {
+            perPage: 2,
+            perMove: 2,
+        },
+        991: {
+            perPage: 4,
+            perMove: 4,
+        }
+      },
+    }).mount();
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": {
+    "ar": "قائمة المنتجات",
+    "en": "Products"
+  },
+  "icon": "fal fa-box",
+  "display": true,
+  "settings": {
+    "title": {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "Title"
+      }
+    },
+    "products": {
+      "type": "products",
+      "label": {
+        "ar": "اختر قائمة المنتجات ",
+        "en": "Select category products"
+      }
+    }
+  }
+}
+{% endschema %}

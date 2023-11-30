@@ -1,4 +1,218 @@
+<style>
+.slide-menu-ul-li:after{
+  content: url('https://media.zid.store/cdn-cgi/image/w=2220,q=100,f=auto/https://media.zid.store/43f22f5f-a76d-4e63-9a36-c8d9d20ec8e3/80902cf3-22bd-48fe-b09f-228515cc3a43.svg');
+  position: absolute;
+  left: 0;
+}
+</style>
 <header class='header-section'>
-    {% include 'logo.twig' with {'width' : '200', 'height': '200'} %}
-    {% include 'navigation.twig' %}
+{% if session.lang.code == 'en' %}
+    {% set to = 'ar' %}
+    {% set title = 'العربية' %}
+{% else %}
+    {% set to = 'en' %}
+    {% set title = 'English' %}
+{% endif %}
+  <nav class="top-0 z-40 flex items-center w-full lg:px-12 py-1 shadow-md bg-white md:px-8 px-4">
+    {# Logo #}
+    
+    <div class="flex items-center flex-1">
+      <a class="py-2.5" href = "/"><img src="{{ store.logo }}" alt="" class="lg:h-12 w-full h-10"></a>
+    </div>
+
+    {# Search #}
+    <div class="flex-1">
+        <div class="lg:block hidden">{% include 'header-search.twig' %}</div>
+        <div class="lg:hidden block">
+            <button type="button" data-te-toggle="modal" data-te-target="#searchModal">
+                <svg width="22" height="22" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.3333 17.4499L16.6667 15.7833M9.58333 16.6166C10.623 16.6166 11.6524 16.4118 12.6129 16.014C13.5734 15.6161 14.4461 15.033 15.1813 14.2979C15.9164 13.5627 16.4995 12.69 16.8974 11.7295C17.2952 10.769 17.5 9.73956 17.5 8.69993C17.5 7.6603 17.2952 6.63085 16.8974 5.67035C16.4995 4.70986 15.9164 3.83713 15.1813 3.102C14.4461 2.36687 13.5734 1.78373 12.6129 1.38588C11.6524 0.988035 10.623 0.783264 9.58333 0.783264C7.4837 0.783264 5.47006 1.61734 3.9854 3.102C2.50074 4.58666 1.66666 6.6003 1.66666 8.69993C1.66666 10.7996 2.50074 12.8132 3.9854 14.2979C5.47006 15.7825 7.4837 16.6166 9.58333 16.6166Z" stroke="#2E3059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button> 
+
+            <!-- Modal -->
+            <div
+                data-te-modal-init
+                class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none backdrop-blur-sm bg-backdropBg"
+                id="searchModal"
+                tabindex="-1"
+                aria-labelledby="searchModalLabel"
+                aria-hidden="true">
+                <div data-te-modal-dialog-ref class="pointer-events-none relative w-full px-3 top-24 max-w-2xl translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out mx-auto ">
+                    <div class="pointer-events-auto relative flex w-full flex-col border-none bg-white bg-clip-padding text-current shadow-lg outline-none">
+                        <div class="relative flex-auto p-2" data-te-modal-body-ref>
+                            {% include 'header-search.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="flex-1">
+        <div class="flex justify-between items-center">
+            {# language & currency #}
+            <div class="flex items-center gap-2 mx-auto">
+                <button href="" class="language-button flex items-end justify-center gap-1" x-data="language('{{ session.lang.code }}')" @click="change('{{ to }}')">{{ title }}</button>
+                <div class="hidden">
+                    {% include 'template_for_shipping_destination_currency_lang' with { 'hideDestination' : true, 'hideLanguage' : false , 'hideCurrency' : false  } %}
+                </div>
+                <div class="hidden">
+                    <span class="destination-shipping-currency">{{ locals.sys_lbl_store_currency }}</span>
+                    <button id="destinationCurrency" type="button" onclick="showDestinationCurrencies()" class="dropbtn">
+                        {{ session.currency.symbol }}
+                    </button>
+                    <div id="destinationCurrencies" class="dropdwn-content">
+                        <div>
+                            {% for storeCurrency in store.currencies %}
+                                <span id="{{ storeCurrency.code }}" data-currency-symbol="{{ storeCurrency.symbol }}" onclick="document.getElementById('destinationCurrency').innerHTML = '{{ storeCurrency.symbol }}'; document.getElementById('inputCurrencySymbol').value = '{{ storeCurrency.symbol }}';document.getElementById('inputCurrencyCode').value = '{{ storeCurrency.code}}'; document.getElementById('inputCountryCode').value = '{{ storeCurrency.country.code}}'; hideAllDestinationsDropDowns();">
+                                    {{ storeCurrency.symbol }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <span>|</span> {% include 'header-dropdown.twig' %}
+            </div>
+            <div class="flex gap-4">
+                {# login #}
+                <a href='{{ customer ? "/account-profile" : "/auth/login" }}' class="hover:text-white transition duration-300 ease-in-out"><img class="w-6" src="{{ asset_url ~ 'login.svg' }}">
+                </a>
+                {# Wish list #}
+                <a href='{{ customer ? "/account-profile" : "/auth/login" }}' class="hover:text-white transition duration-300 ease-in-out"><i class="fa-regular fa-heart"></i>
+                </a>
+                {# Cart #}
+                <div class="flex items-center justify-center gap-2">
+                    <a class="relative" href='/cart/view' x-data="cart()"> 
+                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.6932 12.954V6.95396C20.6932 4.46868 18.5826 2.45396 15.9789 2.45396C13.3753 2.45396 11.2647 4.46868 11.2647 6.95396V12.954M9.69323 29.454H22.2647C24.8683 29.454 26.9789 27.4392 26.9789 24.954V11.454C26.9789 9.7971 25.5718 8.45396 23.8361 8.45396H8.1218C6.38605 8.45396 4.97894 9.7971 4.97894 11.454V24.954C4.97894 27.4392 7.0896 29.454 9.69323 29.454Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="absolute -top-2.5 -right-1 flex items-center justify-center">
+                            <span x-text="count" class="text-sm text-primary-200 text-center font-bold"></span>
+                        </div>
+                    </a>
+                </div> 
+            </div>
+        </div>
+    </div>
+    
+    <div x-data="{show: false}" class="lg:hidden flex  justify-end">
+      <button  @click="show = !show">
+        <svg class="w-6 h-6 text-white" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0H26V2.22222H0V0Z" fill="#000"/>
+          <path d="M0 8.88889H26V11.1111H0V8.88889Z" fill="#000"/>
+          <path d="M0 17.7778H26V20H0V17.7778Z" fill="#000"/>
+        </svg>
+      </button>
+      <ul x-show="show"
+        @click.away="show = false"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="transform origin-right translate-x-full"
+        x-transition:enter-end="transform origin-right -translate-x-0"
+        x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="transform origin-left -translate-x-0"
+        x-transition:leave-end="transform origin-left translate-x-full"
+        x-init="() => { $el.classList.remove('hidden');$el.classList.add('flex') }"
+        dir="rtl"
+        class="flex-col mt-2 items-start px-4 py-2 hidden rtl absolute right-0 w-[300px] h-screen top-[-8px] bg-white shadow-lg z-50">
+        <div class="w-full flex">
+          <button class="mr-auto p-1.5" @click="show = false">
+              <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="w-full">
+          <div class="flex flex-col items-center justify-center pt-4 pb-6">
+            {% if customer %}
+                <a href="/account-profile" class="px-6 pb-1.5 pt-2 border shadow-sm text-sm bg-white  border-primary-200 rounded-lg text-primary-200 hover:bg-primary-200 hover:text-white transition duration-300 font-bold"> {{ locals.home.hello }} {{ customer.name }}</a>
+            {% else %}
+                <a href='/auth/login' class="px-6 pb-1 pt-[5px] border shadow-sm text-sm bg-white  border-primary-200 rounded-lg text-primary-200 hover:bg-primary-200 hover:text-white transition duration-300 font-bold">{{ locals.login }}</a>
+            {% endif %}
+          </div>
+        </div>
+        {% for menu in main_navigation_menu.items %}
+            <li class="slide-menu-ul-li text-black font-bold p-2.5 w-full relative text-sm" onclick="scrollToSubMenu(this)">
+              <a href="{{ menu.url }}">{{ menu.name }}</a>
+            </li>
+        {% endfor %}
+
+        {% if settings.locations_display %}
+        <div class="order-1 w-full bg-primary-50 bg-no-repeat relative bg-cover lg:bg-contain bg-left-bottom px-3 py-5 m-4 mx-auto flex flex-col justify-between mt-auto rounded-lg" style="background-image: url({{ asset_url ~ 'header.svg' }})">
+          <h2 class="text-white text-lg font-bold mb-3">{{ settings.locations_title }}</h2>
+          <a href="{{ settings.locations_url ? settings.locations_url : '/'}}" class="bg-white rounded-tl-full py-1 px-4 text-primary-50 text-xs mb-1 max-w-fit">{{ settings.locations_urlText }}</a>
+        </div>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+   {% include 'header-mega.twig' %}
+  <script>
+    function language(code) {
+        return {
+            open: false,
+            current: code,
+            change: function (code) {
+                document.getElementById(code).click()
+                setTimeout(() => {
+                    document.getElementById('modal-select-destination-city-save').click()
+                }, 200)
+            }
+        }
+    }
+    function cart() {
+      return {
+        count: "",
+        init() {
+          zid.store.cart.fetch().then(
+            function (response) {
+              this.count =
+                response.data.cart.products_count > 0
+                  ? response.data.cart.products_count
+                  : 0;
+            }.bind(this)
+          );
+        },
+      };
+    }
+
+  document.addEventListener("alpine:init", () => {
+    Alpine.store("accordion", {
+      tab: 0,
+    });
+    Alpine.data("accordion", (idx) => ({
+      init() {
+        this.idx = idx;
+      },
+      idx: -1,
+      handleClick() {
+        this.$store.accordion.tab =
+          this.$store.accordion.tab === this.idx ? 0 : this.idx;
+      },
+      handleRotate() {
+        return this.$store.accordion.tab === this.idx ? "-rotate-180" : "";
+      },
+      handleToggle() {
+        return this.$store.accordion.tab === this.idx
+          ? `max-height: ${this.$refs.tab.scrollHeight}px`
+          : "";
+      },
+      handlePlus() {
+        return this.$store.accordion.tab === this.idx ? 'hidden' : 'block';
+      },
+      handleMinus() {
+        return this.$store.accordion.tab === this.idx ? 'block' : 'hidden';
+      },
+    }));
+    Alpine.data("categories", () => ({
+      get_categories: function () {
+        zid.store.product.fetchCategories().then(function (response) {
+          Alpine.store("all_categories", response.data.categories);
+        });
+      },
+      init() {
+        this.get_categories();
+      },
+    }));
+  });
+  </script>
 </header>

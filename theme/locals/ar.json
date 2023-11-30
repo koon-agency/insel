@@ -1,8 +1,74 @@
 {
-    "home_title": "الصفحة الرئيسية",
-    "products": "المنتجات",
-    "categories": "التصنيفات",
+    "home":{
+        "home_title": "الرئيسية",
+        "hello": "اهلاً"
+    },
+    "product":{
+        "products": "المنتجات",
+        "all_products": "جميع الاقمشة",
+        "categories": "التصنيفات",
+        "order_now":"اطلبها الآن",
+        "related_products":"منتجات مقترحة",
+        "add_to_cart":"أضف للسلة",
+        "notify_me":"اعلمني عند توفر المنتج",
+        "product_reviews":"التقييمات",
+        "product_no_reviews": "لاتوجد تقييمات حتى الان",
+        "add_product_review":"اضف تقييمك",
+        "show_name":"لا تظهر اسمي" ,
+        "write_comment":"... اكتب تعليقك هنا",
+        "reviews_submit_success": "شكرًا لتقييمك، سيتم مراجعة التقييم ونشره على المتجر"
+    },
+    "profile": {
+        "title": "معلومات الحساب",
+        "my_account": "حسابي",
+        "orders": {
+            "title": "الطلبات",
+            "order":"حالة الطلب",
+            "id": "رقم الطلب",
+            "date": "التاريخ",
+            "status": "الحالة",
+            "total": "المجموع",
+            "empty": "لا يوجد طلبات"
+        },
+        "addresses": {
+            "title": "العناوين",
+            "empty": "لا يوجد عناوين",
+            "new": "عنوان جديد",
+            "location": "الموقع"
+        }
+    },
+    "cart":{
+        "checkout":"متابعة الشراء",
+        "title": "السلة",
+        "checkout_details": "تفاصيل الدفع",
+        "order_complete": "الطلب مكتمل",
+        "empty_cart": "السلة فارغة",
+        "cart_back_to_store": "متابعة التسوق",
+        "product": "المنتج",
+        "quantity": "الكمية",
+        "price": "السعر",
+        "subtotal": "المجموع",
+        "summary": "مجموع السلة",
+        "back_to_store": "العودة للمتجر",
+        "coupon":"كوبون",
+        "coupon_discount":"كوبون الخصم",
+        "coupon_code":"كود الخصم",
+        "apply_coupon": "تطبيق الكوبون",
+        "coupon_discount_enter": "ادخل كود الخصم",
+        "coupon_discount_submit": "إرسال",
+        "sorry": "عذرًا، هذا الكوبون غير موجود",
+        "sent_successfully":"تم تطبيق الكوبون بنجاح"
+    },
     "login": "تسجيل الدخول",
-    "logout": "خروح",
-    "hello": "اهلاً"
+    "logout": "تسجيل خروج",
+    "see_all":"عرض الكل",
+    "email":"البريد الإلكتروني",
+    "email_address":"عنوان البريد الإلكتروني",
+    "send":"إرسال",
+    "cancel":"إلغاء",
+    "followus": "تواصل معنا",
+    "search":"ابحث",
+    "subscribe":"اشترك",
+    "contact":"تواصل معنا",
+    "no_results": "لا يوجد نتائج"
 }

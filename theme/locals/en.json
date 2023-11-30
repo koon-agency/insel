@@ -1,8 +1,75 @@
 {
-    "home_title": "Home",
-    "products": "Products",
-    "categories": "Categories",
+    "home":{
+        "home_title": "Home",
+        "hello": "Hello"
+    },
+    "product":{
+        "products": "Products",
+        "all_products": "All Fabrics",
+        "categories": "Categories",
+        "order_now":"Order Now",
+        "related_products": "Related Products",
+        "notify_me":"Notify me when the product is available",
+        "add_to_cart": "Add to Cart",
+        "product_reviews":"Product Reviews",
+        "product_no_reviews": "No reviews yet",
+        "add_product_review":"Add your review",
+        "show_name":"Do Not Show My Name",
+        "write_comment":"Write comment here ...",
+        "reviews_submit_success": "Thanks you for your review"
+
+    },
+    "cart":{
+        "checkout": "Checkout",
+        "title": "Cart",
+        "checkout_details": "Checkout Details",
+        "order_complete": "Order Complete",
+        "empty_cart": "Your cart is currently empty.",
+        "cart_back_to_store": "Continue Shopping",
+        "product": "Product",
+        "quantity": "Quantity",
+        "price": "Price",
+        "subtotal": "Total",
+        "summary":"Cart Totals",
+        "back_to_store": "Return to Shop",
+        "coupon":"Coupon",
+        "coupon_discount":"Discount coupon",
+        "coupon_code":"Coupon code",
+        "apply_coupon": "Apply Coupon",
+        "coupon_discount_enter": "Enter discount coupon",
+        "coupon_discount_submit": "Send",
+        "sorry": "Sorry, Coupon does not exist",
+        "sent_successfully":"Coupon Applied Successfully"
+    },
+    "profile": {
+        "title": "Account details",
+        "my_account": "My Account",
+        "orders": {
+            "title": "Orders",
+            "order":"Order Status",
+            "id": "Order ID",
+            "date": "Date",
+            "status": "Status",
+            "total": "Total",
+            "empty": "You have no orders yet"
+        },
+        "addresses": {
+            "title": "Addresses",
+            "new": "New address",
+            "empty": "You have no addresses yet",
+            "location": "Location"
+        }
+    },
     "login": "Login",
     "logout": "Logout",
-    "hello": "Hello"
+    "email":"Email",
+    "email_address":"Email Address",
+    "send":"Send",
+    "cancel":"Cancel",
+    "see_all":"See All",
+    "followus": "Follow us",
+    "search": "Search",
+    "subscribe": "Subscribe",
+    "contact": "Contact us",
+    "no_results": "No results found."
 }

@@ -1,0 +1,114 @@
+<section class="services py-10">
+    <h2 class="text-primary lg:text-3xl text-xl text-center font-bold section-title">{{ settings.title }}</h2>
+    <div class="max-w-6xl mx-auto lg:px-2 px-4">
+        <div class="splide services-slider">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    {% for item in settings.services %}
+                        <li class="splide__slide">
+                            <div class="flex lg:flex-row flex-col">
+                                <div>
+                                    <img class="w-full h-full" src="{{ imageUrl(item.image) }}"alt="{{  item.title }}">
+                                </div>
+                                <div class="p-4 bg-whiteColor-400">
+                                    <h3 class="font-bold lg:text-2xl text-xl mb-2">{{ item.title }}</h3>
+                                    <p>{{ item.description }}</p>
+                                    <a href="{{ item.url ? item.url : '/'}}" class="mt-2 pb-1 border-b text-secondary">{{ settings.urlTitle }}</a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  new Splide(".services-slider", {
+    type: 'slide',
+    direction: 'rtl',
+    perPage: 2,
+    perMove: 2,
+    autoplay: false,
+    arrows: false,
+    gap: '1em',
+    pagination: false,
+    breakpoints: {
+      720: {
+          perPage: 1,
+          perMove: 1,
+      }
+    },
+  }).mount();
+});
+</script>
+{% schema %}
+{
+  "name": {
+    "ar": "الخدمات",
+    "en": "Services"
+  },
+  "icon": "fal fa-cabinet-filing",
+  "display": true,
+  "settings": {
+    "title": {
+      "type": "text",
+      "label": {
+        "ar": "العنوان",
+        "en": "text"
+      }
+    },
+    "services": {
+      "type": "list",
+      "noLabel": true,
+      "maxItems": 20,
+      "info": {
+        "ar": "",
+        "en": ""
+      },
+      "settings": {
+        "image": {
+          "type": "image",
+          "label": {
+            "ar": "الصورة",
+            "en": "Image"
+          },
+          "info": {
+            "ar": "ارفع صورة بحجم 750 * 750 ",
+            "en": "This is an info text sample here"
+          }
+        },
+        "title": {
+            "type": "text",
+            "label": {
+                "ar": "العنوان",
+                "en": "text"
+            }
+        },
+        "description": {
+        "type": "textarea",
+        "label": {
+            "ar": "النص",
+            "en": "Text"
+            }
+        },
+        "url": {
+          "type": "url",
+          "label": {
+            "ar": "الرابط",
+            "en": "Link"
+          }
+        },
+        "urlTitle": {
+            "type": "text",
+            "label": {
+            "ar": "عنوان الرابط",
+            "en": "Link title"
+            }
+        }
+      }
+    }
+  }
+}
+{% endschema %}

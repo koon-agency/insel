@@ -1,15 +1,13 @@
 {% extends "layout.twig" %}
 
-{% block title %} {{ locals.home_title }} {% endblock %}
+{% block title %} {{ locals.home.home_title }} {% endblock %}
 
 {% block header %} {{ include('header.twig') }} {% endblock %}
 
 {% block main_content %}
 
     <div class="main">
-        {% if customer %}
-            <h1>{{ locals.hello }}, {{ customer.name }}</h1>
-        {% endif %}
+      {{ home_template_modules }}
     </div>
 
 {% endblock %}
