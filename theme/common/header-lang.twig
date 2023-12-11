@@ -1,0 +1,50 @@
+<div>
+    <div class="relative" x-data="{show: false}"  x-init="show = false">
+        <div class="flex items-center cursor-pointer" @click="show = !show">
+            <div class="flex items-center gap-2 ltr:justify-end">
+                <img src="{{ session.currency.country.flag }}" alt="{{ session.currency.code }}" class="w-6 h-6 rounded-full object-cover" loading="lazy">
+                <p>{{ session.currency.code }}</p>
+            </div>
+            <i class="fa-solid fa-chevron-down px-1"></i>
+        </div>
+        <ul x-show="show" @click.away="show = false" class="absolute left-0 right-0 mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-md z-10 lg:bottom-auto bottom-9 hidden" :class="show ? '!block' : 'hidden'">
+        {% for storeCurrency in store.currencies %}
+            <li @click="languageChange('{{ storeCurrency.code }}')" class="cursor-pointer">
+                <div class="py-2 px-3 flex items-center gap-2">
+                    <img src="{{ storeCurrency.country.flag }}" alt="{{ storeCurrency.code }}" loading="lazy" class="w-6 h-6 rounded-full object-cover mr-2">
+                    <p>{{ storeCurrency.code }}</p>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+<span>|</span>
+<button href="" class="language-button flex items-end justify-center gap-1" x-data="language('{{ session.lang.code }}')" @click="change('{{ to }}')">{{ title }}</button>
+<div class="hidden">
+    {% include 'template_for_shipping_destination_currency_lang' with { 'hideDestination' : true, 'hideLanguage' : false , 'hideCurrency' : false  } %}
+</div>
+<div class="hidden">
+    <span class="destination-shipping-currency">{{ locals.sys_lbl_store_currency }}</span>
+    <button id="destinationCurrency" type="button" onclick="showDestinationCurrencies()" class="dropbtn">
+        {{ session.currency.symbol }}
+    </button>
+    <div id="destinationCurrencies" class="dropdwn-content">
+        <div>
+            {% for storeCurrency in store.currencies %}
+                <span id="{{ storeCurrency.code }}" data-currency-symbol="{{ storeCurrency.symbol }}" onclick="document.getElementById('destinationCurrency').innerHTML = '{{ storeCurrency.symbol }}'; document.getElementById('inputCurrencySymbol').value = '{{ storeCurrency.symbol }}';document.getElementById('inputCurrencyCode').value = '{{ storeCurrency.code}}'; document.getElementById('inputCountryCode').value = '{{ storeCurrency.country.code}}'; hideAllDestinationsDropDowns();">
+                    {{ storeCurrency.symbol }}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    function languageChange(code) {
+        document.getElementById(code).click();
+        setTimeout(() => {
+            document.getElementById('modal-select-destination-city-save').click();
+        }, 200);
+    }
+</script>
+

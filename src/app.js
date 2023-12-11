@@ -2,9 +2,11 @@ import "./index.css";
 import "@splidejs/splide/dist/css/splide.min.css";
 import Alpine from "alpinejs";
 import Splide from "@splidejs/splide";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
 
 window.Alpine = Alpine;
 window.Splide = Splide;
+window.PhotoSwipeLightbox = PhotoSwipeLightbox;
 
 document.addEventListener("alpine:init", () => {
   Alpine.store("toasts", {

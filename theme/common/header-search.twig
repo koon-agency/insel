@@ -1,16 +1,41 @@
 <div x-data="search">
     <div class="relative flex-auto py-1 px-2.5 border-2 border-primary" data-te-modal-body-ref>
         <div class="autocomplete flex gap-1">
-            <svg fill="#000" xmlns="http://www.w3.org/2000/svg" width="1.3rem" height="1.3rem" viewBox="0 0 32 32">
-                <path d="M30.276 28.391l-7.576-7.576c1.644-2.053 2.633-4.652 2.633-7.481 0-6.616-5.384-12-12-12s-12 5.384-12 12 5.384 12 12 12c2.829 0 5.428-0.989 7.481-2.633l7.576 7.576c0.26 0.26 0.601 0.391 0.943 0.391s0.683-0.131 0.943-0.391c0.521-0.521 0.521-1.364 0-1.885zM13.333 22.667c-5.147 0-9.333-4.187-9.333-9.333s4.187-9.333 9.333-9.333 9.333 4.187 9.333 9.333-4.187 9.333-9.333 9.333z"></path>
-            </svg>
-            <input x-model="query" @input="fetchProductsSearchDebounce" type="text" class="search-input-input w-full" style="border:none; outline:none">
+            <form action="/products" class="flex items-center justify-start" x-data="{}">
+                <button class="search-button ps-2 pe-1" @click="$refs.input.focus();">
+                    <svg fill="#000" xmlns="http://www.w3.org/2000/svg" width="1.3rem" height="1.3rem" viewBox="0 0 32 32">
+                        <path d="M30.276 28.391l-7.576-7.576c1.644-2.053 2.633-4.652 2.633-7.481 0-6.616-5.384-12-12-12s-12 5.384-12 12 5.384 12 12 12c2.829 0 5.428-0.989 7.481-2.633l7.576 7.576c0.26 0.26 0.601 0.391 0.943 0.391s0.683-0.131 0.943-0.391c0.521-0.521 0.521-1.364 0-1.885zM13.333 22.667c-5.147 0-9.333-4.187-9.333-9.333s4.187-9.333 9.333-9.333 9.333 4.187 9.333 9.333-4.187 9.333-9.333 9.333z"></path>
+                    </svg>
+                </button>
+                <input
+                    type="text"
+                    name="search"
+                    x-model="query"
+                    @input="fetchProductsSearchDebounce"
+                    class="search-input-input w-full"
+                    style="border:none; outline:none"
+                    autocomplete="true"
+                    spellcheck="true"
+                    x-ref="input"
+                />
+            </form>
         </div>
     </div>
-    <div x-show="query.length > 0" :class="'autocomplete-items z-50 max-h-60 overflow-y-auto absolute bg-white lg:min-w-[29.7rem] lg:w-auto lg:top-16 lg:right-auto top-20 right-0 border border-primary p-2.5 w-full'">
+    <div
+        x-show="query.length > 0 && products.length"
+        :class="'autocomplete-items z-50 max-h-60 overflow-y-auto absolute bg-white lg:min-w-[29.7rem] lg:w-auto lg:top-16 lg:right-auto top-20 right-0 border border-primary p-2.5 w-full'"
+    >
         <template x-for="(product, index) in products" :key="product.id">
-            <a :href="product.html_url" class="flex items-center gap-2 p-1.5" :class="{ 'border-b border-b-[#ccc]': index < products.length - 1 }">
-                <img :src="product.images[0]['image']['large']" :alt="product.name" class="w-9 border border-primary">
+            <a
+                :href="product.html_url"
+                class="flex items-center gap-2 p-1.5"
+                :class="{ 'border-b border-b-[#ccc]': index < products.length - 1 }"
+            >
+                <img
+                    :src="product.images[0]['image']['large']"
+                    :alt="product.name"
+                    class="w-9 border border-primary"
+                />
                 <p x-text="product.name"></p>
             </a>
         </template>
@@ -23,27 +48,25 @@
         return {
             query: '',
             products: [],
-            fetchProductsSearchDebounce() {
-                debounce(() => {
+            async fetchProductsSearchDebounce() {
+                await debounce(async () => {
                     const searchInput = this.$el.querySelector('.search-input-input');
                     const catId = searchInput ? searchInput.getAttribute('data-cat-id') : null;                    
                     const query = this.query.trim();
-                    this.fetchProductsSearch(catId, query);
+                    await this.fetchProductsSearch(catId, query);
                 }, 650)();
             },
-            fetchProductsSearch(catId, query) {
+            async fetchProductsSearch(catId, query) {
                 const autocompleteItems = this.$el.querySelector('.autocomplete-items');
                 if (!query || query.length <= 0) {
                     this.products = [];
                     return;
                 }
 
-                zid.store.product.fetchAll(catId, { search: encodeURI(query) })
-                    .then(response => {
-                        if (response.status === 'success') {
-                            this.products = response.data ? response.data.products.data : [];
-                        }
-                });
+                const response = await zid.store.product.fetchAll(catId, { search: encodeURI(query) });
+                if (response.status === 'success') {
+                    this.products = response.data ? response.data.products.data : [];
+                }
             },
         };
     }
@@ -64,3 +87,4 @@
         };
     }
 </script>
+

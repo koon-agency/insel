@@ -1,19 +1,19 @@
 <section class="services py-10">
-    <h2 class="text-primary lg:text-3xl text-xl text-center font-bold section-title">{{ settings.title }}</h2>
+    <h2 class="text-grayColor lg:text-3xl text-xl text-center ltr:font-light section-title">{{ settings.title }}</h2>
     <div class="max-w-6xl mx-auto lg:px-2 px-4">
         <div class="splide services-slider">
             <div class="splide__track">
                 <ul class="splide__list">
                     {% for item in settings.services %}
                         <li class="splide__slide">
-                            <div class="flex lg:flex-row flex-col">
-                                <div>
+                            <div class="flex lg:flex-row flex-col ltr:lg:flex-row-reverse h-full">
+                                <div class="lg:basis-1/2">
                                     <img class="w-full h-full" src="{{ imageUrl(item.image) }}"alt="{{  item.title }}">
                                 </div>
-                                <div class="p-4 bg-whiteColor-400">
-                                    <h3 class="font-bold lg:text-2xl text-xl mb-2">{{ item.title }}</h3>
-                                    <p>{{ item.description }}</p>
-                                    <a href="{{ item.url ? item.url : '/'}}" class="mt-2 pb-1 border-b text-secondary">{{ settings.urlTitle }}</a>
+                                <div class="px-4 py-6 bg-whiteColor-400 lg:basis-1/2 flex flex-col justify-center gap-3 ltr:text-left">
+                                    <h3 class="font-bold lg:text-2xl text-xl ltr:lg:text-xl ltr:font-medium">{{ item.title }}</h3>
+                                    <p class="text-sm ltr:text-xs">{{ item.description }}</p>
+                                    <a href="{{ item.url ? item.url : '/'}}" class="text-secondary underline">{{ item.urlTitle }}</a>
                                 </div>
                             </div>
                         </li>
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     autoplay: false,
     arrows: false,
     gap: '1em',
-    pagination: false,
+    pagination: true,
     breakpoints: {
       720: {
           perPage: 1,

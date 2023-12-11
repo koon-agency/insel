@@ -1,6 +1,6 @@
 {% extends "layout.twig" %}
 
-{% block title %} {{ locals.categories }} {% endblock %}
+{% block title %} {{ locals.product.categories }} {% endblock %}
 
 {% block header %} {{ include('header.twig') }} {% endblock %}
 
@@ -8,7 +8,20 @@
 
     <section class="categories">
         <div class="categories-title">
-            <h2>{{ locals.categories }}</h2>
+            <h2 class="text-black font-bold text-xl lg:text-2xl text-center pb-4">{{ locals.product.categories }}</h2>
+            <div class="container my-5">
+                <div class="flex flex-row flex-wrap rtl gap-4 items-center justify-center">
+                {% for key, category in categories %}
+                    <a href="/categories/{{ category.id }}/{{ category.slug }}" class="h-full w-[calc(33.3334%_-_12px)] lg:w-[calc(33.3334%_-_24px)]">
+                        <img class="object-contain aspect-square mx-auto" {% if category.image %}
+                            src="{{ imageUrl(category.image) }}"
+                        {% else %}
+                            src="{{ imageUrl(asset_url ~ 'product-img.svg') }}"
+                        {% endif %} alt="">
+                    </a>
+                {% endfor %}
+                </div>
+            </div>
         </div>
     </section>
 

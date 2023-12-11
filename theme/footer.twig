@@ -2,7 +2,7 @@
     <div class="max-w-[85rem] mx-auto px-4 pt-2">
         <div class="grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 items-baseline lg:gap-0 gap-4">
             <div class="flex flex-col flex-grow w-full pt-4">
-            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase ltr:font-medium">
                 {{ settings.links_1_title }}
             </h5>
             <ul class="grid grid-cols-1 gap-2 py-3">
@@ -15,7 +15,7 @@
             </div>
             <div class="md:block hidden lg:col-span-2">
             <div class="flex flex-col">
-                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase ltr:font-medium">
                 {{ settings.pages_title }}
                 </h5>
                 <ul class="grid grid-cols-2 gap-2 pt-3">
@@ -29,7 +29,7 @@
             </div>
             <div class="md:block hidden">
             <div class="flex flex-col">
-                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+                <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase ltr:font-medium">
                 {{ locals.profile.my_account }}
                 </h5>
                 <ul class="grid grid-cols-1 gap-2 pt-3">
@@ -50,26 +50,26 @@
             </div>
             </div>
             <div class="flex flex-col">
-            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase">
+            <h5 class="text-white lg:text-xl font-bold text-lg border-b border-b-whiteColor-500 pb-2.5 uppercase ltr:font-medium">
                 {{ locals.contact }}
             </h5>
             <ul class="grid grid-cols-3 gap-2 md:pt-3 pt-6 items-stretch lg:px-0 px-6">
                 <li>
                     <a href="tel:{{ store.phone }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
                     <i class="fa-solid fa-phone"></i>
-                    <p class="text-white uppercase text-[10px]">call us</p>
+                    <p class="text-white uppercase ltr:font-medium text-[10px]">call us</p>
                     </a>
                 </li>
                 <li>
                     <a href="https://wa.me/{{ store.phone }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
-                        <p class="text-white uppercase text-[10px]">whatsapp</p>
+                        <p class="text-white uppercase ltr:font-medium text-[10px]">whatsapp</p>
                     </a>
                 </li>
                 <li>
                     <a href="mailto:{{ store.email }}" target="_blank" class="bg-secondary py-2 rounded flex flex-col justify-center items-center text-white gap-1 h-full">
                         <i class="fa-regular fa-envelope text-lg"></i>
-                        <p class="text-white uppercase text-[10px]">email</p>
+                        <p class="text-white uppercase ltr:font-medium text-[10px]">email</p>
                     </a>
                 </li>
             </ul>
@@ -85,17 +85,18 @@
         </div>
     </div>
     <div class="border-t border-t-whiteColor-500 py-2.5">
-        <p class="text-white text-xs max-w-[85rem] mx-auto px-4 md:rtl:text-right md:text-left pb-2.5 text-center pt-1">.All rights reserved شركة الإختيار الداخلي التجارية Copyright 2023 ©</p>
+        <p class="text-white md:text-xs text-[11px] max-w-[85rem] mx-auto px-4 md:rtl:text-right md:text-left pb-2.5 text-center pt-1">.All rights reserved شركة الإختيار الداخلي التجارية Copyright 2023 ©</p>
     </div>
 </footer>   
 <style>
-.app.rtl .footer-item:hover {
-    padding-right: 5px;
-    transition: .5s all ease;
+.footer-item:hover {
     color: #afb1b1!important;
 }
+.app.rtl .footer-item:hover {
+    padding-right: 5px;
+}
 .footer-item{
-    transition-duration: 0.5s;
+    transition: .5s all ease;
 }
 .app.ltr .footer-item:hover {
     padding-left: 5px;

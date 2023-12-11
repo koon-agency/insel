@@ -1,13 +1,37 @@
 {% extends "layout.twig" %}
-
-{% block title %} Orders {% endblock %}
-
+{% block title %} {{ locals.profile.orders.title }} {% endblock %}
 {% block header %} {{ include('header.twig') }} {% endblock %}
-
 {% block main_content %}
-
-    <h1>account-orders</h1>
-
+    <section class="account account-profile">
+        <div class="w-full border-y  bg-beige-300">
+            <div class="p-4 min-h-[60px]">
+                <h1 class="font-black text-black text-xl lg:text-2xl text-center">{{ locals.profile.orders.title }}</h1>
+            </div>
+        </div>
+        <div class="flex px-7 md:flex-row flex-col-reverse">
+            <div class="flex-[3] ps-7 py-7 pe-4">
+                <div class="w-full flex items-center justify-between border-b-[0.5px] border-green pb-2">
+                    <p class="text-sm text-black font-bold">{{ locals.profile.orders.id }}</p>
+                    <p class="text-sm text-black font-bold">{{ locals.profile.orders.date }}</p>
+                    <p class="text-sm text-black font-bold">{{ locals.profile.orders.status }}</p>
+                    <p class="text-sm text-black font-bold">{{ locals.profile.orders.total }}</p>
+                </div>
+                <div class="pt-6">
+                {% for order in orders %}
+                    <a href="/orders/{{ order.code }}/invoice" class="w-full flex items-center justify-between px-4 py-3 border border-beige-200 hover:border-black">
+                    <p class="text-sm text-black">#{{ order.id }}</p>
+                    <p class="text-sm text-black">{{ datetimeFormat(order.created_at, 'd-m-Y g:i:s A', session.lang.code) }}</p>
+                    <p class="text-sm text-black">{{ order.order_status.name }}</p>
+                    <p class="text-sm text-black">{{ order.order_total_string }}</p>
+                    </a>
+                {% else %}
+                    <p class="my-3 text-black text-center">{{ locals.profile.orders.empty }}</p>
+                {% endfor %}
+                </div>
+            </div>
+            {% include 'profile-links.twig' with { 'active' : locals.profile.orders.title } %}
+        </div>
+    </section>
 {% endblock %}
 
 {% block footer %} {{ include('footer.twig') }} {% endblock %}

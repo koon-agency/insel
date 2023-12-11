@@ -1,8 +1,8 @@
 <section class="pt-10">
     <div class="bg-whiteColor-200 py-6 lg:py-12 flex flex-col gap-3 justify-center items-center lg:flex-row">
-        <h2 class="text-primary lg:text-3xl text-xl text-center font-bold">{{ settings.title }}</h2>
-        <form class="flex justify-center" action="" method="post">
-            <button type="submit" class="bg-primary text-white rounded-r px-4 py-1.5 text-lg">{{ locals.subscribe }}</button>
+        <h2 class="text-primary lg:text-3xl text-xl text-center font-bold ltr:font-light">{{ settings.title }}</h2>
+        <form class="flex justify-center ltr:flex-row-reverse" action="" method="post">
+            <button type="submit" class="bg-primary text-white rounded-r px-4 py-1.5 text-lg uppercase ltr:font-light">{{ locals.subscribe }}</button>
             <input type="email" class="rounded-l border border-primary px-2" style="outline:none;" placeholder="{{ locals.email_address }}"/>
         </form>
     </div>

@@ -1,27 +1,52 @@
 {
     "home":{
-        "home_title": "Home",
-        "hello": "Hello"
+        "title": "Home",
+        "hello": "Hello",
+        "shop":"Shop",
+        "services": "Our Services"
     },
     "product":{
         "products": "Products",
-        "all_products": "All Fabrics",
+        "description": "Description",
+        "ship_details": "Shipping Details",
+        "code": "Product Code:",
         "categories": "Categories",
-        "order_now":"Order Now",
-        "related_products": "Related Products",
+        "related_products": "You May Also Like",
         "notify_me":"Notify me when the product is available",
-        "add_to_cart": "Add to Cart",
+        "add_to_cart": "Add to bag",
         "product_reviews":"Product Reviews",
         "product_no_reviews": "No reviews yet",
         "add_product_review":"Add your review",
         "show_name":"Do Not Show My Name",
         "write_comment":"Write comment here ...",
-        "reviews_submit_success": "Thanks you for your review"
-
+        "reviews_submit_success": "Thanks you for your review",
+        "in_stock":" In Stock ",
+        "out_of_stock":"Out of Stock",
+        "rest":" Only ",
+        "pieces":" Pieces left ",
+        "ship":"Shipping From SA",
+        "delivery":"1-2 Working days to Riyadh"
+    },
+    "products":{
+        "sort":"Sort",
+        "filter_latest":"Newest",
+        "filter_popularity":"popular",
+        "filter_price_low":"Low to high",
+        "filter_price_high":"High to low",
+        "filter": "Filter",
+        "filter_price": "Price",
+        "filter_price_from": "From",
+        "filter_price_to": "To",
+        "result": "Items",
+        "clear":"Clear All",
+        "save":"Save",
+        "apply":"Apply",
+        "empty":"No products",
+        "more":"+ More"
     },
     "cart":{
         "checkout": "Checkout",
-        "title": "Cart",
+        "title": "Shopping Cart",
         "checkout_details": "Checkout Details",
         "order_complete": "Order Complete",
         "empty_cart": "Your cart is currently empty.",
@@ -39,7 +64,9 @@
         "coupon_discount_enter": "Enter discount coupon",
         "coupon_discount_submit": "Send",
         "sorry": "Sorry, Coupon does not exist",
-        "sent_successfully":"Coupon Applied Successfully"
+        "sent_successfully":"Coupon Applied Successfully",
+        "remove":"Remove",
+        "update":"Update"
     },
     "profile": {
         "title": "Account details",
@@ -61,6 +88,7 @@
         }
     },
     "login": "Login",
+    "register": "Register",
     "logout": "Logout",
     "email":"Email",
     "email_address":"Email Address",
@@ -71,5 +99,9 @@
     "search": "Search",
     "subscribe": "Subscribe",
     "contact": "Contact us",
-    "no_results": "No results found."
+    "no_results": "No results found.",
+    "side_shop": "For faster checkout",
+    "help":"Need help?",
+    "call":"Call Us",
+    "whatsapp": "Whatsapp"
 }

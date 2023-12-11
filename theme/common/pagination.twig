@@ -1,0 +1,51 @@
+{% if totalPages > 1 %}
+<nav class="products-pagination my-10" aria-label="products navigation">
+    <ul class="pagination flex items-center justify-center gap-2.5">
+        <li class="page-item {% if currentPage == 1 %}disabled pointer-events-none{% endif %}">
+            <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center text-lg" href="{{ requestAdd({page:(currentPage - 1)}) }}" tabindex="-1">«</a>
+        </li>
+
+        {% if currentPage > 3 and totalPages > 5 %}
+            <li class="page-item">
+                <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center" href="{{ requestAdd({page:1}) }}">{{ (1) }}</a>
+            </li>
+        {% endif %}
+
+        {% if currentPage > 3 and totalPages > 5 %}
+        <li class="  border border-[#f0f0f0] w-8 h-8 justify-center items-center page-item hidden lg:flex"><a class="page-link">...</a></li>
+        {% endif %}
+
+        {% if currentPage <= 2 %}
+            {% set startPage = 1 %}
+        {% else %}
+            {% set startPage = (currentPage - 2) %}
+        {% endif %}
+
+        {% if (currentPage + 2) <= totalPages %}
+            {% set endPage = (currentPage + 2) %}
+        {% else %}
+            {% set endPage = totalPages %}
+        {% endif %}
+
+        {% for n in rangeN(startPage, endPage) %}
+            <li class="page-item{% if totalPages > 5 and (n - currentPage == 2 or currentPage - n == 2)  %} page-item-n-last {% endif %}" >
+                <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center {% if currentPage == n %}bg-primary font-bold border-primary text-white{% endif %}" {% if currentPage != n %} href="{{ requestAdd({page:n}) }}" {% endif %}>{{ (n) }}</a>
+            </li>
+        {% endfor %}
+
+        {% if currentPage < (totalPages - 3) and totalPages >= 5 %}
+        <li class=" border border-[#f0f0f0] w-8 h-8 flex justify-center items-center page-item lg:flex page-item"><a class="page-link">...</a></li>
+        {% endif %}
+
+        {% if currentPage < (totalPages - 2) and totalPages >= 5 %}
+            <li class="page-item">
+                <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center" href="{{ requestAdd({page:totalPages}) }}">{{ (totalPages) }}</a>
+            </li>
+        {% endif %}
+
+        <li class="page-item {% if currentPage == totalPages %}bg-primary font-bold border-primary text-white{% endif %}">
+            <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center text-lg" href="{{ requestAdd({page:(currentPage + 1)}) }}">»</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

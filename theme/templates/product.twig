@@ -1,16 +1,463 @@
 {% extends "layout.twig" %}
 
 {% block title %} {{ product.name }} {% endblock %}
-
 {% block header %} {{ include('header.twig') }} {% endblock %}
-
 {% block main_content %}
 
-    <section class="product">
-        <div class="product-title">
-            <h2>{{ product.name }}</h2>
+<div class="md:pt-6 pt-3 lg:px-14">
+    <ul class="flex items-center gap-2 p-4 text-sm">
+        <li><a href="/">{{ locals.home.title }}</a></li>|
+        <li><a href="/products/">{{ locals.product.products }}</a></li>|
+        <li class="truncate text-ellipsis"><a class="font-semibold">{{ product.name }}</a></li>
+    </ul>
+    <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
+        <div class="product-details flex-1 pt-6">
+            <div>
+                <img class="brand-logo md:w-32 w-28 hidden" src="" alt=""/>
+                <h3 class="text-lg text-primary brand px-4">{{ product.name }}</h3>
+                    <div class="flex items-center w-full gap-2 pt-2 px-4">
+                        <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
+                            {{ product.selected_product.formatted_sale_price ? product.selected_product.formatted_sale_price :  product.selected_product.formatted_price }}
+                        </div>
+                        {% if product.selected_product.formatted_sale_price %}
+                        <div class="text-sm text-light-400 opacity-60" id="old-price">
+                            {{ product.selected_product.formatted_sale_price }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-2 pt-2 px-4">
+                        <span class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ product.selected_product.quantity <= 3 ? 'bg-red-700' : 'bg-green-500' }} opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 {{ product.selected_product.quantity <= 3 ? 'bg-red-700' : 'bg-green-500' }}"></span>
+                        </span>
+                        <p class="font-medium {{ product.selected_product.quantity <= 3 ? 'text-red-700' : 'text-primary' }}">
+                            {{ product.selected_product.quantity > 3
+                                ? product.selected_product.quantity ~ locals.product.in_stock
+                                : (product.selected_product.quantity == 0
+                                    ? locals.product.out_of_stock
+                                    : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                            }}
+                        </p>
+                    </div>
+
+                <div>
+                    <form id="product-form" class="w-full">
+                        <div>
+                            <input id="product-id" type="hidden" value="{{ product.selected_product.id }}">
+                            <div class="size-box">
+                            {{ template_for_product_variants_list }}
+                            {% if product.has_custom_input_fields  %}
+                                <div class="border-product" style="margin-top: 25px"></div>
+                                {{ template_for_product_custom_input_fields }}
+                            {% endif %}
+                        </div>
+
+                        <div class="py-2">{{ template_for_product_payments_widget }}</div>
+
+                        <div class="p-4 border-y border-grayColor-100">
+                            <div class="flex gap-1 items-center">
+                                <svg class="text-primary inline-block" width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.6884 9.33167C19.2936 8.5155 18.48 8.00037 17.5908 8.00355H14.26V5.43521C14.26 5.31977 14.2152 5.20906 14.1355 5.12744C14.0558 5.04582 13.9478 4.99998 13.8351 5H4.35849C4.20647 4.99964 4.06585 5.08252 3.98973 5.21732C3.91362 5.35212 3.91362 5.51831 3.98973 5.65311C4.06585 5.78791 4.20647 5.87079 4.35849 5.87043H13.4101V16.2885H9.04254C8.83962 15.2193 7.92542 14.4473 6.86207 14.4473C5.79872 14.4473 4.88451 15.2193 4.68159 16.2885H4.56911C4.41709 16.2881 4.27646 16.371 4.20035 16.5058C4.12424 16.6406 4.12424 16.8068 4.20035 16.9416C4.27646 17.0764 4.41709 17.1593 4.56911 17.1589H4.68159C4.88457 18.2281 5.79875 19 6.86207 19C7.92538 19 8.83957 18.2281 9.04254 17.1589H14.7989C15.0018 18.2281 15.916 19 16.9793 19C18.0426 19 18.9568 18.2281 19.1598 17.1589H20.575C20.6877 17.159 20.7958 17.1131 20.8755 17.0315C20.9552 16.9499 21 16.8392 21 16.7237V12.1209C20.9999 12.0533 20.9845 11.9867 20.955 11.9263L19.6884 9.33167ZM6.8622 18.1296C6.30706 18.1297 5.80655 17.7872 5.59406 17.2618C5.38157 16.7364 5.49897 16.1317 5.89149 15.7296C6.28402 15.3275 6.87437 15.2072 7.38725 15.4248C7.90013 15.6424 8.23453 16.1551 8.23451 16.7237C8.23366 17.4997 7.61977 18.1286 6.8622 18.1296ZM18.9284 9.72075C18.6766 9.20035 18.1578 8.87191 17.5908 8.87394H14.26V12.5229H20.15V12.2237L18.9284 9.72075ZM16.9794 18.1296C16.4242 18.1297 15.9237 17.7872 15.7112 17.2618C15.4988 16.7364 15.6162 16.1317 16.0087 15.7296C16.4012 15.3275 16.9916 15.2072 17.5044 15.4248C18.0173 15.6424 18.3517 16.1551 18.3517 16.7237C18.3508 17.4997 17.737 18.1286 16.9794 18.1296ZM16.9793 14.4473C18.0427 14.4473 18.9569 15.2193 19.1598 16.2885H20.15V13.3934H14.26V16.2885H14.7988C15.0018 15.2193 15.916 14.4473 16.9793 14.4473ZM4.62115 8.32037H10.7018C10.8538 8.32002 10.9945 8.40289 11.0706 8.53769C11.1467 8.67249 11.1467 8.83868 11.0706 8.97348C10.9945 9.10828 10.8538 9.19116 10.7018 9.1908H4.62115C4.46913 9.19116 4.32851 9.10828 4.2524 8.97348C4.17628 8.83868 4.17628 8.67249 4.2524 8.53769C4.32851 8.40289 4.46913 8.32002 4.62115 8.32037ZM3.12448 11.5251C3.04478 11.6067 3 11.7174 3 11.8328C3 11.9483 3.04478 12.059 3.12448 12.1406C3.20418 12.2222 3.31227 12.2681 3.42497 12.268H8.68933C8.84135 12.2684 8.98197 12.1855 9.05808 12.0507C9.1342 11.9159 9.1342 11.7497 9.05808 11.6149C8.98197 11.4801 8.84135 11.3973 8.68933 11.3976H3.42497C3.31228 11.3976 3.20418 11.4434 3.12448 11.5251Z"></path></svg>
+                                <p class="font-semibold text-sm">{{ locals.product.ship }}</p>
+                            </div>
+                            <p class="text-xs ltr:text-left">{{ locals.product.delivery }}</p>
+                        </div>
+                        {% if product.low_stock_quantity %}
+                            <div id="only_n_remaining" class=" flex text-light-400 px-3 py-2 my-4 rounded-lg text-xs items-center gap-2">
+                                <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path>
+                                </svg>
+                                {{ locals.product.only_n_remaining | format(product.low_stock_quantity) }}
+                            </div>
+                        {% endif %}
+                        <div id="notify-me" class=" px-3 py-2 my-4 rounded-lg {% if not product.selected_product.out_of_stock %} hidden {% endif %}">
+                            <div class="flex flex-col gap-2.5 items-end bg-beige-300 p-2.5">
+                                <div class="flex items-center gap-2">
+                                    <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"></path>
+                                    </svg>
+                                    <p class="text-primary-50 text-sm">
+                                       {{ locals.product.notify_me }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <label class="text-sm text-primary opacity-60" for="email">{{ locals.email }}</label>
+                                    <input class="w-full text-sm text-light-200 placeholder:text-light-400 placeholder:opacity-60 outline-none rounded-lg px-3 py-2 transition border focus:border-primary active:border-primary border-primary/30" type="email" placeholder="example@example.com" required>
+                                </div>
+                                <div class="flex items-center pt-2">
+                                    <button class="px-3 py-1.5 text-sm bg-primary-50 text-white rounded-lg">{{ locals.send }}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start w-full gap-4 mt-4 px-4">
+                            <div class="flex gap-4 w-full">
+                                {% if product.selected_product.is_infinite or product.selected_product.quantity > 0 %}
+                                        {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
+                                            {% set maxQuantity = 100 %}
+                                        {% else %}
+                                            {% set maxQuantity = product.selected_product.quantity %}
+                                        {% endif %}
+                                        <div class="h-full flex flex-col">
+                                            <div class="flex flex-row h-full text-primary-50 border-2 border-primary py-0.5 px-2" x-data="{count: 1}">
+                                                <button type="button" x-on:click="count++" class="text-2xl py-1 px-2">+</button>
+                                                <input x-model="count" id="product-quantity" name="quantity" type="text" max="{{ maxQuantity }}" min="1" pattern="^([0-9])+$" class="text-center text-xl w-5" style="outline: none;">
+                                                <button type="button" x-on:click="count > 1 && count--" class="text-2xl py-1 px-2">-</button>
+                                            </div>
+                                        </div>
+                                {% endif %}
+                               
+                                <div class="product-buttons flex-grow w-full {% if product.selected_product.out_of_stock %}hidden{% else %}block{% endif %}">
+                                    <button class="flex justify-center uppercase font-medium items-center gap-1 bg-primary px-10 h-full text-white hover:opacity-60 transition duration-300 ease-in-out md:w-auto w-full" type="button" onclick="productAddToCart()">
+                                        <img class="add-to-cart-progress hidden" src="{{ asset_url }}spinner.gif" width="20" height="20"/>
+                                        <span class="text-lg">{{ locals.product.add_to_cart }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            </div>   
+                        </div>
+                    </form>
+                    <div class="pt-4">
+                        <div class="accordions flex flex-col w-full">
+                            <ul class="flex flex-col w-full">
+                                <li class="w-full bg-white border-t border-t-grayColor-100" x-data="accordion(1)">
+                                    <h2 @click="handleClick()" class="flex flex-row items-center justify-between py-2.5 px-4 cursor-pointer">
+                                        <span class="text-sm">{{ locals.product.description }}</span>
+                                        <p :class="handlePlus()" class="text-4xl font-thin w-font">+</p>
+                                        <p :class="handleMinus()" class="text-4xl font-thin w-font">-</p>
+                                    </h2>
+                                    <div x-ref="tab" :style="handleToggle()"
+                                    class="overflow-hidden transition-all duration-500 max-h-0 px-4">
+                                        <div class="product-description lg:text-base prose prose-p:m-0 prose-sm ltr:text-left">{{ product.description | raw }}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="accordions flex flex-col w-full">
+                            <ul class="flex flex-col w-full">
+                                <li class="w-full bg-white border-y border-y-grayColor-100" x-data="accordion(1)">
+                                    <h2 @click="handleClick()" class="flex flex-row items-center justify-between py-2.5 px-4 cursor-pointer">
+                                        <span class="text-sm">{{ locals.product.ship_details }}</span>
+                                        <p :class="handlePlus()" class="text-4xl font-thin w-font">+</p>
+                                        <p :class="handleMinus()" class="text-4xl font-thin w-font">-</p>
+                                    </h2>
+                                    <div x-ref="tab" :style="handleToggle()"
+                                    class="overflow-hidden transition-all duration-500 max-h-0 px-4">
+                                        <p>{{ locals.product.ship_details }}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-6 ltr:text-left"><p>{{ locals.product.code }} {{ product.selected_product.sku }}</p></div>
+                    <div class="flex border-b border-b-grayColor-100 items-center px-4 py-3 gap-4">
+                        <p class="font-semibold">{{ locals.help }}</p>
+                        <div class="flex gap-3 items-center">
+                            <a href="tel:+966506578189" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
+                            <a href="https://api.whatsapp.com/send?phone=+966551049400&text=Hello, I am interested in this product : {{ product.name }} (Product Code : {{ product.sku }})" target="_blank"  class="flex items-center gap-1"><img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/e867bd5a-7032-4cc4-8ed6-24a6990a145d.svg" alt="icon"><span>{{ locals.whatsapp }}</span></a>
+                        </div>  
+                    </div>
+                </div>
+            </div>      
+        </div>
+        <div class="product-image flex-1 px-4">
+            <div class="h-full">
+                <div class="splide" id="product-images" role="group">
+                    <div class="splide__track">
+                        <ul class="splide__list pswp-gallery pswp-gallery--single-column">
+                        {% for key, image in product.selected_product.images %}
+                            <li class="splide__slide px-0 lg:px-4 max-h-96 lg:max-h-[30rem]">
+                                <a href="{{ image.image.full_size }}" class="block w-full h-full" id="{{ image.id }}">
+                                    <div class="flex flex-col w-full h-full items-center justify-center">
+                                        <img class="w-full h-full object-contain" src="{{ image.image.large }}" alt="">
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- Add the progress bar element -->
+                    <div class="slider-progress bg-whiteColor-700 mt-4 md:hidden block" style="direction:{{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
+                        <div class="progress-bar bg-grayColor-100 h-1.5 w-0" style="transition: width 400ms ease;"></div>
+                    </div>
+                </div>
+
+                <div class="splide mt-4 !mx-4 md:block hidden" id="product-thumbnails" role="group">
+                    <div class="splide__track">
+                        <ul class="splide__list pswp-gallery pswp-gallery--single-column">
+                        {% for key, image in product.selected_product.images %}
+                            <li class="splide__slide lg:px-4 px-1" style="border:none">
+                                <div class="flex flex-col w-full items-center justify-center h-full">
+                                    <img class="h-full w-full object-cover" src="{{ image.image.small }}" alt="">
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    main = new Splide(document.getElementById('product-images'), {
+                    type   : 'loop',
+                    direction: 'rtl',
+                    perPage: 1,
+                    perMove: 1,
+                    snap   : true,
+                    padding: {
+                        right: 0,
+                        left: 0
+                    },
+                    arrows: false,
+                    pagination: false,
+                    autoScroll: {
+                        speed: 0.35,
+                        pauseOnHover: false,
+                        pauseOnFocus: false
+                    },
+                });
+                const bar = main.root.querySelector('.progress-bar');
+                main.on('mounted move', function () {
+                const end = main.Components.Controller.getEnd() + 1;
+                    const rate = Math.min((main.index + 1) / end, 1);
+                    bar.style.width = String(100 * rate) + '%';
+                });
+
+                thumbnails = new Splide(document.getElementById('product-thumbnails'), {
+                    type   : 'slide',
+                    direction: 'rtl',
+                    perPage: 4,
+                    snap   : true,
+                    focus: 'center',
+                    isNavigation    : true,
+                    padding: {
+                        right: 0,
+                        left: 0
+                    },
+                    breakpoints: {
+                        720: {
+                            perPage: 3
+                        }
+                    },
+                    arrows: false,
+                    pagination: false,
+                    cover: true,
+                    autoScroll: {
+                        speed: 0.35,
+                        pauseOnHover: false,
+                        pauseOnFocus: false
+                    },
+                });
+
+                main.sync( thumbnails );
+                main.mount();
+                thumbnails.mount();
+
+                const lightbox = new PhotoSwipeLightbox({
+                    gallery: '#product-images',
+                    children: 'li > a',
+                });
+                lightbox.init();
+                });
+
+                </script>
+            </div>
         </div>
     </section>
+</div>
+
+<section class="lg:py-14 py-5">
+    {% if (product.related_products | length) >  0 %}
+        {% include 'related.twig' with {'product' : product} %}
+    {% endif %}
+</section>
+{% include 'toast.twig' %}
+{% endblock %}
+
+{% block footer_scripts %}
+{{ product_view_scripts|raw }}
+<script>
+    function accordion(idx){
+        return {
+            show: false,
+            handleClick() {
+                this.show = !this.show;
+            },
+            handlePlus() {
+                return this.show ? 'hidden' : 'block';
+            },
+            handleMinus() {
+                return this.show ? 'block' : 'hidden';
+            },
+            handleToggle() {
+                return this.show ? `max-height: ${this.$refs.tab.scrollHeight}px` : '';
+            }
+        }
+    };
+</script>
+<script>
+    async function productAddToCart(isIcon=false) {
+        const progress = document.querySelector('.add-to-cart-progress');
+        progress && progress.classList.remove('hidden');
+
+        await zid.store.cart.addProduct({ formId: 'product-form' }).then(async (response) => {
+            if(response.status  === 'success'){
+                Alpine.store('toasts').createToast('تمت إضافة المنتج للسلة', 'success')
+                progress.classList.add('hidden');
+                setCartBadge(response.data.cart.products_count);
+            }
+        });
+    }
+    function setCartBadge(badge) {
+        document.querySelector('.header-section span[x-text="count"]').innerHTML = badge;
+    }
+    async function catImage(name) {
+        await zid.store.product.fetchCategories().then(async function (response) {
+            await response.data.categories.map((item) => {
+                if(item.slug == 'brands'){
+                    item.sub_categories.map((subItem) => {
+                        const brand = document.querySelector('.product');
+                        if(brand){
+                            const logo = brand.textContent.trim().split('.')
+                            if(logo.length > 0 && subItem.name == logo[0]) {
+                                document.querySelector('.brand-logo').src = subItem.image;
+                                document.querySelector('.brand-logo').classList.remove('hidden')
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    function productOptionsChanged(selected_product) {
+         if (!selected_product){
+                return
+            }
+            main.remove('.splide__slide');
+            thumbnails.remove('.splide__slide');
+            for (let i = 0; i < selected_product.images.length; i++) {
+                const element = selected_product.images[i];
+                let thumbImg = '<li class="splide__slide px-2 lg:px-4"><div class="flex flex-col w-full items-center justify-center h-full"><img class="h-full w-full object-cover" src='+`${element.image.small}`+' alt=""></div></li>'
+                thumbnails.add(thumbImg)
+                let mainImg = '<li class="splide__slide px-0 lg:px-4 max-h-96 lg:max-h-[30rem]"><a href='+`${element.image.full_size}`+' class="block w-full h-full"><div class="flex flex-col w-full h-full items-center justify-center"><img class="w-full h-full object-cover" src='+`${element.image.large}`+' alt=""></div></a></li>'
+                main.add(mainImg)
+            }
+            main.sync(thumbnails)
+        window.selected_product = selected_product;
+        if(selected_product) {
+
+            document.getElementById('product-id').value = selected_product.id;
+
+            if(selected_product.formatted_sale_price){
+                if (document.getElementById('old-price')) {
+                    document.getElementById('old-price').innerHTML = selected_product.formatted_price;
+                }
+                document.getElementById('price').innerHTML = selected_product.formatted_sale_price;
+
+            } else{
+                document.getElementById('price').innerHTML = selected_product.formatted_price;
+            }
+            if (!selected_product.unavailable) {
+                // Selected a valid variant that is available.
+                {% if store.is_low_stock_label_enabled %}
+                var store_low_stock_limit = {{ store.low_stock_quantity_limit }};
+                var low_stock_message = '{{ locals.product.only_n_remaining }}';
+
+                if(!selected_product.is_infinite &&  selected_product.quantity < store_low_stock_limit) {
+                    if(document.getElementById('only_n_remaining')) {
+                        document.getElementById('only_n_remaining').classList.remove('!hidden');
+                        document.getElementById('only_n_remaining').innerHTML = low_stock_message.replace('%s', selected_product.quantity);
+                    }
+                    
+                } else {
+                    if(document.getElementById('only_n_remaining')) {
+                        document.getElementById('only_n_remaining').classList.add('!hidden');
+                    }
+                }
+                {% endif %}
+
+                if(selected_product.is_infinite)
+                    selected_product.quantity = 100;
+
+                if(selected_product.quantity > 0) {
+                    document.getElementById('product-quantity').max = selected_product.quantity;
+                } else{
+                    document.getElementById('product-quantity').max = "0"
+                }
+                document.getElementById('notify-me').classList.add('hidden');
+            } else {
+                // Variant is sold out.
+                document.getElementById('notify-me').classList.remove('hidden');
+            }
+
+        } else {
+            document.getElementById('notify-me').classList.remove('hidden');
+            updateProductImages(selected_product);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', catImage);
+
+</script>
+<style>
+    span[style="font-size: 18px;"]{
+        display: none;
+    }
+    #product-variants-options ul{
+        display: flex;
+        flex-wrap:wrap;
+        gap:0.5rem;
+        color: #E9D3C2;
+        justify-content: center;
+        align-items: center;
+    }
+    #product-variants-options{
+        margin-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    #product-variants-options label{
+        font-size: 1.1rem;
+        color: #000;
+        font-weight: 600;
+        display: block;
+        padding: 10px
+    }
+    #product-variants-options div div{
+        display: flex;
+        gap: 10px;
+        padding: 0px 6px;
+    }
+    #product-variants-options ul li{
+        padding: 5px;
+        cursor: pointer;
+        color: #000;
+    }
+    #product-variants-options ul li span {
+        font-size: 1rem;
+    }
+    #product-variants-options ul .active{
+        font-weight:600
+    }
+    .product-description b *, .product-description b {
+        color: #E9D3C2 !important;
+    }
+    .descrip-head:after{
+        content: '';
+        width: 6rem;
+        height: 0.1rem;
+        background-color: #000;
+        display: block;
+        text-align: center;
+        margin: 0.5rem auto 1rem;
+    }
+    .product-box{
+        background: #FFFFFF;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.08);
+        border-radius: 8px;
+    }
+    /* .splide__track--nav>.splide__list>.splide__slide {
+        border: none !important;
+        max-height: 100px;
+    } */
+</style>
 
 {% endblock %}
 

@@ -12,36 +12,52 @@
     <link rel="stylesheet" href="{{ assetUrl('style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@0;1&family=Work+Sans:wght@200;300;400;500;600;700&display=swap');
         @font-face {
-            font-family: "Avenir";
-            src: url('{{ asset_url ~ 'Avenir-Bold.otf' }}');
-            font-weight: 700;
-            font-style: normal;
+            font-family: 'calibri';
+            src: url('{{ asset_url ~ 'calibri-reqular.ttf' }}');
         }
         @font-face {
-            font-family: "Avenir";
-            src: url('{{ asset_url ~ 'Avenir-Regular.otf' }}');
-            font-weight: 400;
+            font-family: 'calibri';
+            src: url('{{ asset_url ~ 'calibri-bold.ttf' }}');
             font-weight: bold;
         }
-
         .app.rtl{
-            font-family: Arial, sans-serif;
+            font-family: 'calibri', sans-serif;
         }
         .app.ltr{
-            font-family: Avenir, sans-serif;
+            font-family: 'Work Sans', sans-serif;
+        }
+        .app.ltr .cat{
+            font-family: 'Libre Baskerville', sans-serif !important;
+        }
+        .w-font{
+            font-family: 'Work Sans', sans-serif;
+        }
+        .splide__pagination {
+            bottom: -25px;
+        }
+        .splide__pagination__page.is-active {
+            opacity: 1;
+            transform: none;
+            background-color: #000;
+        }
+        .splide__pagination__page {
+            content: "";
+            color: #000;
+            background-color: #000;
+            border-radius: 0;
+            width: 36px;
+            height: 4px;
+            opacity: .25;
+            padding: 0;
         }
     </style>
 </head>
-{% if session.lang.code == 'ar' %}
-    {% set direction_rtl_class = ' rtl' %}
-{% else %}
-    {% set direction_rtl_class = ' ltr' %}
-{% endif %}
 
-<body style="direction:{{ direction_rtl_class }}">
+<body style="direction:{{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
 
-    <div class="app{{ direction_rtl_class }}">
+    <div class="app {{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
         {% block header %}{% endblock %}
         {% block main_content %}{% endblock %}
         {% block footer %}{% endblock %}

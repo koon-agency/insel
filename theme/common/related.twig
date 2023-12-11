@@ -1,0 +1,39 @@
+<div class="mb-5 px-4 py-5 md:py-8 md:px-8 lg:px-14">
+    <h6 class="text-xl lg:text-2xl font-medium text-center">{{ locals.product.related_products }}</h6>
+    <div class="!pt-4 splide" id="related-products">
+        <div class="splide__track">
+            <div class="splide__list justify-center">
+                {% for product in product.related_products %}
+                    <div class="splide__slide">
+                        {% include 'product-card.twig' with {'product' : product, 'index': key} %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>   
+</div>
+<script>
+    document.addEventListener( 'DOMContentLoaded', function () {
+
+    const related_products = new Splide( '#related-products', {
+        type: 'slide',
+        direction: 'rtl',
+        perPage: 5,
+        perMove: 5,
+        arrows: false,
+        gap: '1em',
+        pagination: true,
+        breakpoints: {
+            720: {
+                perPage: 2,
+                perMove: 2,
+            },
+            991: {
+                perPage: 4,
+                perMove: 4,
+            }
+        }
+    });
+    related_products.mount();
+    } );
+</script>

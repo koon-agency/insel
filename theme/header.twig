@@ -1,8 +1,13 @@
 <style>
-.slide-menu-ul-li:after{
-  content: url('https://media.zid.store/cdn-cgi/image/w=2220,q=100,f=auto/https://media.zid.store/43f22f5f-a76d-4e63-9a36-c8d9d20ec8e3/80902cf3-22bd-48fe-b09f-228515cc3a43.svg');
+.app.rtl .slide-menu-ul-li:after{
+  content: url('https://media.zid.store/43f22f5f-a76d-4e63-9a36-c8d9d20ec8e3/1c1cfd13-bceb-4455-82e7-059d6e341288.svg');
   position: absolute;
   left: 0;
+}
+.app.ltr .slide-menu-ul-li:after{
+  content: url('https://media.zid.store/43f22f5f-a76d-4e63-9a36-c8d9d20ec8e3/4ef762c0-2e4a-4e6c-9259-9544fb93cac7.svg');
+  position: absolute;
+  right: 0;
 }
 </style>
 <header class='header-section'>
@@ -13,136 +18,72 @@
     {% set to = 'en' %}
     {% set title = 'English' %}
 {% endif %}
-  <nav class="top-0 z-40 flex items-center w-full lg:px-12 py-1 shadow-md bg-white md:px-8 px-4">
-    {# Logo #}
+ <nav x-data="{ isScrolled: false }"
+    @scroll.window="isScrolled = window.scrollY > 0"
+    :class="{ 'fixed top-0 transition-transform duration-300 ease-in-out': isScrolled }"
+    class="top-0 z-40 flex items-center w-full lg:px-12 bg-white md:px-8 px-4">
+    {# Submenu #}
+    {% include 'side-menu.twig' %}
     
+    {# Logo #}
     <div class="flex items-center flex-1">
-      <a class="py-2.5" href = "/"><img src="{{ store.logo }}" alt="" class="lg:h-12 w-full h-10"></a>
+      <a class="py-2" href = "/"><img src="{{ store.logo }}" alt="" class="lg:h-12 w-full h-10"></a>
     </div>
 
     {# Search #}
-    <div class="flex-1">
-        <div class="lg:block hidden">{% include 'header-search.twig' %}</div>
-        <div class="lg:hidden block">
-            <button type="button" data-te-toggle="modal" data-te-target="#searchModal">
-                <svg width="22" height="22" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18.3333 17.4499L16.6667 15.7833M9.58333 16.6166C10.623 16.6166 11.6524 16.4118 12.6129 16.014C13.5734 15.6161 14.4461 15.033 15.1813 14.2979C15.9164 13.5627 16.4995 12.69 16.8974 11.7295C17.2952 10.769 17.5 9.73956 17.5 8.69993C17.5 7.6603 17.2952 6.63085 16.8974 5.67035C16.4995 4.70986 15.9164 3.83713 15.1813 3.102C14.4461 2.36687 13.5734 1.78373 12.6129 1.38588C11.6524 0.988035 10.623 0.783264 9.58333 0.783264C7.4837 0.783264 5.47006 1.61734 3.9854 3.102C2.50074 4.58666 1.66666 6.6003 1.66666 8.69993C1.66666 10.7996 2.50074 12.8132 3.9854 14.2979C5.47006 15.7825 7.4837 16.6166 9.58333 16.6166Z" stroke="#2E3059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button> 
-
-            <!-- Modal -->
-            <div
-                data-te-modal-init
-                class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none backdrop-blur-sm bg-backdropBg"
-                id="searchModal"
-                tabindex="-1"
-                aria-labelledby="searchModalLabel"
-                aria-hidden="true">
-                <div data-te-modal-dialog-ref class="pointer-events-none relative w-full px-3 top-24 max-w-2xl translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out mx-auto ">
-                    <div class="pointer-events-auto relative flex w-full flex-col border-none bg-white bg-clip-padding text-current shadow-lg outline-none">
-                        <div class="relative flex-auto p-2" data-te-modal-body-ref>
-                            {% include 'header-search.twig' %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="flex-1 lg:block hidden">
+        <div>{% include 'header-search.twig' %}</div>
     </div>
 
     
     <div class="flex-1">
-        <div class="flex justify-between items-center">
+        <div class="flex lg:justify-between items-center justify-end">
             {# language & currency #}
-            <div class="flex items-center gap-2 mx-auto">
-                <button href="" class="language-button flex items-end justify-center gap-1" x-data="language('{{ session.lang.code }}')" @click="change('{{ to }}')">{{ title }}</button>
-                <div class="hidden">
-                    {% include 'template_for_shipping_destination_currency_lang' with { 'hideDestination' : true, 'hideLanguage' : false , 'hideCurrency' : false  } %}
-                </div>
-                <div class="hidden">
-                    <span class="destination-shipping-currency">{{ locals.sys_lbl_store_currency }}</span>
-                    <button id="destinationCurrency" type="button" onclick="showDestinationCurrencies()" class="dropbtn">
-                        {{ session.currency.symbol }}
-                    </button>
-                    <div id="destinationCurrencies" class="dropdwn-content">
-                        <div>
-                            {% for storeCurrency in store.currencies %}
-                                <span id="{{ storeCurrency.code }}" data-currency-symbol="{{ storeCurrency.symbol }}" onclick="document.getElementById('destinationCurrency').innerHTML = '{{ storeCurrency.symbol }}'; document.getElementById('inputCurrencySymbol').value = '{{ storeCurrency.symbol }}';document.getElementById('inputCurrencyCode').value = '{{ storeCurrency.code}}'; document.getElementById('inputCountryCode').value = '{{ storeCurrency.country.code}}'; hideAllDestinationsDropDowns();">
-                                    {{ storeCurrency.symbol }}
-                                </span>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <span>|</span> {% include 'header-dropdown.twig' %}
+            <div class="hidden lg:flex items-center gap-2 mx-auto">
+                {% include 'header-lang.twig' %}
             </div>
             <div class="flex gap-4">
                 {# login #}
-                <a href='{{ customer ? "/account-profile" : "/auth/login" }}' class="hover:text-white transition duration-300 ease-in-out"><img class="w-6" src="{{ asset_url ~ 'login.svg' }}">
+                <a href='{{ customer ? "/account-profile" : "/auth/login" }}' class="lg:block hidden hover:text-white transition duration-300 ease-in-out">                    <svg width="28" height="28" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.1 7C15.1 8.71208 13.7121 10.1 12 10.1C10.2879 10.1 8.9 8.71208 8.9 7C8.9 5.28792 10.2879 3.9 12 3.9C13.7121 3.9 15.1 5.28792 15.1 7ZM16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7ZM12 11C7.30245 11 3.44548 14.9988 3.03596 20.1C3.01219 20.3961 3.00003 20.6959 3 20.9988V21H3.9H12H20.1H21V20.9988C21 20.6959 20.9878 20.3961 20.964 20.1C20.5545 14.9988 16.6976 11 12 11ZM3.94765 20.1H3.93873C4.34387 15.4232 7.87412 11.9 12 11.9C16.1259 11.9 19.6561 15.4232 20.0613 20.1H20.0524H20.0401H20.0278H20.0154H20.0029H19.9904H19.9778H19.9651H19.9524H19.9396H19.9267H19.9137H19.9007H19.8876H19.8745H19.8612H19.8479H19.8346H19.8211H19.8076H19.794H19.7804H19.7667H19.7529H19.739H19.7251H19.7111H19.697H19.6829H19.6687H19.6545H19.6401H19.6257H19.6113H19.5967H19.5821H19.5675H19.5527H19.5379H19.5231H19.5081H19.4931H19.4781H19.4629H19.4477H19.4325H19.4172H19.4018H19.3863H19.3708H19.3552H19.3395H19.3238H19.3081H19.2922H19.2763H19.2603H19.2443H19.2282H19.212H19.1958H19.1795H19.1631H19.1467H19.1302H19.1137H19.0971H19.0804H19.0637H19.0469H19.03H19.0131H18.9961H18.9791H18.962H18.9448H18.9276H18.9103H18.893H18.8756H18.8581H18.8406H18.823H18.8053H18.7876H18.7698H18.752H18.7341H18.7162H18.6982H18.6801H18.662H18.6438H18.6255H18.6072H18.5889H18.5704H18.552H18.5334H18.5148H18.4962H18.4774H18.4587H18.4398H18.421H18.402H18.383H18.364H18.3448H18.3257H18.3064H18.2872H18.2678H18.2484H18.229H18.2095H18.1899H18.1703H18.1506H18.1309H18.1111H18.0912H18.0713H18.0514H18.0314H18.0113H17.9912H17.971H17.9508H17.9305H17.9102H17.8898H17.8694H17.8489H17.8284H17.8078H17.7871H17.7664H17.7456H17.7248H17.704H17.6831H17.6621H17.6411H17.62H17.5989H17.5777H17.5565H17.5352H17.5139H17.4925H17.4711H17.4496H17.4281H17.4065H17.3848H17.3632H17.3414H17.3196H17.2978H17.2759H17.254H17.232H17.21H17.1879H17.1658H17.1436H17.1214H17.0991H17.0768H17.0544H17.032H17.0095H16.987H16.9644H16.9418H16.9192H16.8965H16.8737H16.8509H16.8281H16.8052H16.7822H16.7592H16.7362H16.7131H16.69H16.6668H16.6436H16.6203H16.597H16.5737H16.5503H16.5268H16.5033H16.4798H16.4562H16.4326H16.4089H16.3852H16.3615H16.3377H16.3138H16.2899H16.266H16.242H16.218H16.1939H16.1698H16.1457H16.1215H16.0973H16.073H16.0487H16.0243H15.9999H15.9755H15.951H15.9264H15.9019H15.8773H15.8526H15.8279H15.8032H15.7784H15.7536H15.7287H15.7038H15.6789H15.6539H15.6289H15.6038H15.5787H15.5536H15.5284H15.5032H15.478H15.4527H15.4273H15.4019H15.3765H15.3511H15.3256H15.3001H15.2745H15.2489H15.2233H15.1976H15.1719H15.1461H15.1203H15.0945H15.0686H15.0427H15.0168H14.9908H14.9648H14.9388H14.9127H14.8866H14.8604H14.8342H14.808H14.7817H14.7554H14.7291H14.7027H14.6763H14.6499H14.6234H14.5969H14.5704H14.5438H14.5172H14.4905H14.4639H14.4371H14.4104H14.3836H14.3568H14.33H14.3031H14.2762H14.2492H14.2223H14.1953H14.1682H14.1411H14.114H14.0869H14.0597H14.0325H14.0053H13.978H13.9507H13.9234H13.8961H13.8687H13.8413H13.8138H13.7863H13.7588H13.7313H13.7037H13.6761H13.6485H13.6208H13.5931H13.5654H13.5377H13.5099H13.4821H13.4543H13.4264H13.3985H13.3706H13.3427H13.3147H13.2867H13.2587H13.2306H13.2025H13.1744H13.1463H13.1181H13.0899H13.0617H13.0334H13.0052H12.9769H12.9485H12.9202H12.8918H12.8634H12.835H12.8065H12.7781H12.7495H12.721H12.6925H12.6639H12.6353H12.6066H12.578H12.5493H12.5206H12.4919H12.4631H12.4344H12.4056H12.3767H12.3479H12.319H12.2901H12.2612H12.2323H12.2033H12.1744H12.1453H12.1163H12.0873H12.0582H12.0291H12H11.9709H11.9418H11.9127H11.8837H11.8546H11.8256H11.7967H11.7677H11.7388H11.7099H11.681H11.6521H11.6233H11.5944H11.5656H11.5369H11.5081H11.4794H11.4507H11.422H11.3934H11.3647H11.3361H11.3075H11.279H11.2505H11.2219H11.1935H11.165H11.1366H11.1082H11.0798H11.0515H11.0231H10.9948H10.9666H10.9383H10.9101H10.8819H10.8537H10.8256H10.7975H10.7694H10.7413H10.7133H10.6853H10.6573H10.6294H10.6015H10.5736H10.5457H10.5179H10.4901H10.4623H10.4346H10.4069H10.3792H10.3515H10.3239H10.2963H10.2687H10.2412H10.2137H10.1862H10.1587H10.1313H10.1039H10.0766H10.0493H10.022H9.9947H9.96747H9.94027H9.9131H9.88596H9.85886H9.83178H9.80474H9.77774H9.75076H9.72382H9.69691H9.67003H9.64318H9.61637H9.58959H9.56285H9.53614H9.50946H9.48282H9.45621H9.42963H9.40309H9.37659H9.35011H9.32368H9.29727H9.2709H9.24457H9.21827H9.19201H9.16578H9.13959H9.11344H9.08732H9.06123H9.03519H9.00918H8.9832H8.95726H8.93136H8.9055H8.87967H8.85388H8.82813H8.80241H8.77673H8.75109H8.72549H8.69993H8.6744H8.64891H8.62346H8.59805H8.57268H8.54734H8.52205H8.49679H8.47158H8.4464H8.42126H8.39616H8.37111H8.34609H8.32111H8.29617H8.27127H8.24642H8.2216H8.19682H8.17209H8.14739H8.12274H8.09813H8.07356H8.04903H8.02454H8.0001H7.97569H7.95133H7.92701H7.90274H7.8785H7.85431H7.83016H7.80606H7.78199H7.75797H7.734H7.71007H7.68618H7.66233H7.63853H7.61477H7.59106H7.56739H7.54377H7.52019H7.49665H7.47316H7.44972H7.42632H7.40296H7.37965H7.35639H7.33317H7.31H7.28687H7.26379H7.24076H7.21777H7.19483H7.17194H7.14909H7.12629H7.10354H7.08083H7.05817H7.03556H7.013H6.99048H6.96801H6.94559H6.92322H6.9009H6.87862H6.8564H6.83422H6.81209H6.79001H6.76798H6.746H6.72407H6.70219H6.68035H6.65857H6.63684H6.61516H6.59352H6.57194H6.55041H6.52893H6.5075H6.48612H6.46479H6.44352H6.42229H6.40112H6.38H6.35893H6.33791H6.31694H6.29603H6.27516H6.25435H6.2336H6.21289H6.19224H6.17164H6.1511H6.13061H6.11017H6.08978H6.06945H6.04918H6.02895H6.00878H5.98867H5.96861H5.9486H5.92865H5.90876H5.88891H5.86913H5.8494H5.82972H5.8101H5.79054H5.77103H5.75157H5.73218H5.71284H5.69355H5.67432H5.65515H5.63604H5.61698H5.59798H5.57904H5.56015H5.54132H5.52255H5.50384H5.48518H5.46658H5.44805H5.42956H5.41114H5.39278H5.37447H5.35622H5.33804H5.31991H5.30184H5.28383H5.26588H5.24799H5.23016H5.21238H5.19467H5.17702H5.15943H5.1419H5.12443H5.10702H5.08967H5.07239H5.05516H5.038H5.0209H5.00385H4.98687H4.96996H4.9531H4.93631H4.91957H4.90291H4.8863H4.86976H4.85327H4.83686H4.8205H4.80421H4.78798H4.77182H4.75572H4.73968H4.7237H4.70779H4.69195H4.67617H4.66045H4.6448H4.62921H4.61369H4.59823H4.58284H4.56752H4.55225H4.53706H4.52193H4.50686H4.49187H4.47693H4.46207H4.44727H4.43254H4.41787H4.40327H4.38874H4.37427H4.35988H4.34555H4.33128H4.31709H4.30296H4.2889H4.27491H4.26099H4.24713H4.23334H4.21963H4.20598H4.1924H4.17889H4.16544H4.15207H4.13877H4.12553H4.11237H4.09928H4.08625H4.0733H4.06041H4.0476H4.03486H4.02219H4.00958H3.99705H3.98459H3.97221H3.95989H3.94765Z"></path></svg>
                 </a>
-                {# Wish list #}
-                <a href='{{ customer ? "/account-profile" : "/auth/login" }}' class="hover:text-white transition duration-300 ease-in-out"><i class="fa-regular fa-heart"></i>
-                </a>
+                {# Search in mobile #}
+                <div class="lg:hidden flex">
+                    <button type="button" data-te-toggle="modal" data-te-target="#searchModal">
+                        <svg width="22" height="22" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.3333 17.4499L16.6667 15.7833M9.58333 16.6166C10.623 16.6166 11.6524 16.4118 12.6129 16.014C13.5734 15.6161 14.4461 15.033 15.1813 14.2979C15.9164 13.5627 16.4995 12.69 16.8974 11.7295C17.2952 10.769 17.5 9.73956 17.5 8.69993C17.5 7.6603 17.2952 6.63085 16.8974 5.67035C16.4995 4.70986 15.9164 3.83713 15.1813 3.102C14.4461 2.36687 13.5734 1.78373 12.6129 1.38588C11.6524 0.988035 10.623 0.783264 9.58333 0.783264C7.4837 0.783264 5.47006 1.61734 3.9854 3.102C2.50074 4.58666 1.66666 6.6003 1.66666 8.69993C1.66666 10.7996 2.50074 12.8132 3.9854 14.2979C5.47006 15.7825 7.4837 16.6166 9.58333 16.6166Z" stroke="#2E3059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button> 
+
+                    <!-- Modal -->
+                    <div
+                        data-te-modal-init
+                        class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none backdrop-blur-sm bg-backdropBg"
+                        id="searchModal"
+                        tabindex="-1"
+                        aria-labelledby="searchModalLabel"
+                        aria-hidden="true">
+                        <div data-te-modal-dialog-ref class="pointer-events-none relative w-full px-3 top-24 max-w-2xl translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out mx-auto ">
+                            <div class="pointer-events-auto relative flex w-full flex-col border-none bg-white bg-clip-padding text-current shadow-lg outline-none">
+                                <div class="relative flex-auto p-2" data-te-modal-body-ref>
+                                    {% include 'header-search.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
                 {# Cart #}
                 <div class="flex items-center justify-center gap-2">
-                    <a class="relative" href='/cart/view' x-data="cart()"> 
-                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.6932 12.954V6.95396C20.6932 4.46868 18.5826 2.45396 15.9789 2.45396C13.3753 2.45396 11.2647 4.46868 11.2647 6.95396V12.954M9.69323 29.454H22.2647C24.8683 29.454 26.9789 27.4392 26.9789 24.954V11.454C26.9789 9.7971 25.5718 8.45396 23.8361 8.45396H8.1218C6.38605 8.45396 4.97894 9.7971 4.97894 11.454V24.954C4.97894 27.4392 7.0896 29.454 9.69323 29.454Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <div class="absolute -top-2.5 -right-1 flex items-center justify-center">
-                            <span x-text="count" class="text-sm text-primary-200 text-center font-bold"></span>
-                        </div>
-                    </a>
-                </div> 
+                  <a class="relative" href='/cart/view' x-data="cart()"> 
+                    <svg :class="count > 0 ? '!hidden' : 'block'" width="28" height="28" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.69754 4.03035C9.43797 3.93587 9.15095 4.06971 9.05647 4.32928L7.00297 9.97122H4.02855C3.3708 9.97122 2.88222 10.5671 3.0249 11.1953L4.62421 19.2123C4.72874 19.6725 5.14597 20 5.62786 20H18.3722C18.8541 20 19.2713 19.6725 19.3758 19.2123L20.9751 11.1953C21.1178 10.5671 20.6292 9.97122 19.9715 9.97122H16.9978L14.9443 4.32931C14.8499 4.06974 14.5628 3.9359 14.3033 4.03038C14.0437 4.12485 13.9098 4.41187 14.0043 4.67145L15.9333 9.97122H8.06751L9.99648 4.67142C10.091 4.41184 9.95712 4.12483 9.69754 4.03035ZM19.9715 10.9771H4.02855L5.62785 18.9941L18.3722 18.9941L19.9715 10.9771Z"></path></svg>
+                    <svg class="hidden" :class="count > 0 ? '!block' : 'hidden'" width="28" height="28" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.69754 4.03035C9.43797 3.93587 9.15095 4.06971 9.05647 4.32928L7.00297 9.97122H4.02855C3.3708 9.97122 2.88222 10.5671 3.0249 11.1953L4.62421 19.2123C4.72874 19.6725 5.14597 20 5.62786 20H18.3722C18.8541 20 19.2713 19.6725 19.3758 19.2123L20.9751 11.1953C21.1178 10.5671 20.6292 9.97122 19.9715 9.97122H16.9978L14.9443 4.32931C14.8499 4.06974 14.5628 3.9359 14.3033 4.03038C14.0437 4.12485 13.9098 4.41187 14.0043 4.67145L15.9333 9.97122H8.06751L9.99648 4.67142C10.091 4.41184 9.95712 4.12483 9.69754 4.03035Z"></path></svg>
+                    <div class="absolute -top-2 right-0 flex items-center justify-center">
+                        <span x-text="count" class="text-xs text-primary-200 text-center"></span>
+                    </div>
+                  </a>
+                </div>
+
             </div>
         </div>
-    </div>
-    
-    <div x-data="{show: false}" class="lg:hidden flex  justify-end">
-      <button  @click="show = !show">
-        <svg class="w-6 h-6 text-white" viewBox="0 0 26 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0H26V2.22222H0V0Z" fill="#000"/>
-          <path d="M0 8.88889H26V11.1111H0V8.88889Z" fill="#000"/>
-          <path d="M0 17.7778H26V20H0V17.7778Z" fill="#000"/>
-        </svg>
-      </button>
-      <ul x-show="show"
-        @click.away="show = false"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="transform origin-right translate-x-full"
-        x-transition:enter-end="transform origin-right -translate-x-0"
-        x-transition:leave="transition ease-in duration-300"
-        x-transition:leave-start="transform origin-left -translate-x-0"
-        x-transition:leave-end="transform origin-left translate-x-full"
-        x-init="() => { $el.classList.remove('hidden');$el.classList.add('flex') }"
-        dir="rtl"
-        class="flex-col mt-2 items-start px-4 py-2 hidden rtl absolute right-0 w-[300px] h-screen top-[-8px] bg-white shadow-lg z-50">
-        <div class="w-full flex">
-          <button class="mr-auto p-1.5" @click="show = false">
-              <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </button>
-        </div>
-        <div class="w-full">
-          <div class="flex flex-col items-center justify-center pt-4 pb-6">
-            {% if customer %}
-                <a href="/account-profile" class="px-6 pb-1.5 pt-2 border shadow-sm text-sm bg-white  border-primary-200 rounded-lg text-primary-200 hover:bg-primary-200 hover:text-white transition duration-300 font-bold"> {{ locals.home.hello }} {{ customer.name }}</a>
-            {% else %}
-                <a href='/auth/login' class="px-6 pb-1 pt-[5px] border shadow-sm text-sm bg-white  border-primary-200 rounded-lg text-primary-200 hover:bg-primary-200 hover:text-white transition duration-300 font-bold">{{ locals.login }}</a>
-            {% endif %}
-          </div>
-        </div>
-        {% for menu in main_navigation_menu.items %}
-            <li class="slide-menu-ul-li text-black font-bold p-2.5 w-full relative text-sm" onclick="scrollToSubMenu(this)">
-              <a href="{{ menu.url }}">{{ menu.name }}</a>
-            </li>
-        {% endfor %}
-
-        {% if settings.locations_display %}
-        <div class="order-1 w-full bg-primary-50 bg-no-repeat relative bg-cover lg:bg-contain bg-left-bottom px-3 py-5 m-4 mx-auto flex flex-col justify-between mt-auto rounded-lg" style="background-image: url({{ asset_url ~ 'header.svg' }})">
-          <h2 class="text-white text-lg font-bold mb-3">{{ settings.locations_title }}</h2>
-          <a href="{{ settings.locations_url ? settings.locations_url : '/'}}" class="bg-white rounded-tl-full py-1 px-4 text-primary-50 text-xs mb-1 max-w-fit">{{ settings.locations_urlText }}</a>
-        </div>
-        {% endif %}
-      </ul>
     </div>
   </nav>
    {% include 'header-mega.twig' %}
@@ -161,7 +102,7 @@
     }
     function cart() {
       return {
-        count: "",
+        count: "0",
         init() {
           zid.store.cart.fetch().then(
             function (response) {
@@ -174,45 +115,5 @@
         },
       };
     }
-
-  document.addEventListener("alpine:init", () => {
-    Alpine.store("accordion", {
-      tab: 0,
-    });
-    Alpine.data("accordion", (idx) => ({
-      init() {
-        this.idx = idx;
-      },
-      idx: -1,
-      handleClick() {
-        this.$store.accordion.tab =
-          this.$store.accordion.tab === this.idx ? 0 : this.idx;
-      },
-      handleRotate() {
-        return this.$store.accordion.tab === this.idx ? "-rotate-180" : "";
-      },
-      handleToggle() {
-        return this.$store.accordion.tab === this.idx
-          ? `max-height: ${this.$refs.tab.scrollHeight}px`
-          : "";
-      },
-      handlePlus() {
-        return this.$store.accordion.tab === this.idx ? 'hidden' : 'block';
-      },
-      handleMinus() {
-        return this.$store.accordion.tab === this.idx ? 'block' : 'hidden';
-      },
-    }));
-    Alpine.data("categories", () => ({
-      get_categories: function () {
-        zid.store.product.fetchCategories().then(function (response) {
-          Alpine.store("all_categories", response.data.categories);
-        });
-      },
-      init() {
-        this.get_categories();
-      },
-    }));
-  });
   </script>
 </header>

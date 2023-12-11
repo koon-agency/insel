@@ -1,14 +1,17 @@
 {
     "home":{
-        "home_title": "الرئيسية",
-        "hello": "اهلاً"
+        "title": "الرئيسية",
+        "hello": "اهلاً",
+        "shop":"تسوق",
+        "services": "خدماتنا"
     },
     "product":{
         "products": "المنتجات",
-        "all_products": "جميع الاقمشة",
+        "description": "الوصف",
+        "ship_details":"تفاصيل الشحن",
+        "code":"رمز المنتج:",
         "categories": "التصنيفات",
-        "order_now":"اطلبها الآن",
-        "related_products":"منتجات مقترحة",
+        "related_products":"يمكن أن يعجبك أيضاً",
         "add_to_cart":"أضف للسلة",
         "notify_me":"اعلمني عند توفر المنتج",
         "product_reviews":"التقييمات",
@@ -16,7 +19,30 @@
         "add_product_review":"اضف تقييمك",
         "show_name":"لا تظهر اسمي" ,
         "write_comment":"... اكتب تعليقك هنا",
-        "reviews_submit_success": "شكرًا لتقييمك، سيتم مراجعة التقييم ونشره على المتجر"
+        "reviews_submit_success": "شكرًا لتقييمك، سيتم مراجعة التقييم ونشره على المتجر",
+        "in_stock":" متوفر ",
+        "out_of_stock":"غير متوفر",
+        "rest":" متبقي ",
+        "pieces":" قطع فقط ",
+        "ship":"الشحن من المملكة العربية السعودية",
+        "delivery":"خلال ١-٢ أيام عمل إلى الرياض"
+    },
+    "products":{
+        "sort":"ترتيب",
+        "filter_latest":"الأحدث",
+        "filter_popularity":"الشائعة",
+        "filter_price_low":"الأقل سعر",
+        "filter_price_high":"الأعلى سعر",
+        "filter": "تصفية النتائج",
+        "filter_price": "السعر",
+        "filter_price_from": "من",
+        "filter_price_to": "إلى",
+        "result": "منتج",
+        "clear":"حذف الكل",
+        "save":"حفظ",
+        "apply":"تطبيق",
+        "empty":"لا يوجد منتجات",
+        "more":"+ المزيد"
     },
     "profile": {
         "title": "معلومات الحساب",
@@ -39,7 +65,7 @@
     },
     "cart":{
         "checkout":"متابعة الشراء",
-        "title": "السلة",
+        "title": "سلة التسوق",
         "checkout_details": "تفاصيل الدفع",
         "order_complete": "الطلب مكتمل",
         "empty_cart": "السلة فارغة",
@@ -57,9 +83,12 @@
         "coupon_discount_enter": "ادخل كود الخصم",
         "coupon_discount_submit": "إرسال",
         "sorry": "عذرًا، هذا الكوبون غير موجود",
-        "sent_successfully":"تم تطبيق الكوبون بنجاح"
+        "sent_successfully":"تم تطبيق الكوبون بنجاح",
+        "remove":"حذف",
+        "update":"تعديل"
     },
     "login": "تسجيل الدخول",
+    "register": "تسجيل",
     "logout": "تسجيل خروج",
     "see_all":"عرض الكل",
     "email":"البريد الإلكتروني",
@@ -70,5 +99,9 @@
     "search":"ابحث",
     "subscribe":"اشترك",
     "contact":"تواصل معنا",
-    "no_results": "لا يوجد نتائج"
+    "no_results": "لا يوجد نتائج",
+    "side_shop": "لإتمام الدفع بشكل أسرع",
+    "help": "تحتاج لمساعدة؟",
+    "call": "اتصل بنا",
+    "whatsapp":"واتساب"
 }
