@@ -6,22 +6,18 @@
 
 {% block main_content %}
 
-    <section class="categories">
-        <div class="categories-title">
-            <h2 class="text-black font-bold text-xl lg:text-2xl text-center pb-4">{{ locals.product.categories }}</h2>
-            <div class="container my-5">
-                <div class="flex flex-row flex-wrap rtl gap-4 items-center justify-center">
-                {% for key, category in categories %}
-                    <a href="/categories/{{ category.id }}/{{ category.slug }}" class="h-full w-[calc(33.3334%_-_12px)] lg:w-[calc(33.3334%_-_24px)]">
-                        <img class="object-contain aspect-square mx-auto" {% if category.image %}
-                            src="{{ imageUrl(category.image) }}"
-                        {% else %}
-                            src="{{ imageUrl(asset_url ~ 'product-img.svg') }}"
-                        {% endif %} alt="">
-                    </a>
-                {% endfor %}
-                </div>
-            </div>
+    <section class="categories py-14 max-w-7xl mx-auto md:px-8 lg:px-14 px-4">
+        <h2 class="text-black font-semibold text-xl lg:text-2xl pb-4 text-center">{{ locals.product.categories }}</h2>
+        <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-4 items-center justify-center">
+        {% for key, category in categories %}
+            <a href="/categories/{{ category.id }}/{{ category.slug }}" class="h-full w-full">
+                <img class="object-contain w-full" {% if category.image %}
+                    src="{{ imageUrl(category.image) }}"
+                {% else %}
+                    src="{{ imageUrl(asset_url ~ 'product-img.svg') }}"
+                {% endif %} alt="">
+            </a>
+        {% endfor %}
         </div>
     </section>
 

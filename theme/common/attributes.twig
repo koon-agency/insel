@@ -1,4 +1,4 @@
-<div class="w-full product-attributes {% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}">
+{# <div class="w-full product-attributes {% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}">
 	<div class="product-attributes-light-box">
 		<div class="product-attributes-light-box-top-section" onclick="toggleProductAttributeMobile()"></div>
 		<div class="products-filters-container mt-4">
@@ -95,12 +95,118 @@
 
 		</div>
 	</div>
+</div> #}
+
+
+
+
+<div class="product-attributes {% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}">
+	<div class="product-attributes-light-box">
+		<div class="product-attributes-light-box-top-section" onclick="toggleProductAttributeMobile()"></div>
+		<div class="products-filters-container mt-4">
+			<div class="attribute">
+				<div class="filtration-header">
+					
+				</div>
+				<div class="products-filters-attribute-form">
+					<form method="get" id="attribute_form" action="{{ requestUri() }}">
+						{% for key, input in requestInputs() %}
+							{% if 'attribute_values' not in key %}
+								<input type="hidden" name="{{ key }}" value="{{ input }}">
+							{% endif %}
+						{% endfor %}
+						
+						{% for  key1, attribute in products.filters.attributes %}
+							<div class="attribute-group">
+								<div class="attribute-header">
+									<span class="attribute-name">
+										{{ attribute.name }}
+									</span>
+
+									<span class="attribute-arrow attribute-arrow-expand" onclick="toggleAttributeBodyOfId(this, '{{ key1 }}')">
+										<svg width="11" height="8" viewbox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M0.444716 3.12066L4.32972 7.00566C4.91472 7.59066 5.85972 7.59066 6.44472 7.00566L10.3297 3.12066C11.2747 2.17566 10.5997 0.555664 9.26472 0.555664H1.49472C0.159716 0.555664 -0.500284 2.17566 0.444716 3.12066Z" fill="#494949"/>
+										</svg>
+									</span>
+								</div>
+								<div class="filter-content" style="">
+									<div class="attribute-body attribute-body-{{ key1 }}">
+										{% for  key2, item in attribute.data %}
+											<div class="filter-row {% if key2 > 3 %}attribute-label-hidden{% endif %}" data-attribute-index="{{ key1 }}">
+												<input class="checkbox {% if async %}checkbox-async{% endif %}" type="checkbox" name="attribute_values[]" id="{{ item.value }}" value="{{ item.value }}" {% if item.value in requestGet('attribute_values') %} checked {% endif %}>
+												<label class="attribute-label"  for="{{ item.value }}">
+													<div class="attribute-label-extra">
+														{% if item.type == 'icon' %}
+															<img class="attribute-image" src="{{ imageUrl(item.type_value.full_size) }}">
+														{% elseif item.type == 'color' %}
+															<div style="background-color: {{ item.type_value }};" class="attribute-color"></div>
+														{% endif %}
+													</div>
+													<div>
+													<span>
+														{{ item.value }}
+													</span>
+													</div>
+												</label>
+											</div>
+										{% endfor %}
+
+										{% if attribute.data | length > 3 %}
+											<div class="attribute-more">
+												<span onclick="showAttributesOfId(this, '{{ key1 }}')">المزيد</span>
+											</div>
+										{% endif %}
+
+									</div>
+								</div>
+							</div>
+
+
+						{% endfor %}
+
+						<div class="attribute-group">
+							<div class="attribute-header">
+								<span class="attribute-name">{{locals.products_list_filter_price}}</span>
+							</div>
+							<div class="filter-content">
+								<div class="attribute-body attribute-price-body">
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label>
+												<h6>
+													{{locals.products.filter_price_from}}
+												</h6>
+											</label>
+											<input name="from_price" class="form-control" placeholder="0 {{ session.currency.code }}" type="number">
+										</div>
+										<div class="form-group text-right col-md-6">
+											<label>
+												<span>
+													{{locals.products.filter_price_to}}
+												</span>
+											</label>
+											<input name="to_price" class="form-control" placeholder="1000 {{ session.currency.code }}" type="number">
+										</div>
+									</div>
+									<div class="attribute-footer">
+										
+										<a href="{{ requestUri() }}" class="px-6 w-full py-2 border-2 border-primary text-primary text-center uppercase text-base">{{ locals.products.clear }}</a>
+										<button type="submit" class="highlight-button btn btn-sm px-6 w-full py-2 border-2 border-primary bg-primary text-white text-center uppercase text-base" data-abc="true">{{ locals.products.apply }}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
 </div>
 
 <style>
-	.attribute-body input::placeholder{
-		font-size:10px
-	}
 
 	.products-filters-container {
 		font-size: 1.167rem
@@ -114,11 +220,18 @@
 
 	.filter-row {
 		display: flex;
+		padding: 0rem 1.25rem;
+	}
+
+	.attribute-name {
+		font-weight: bold;
 	}
 
 	.attribute-group {
-		border-bottom: 1px solid #e4e4e4;
-		margin-bottom: 10px;
+		border: 1px solid #e4e4e4;
+		border-radius: 8px;
+		margin-bottom: 25px;
+		text-align: right;
 	}
 
 	.attribute {
@@ -136,15 +249,17 @@
 	}
 
 	.attribute-header {
-		padding: 0.75rem 0;
+		padding: 0.75rem 1.25rem;
 		margin-bottom: 0;
 		background-color: #fff;
+		border-radius: 10px;
 		display: flex;
 		justify-content: space-between;
 	}
 
 	.attribute-footer {
 		display: flex;
+		justify-content: end;
 		padding: 0.75rem 0;
 	}
 
@@ -175,6 +290,14 @@
 		z-index: -1;
 	}
 
+
+	.attribute-body.attribute-price-body {
+		padding: 0 1.25rem;
+	}
+
+	.attribute-body input.form-control {
+		padding: 5px;
+	}
 
 	.icon-control {
 		margin-top: 6px;
@@ -208,6 +331,8 @@
 	.attribute-label {
 		display: flex;
 		align-items: center;
+		padding: 0 0.5rem;
+		margin: 0.75rem 0;
 		cursor: pointer;
 		max-height: 20vh;
 		opacity: 1;
@@ -258,6 +383,12 @@
 		color: #3167eb;
 		padding-inline-start: 8px;
 	}
+
+	.attribute-more {
+		display: flex;
+		justify-content: center
+	}
+
 	.attribute-more {
 		position: relative;
 		bottom: 10px;
@@ -266,6 +397,13 @@
 	.attribute-more > span {
 		text-decoration: underline;
 		cursor: pointer;
+	}
+
+
+	.product-attributes {
+		min-width: 100%;
+		width: 100%;
+		padding-inline-end: 25px;
 	}
 
 	.product-attributes-light-box {
@@ -283,5 +421,131 @@
 
 	.product-attributes-light-box-top-section {
 		height: auto;
+	}
+
+
+	@media(max-width: 768px) {
+		.product-attributes {
+			min-width: unset;
+			width: 100%;
+			position: fixed;
+			left: 0;
+			top: 100%;
+			padding: 0;
+			z-index: 199;
+		}
+
+		.product-attributes-show-mobile {
+			top: 0;
+		}
+
+
+		.product-attributes-light-box {
+			position: fixed;
+			height: 100vh;
+			background-color: rgba(0, 0, 0, 0.4);
+			justify-content: end;
+			width: 100%;
+		}
+
+		.products-filters-container {
+			transition: all 0.5s;
+			height: 60%;
+			overflow-y: scroll;
+			background-color: #fff;
+			max-height: 0;
+			opacity: 0;
+		}
+
+		.product-attributes-light-box-top-section {
+			height: 40%;
+		}
+
+		.products-filters-container.products-filters-container-show-mobile {
+			max-height: 100%;
+			opacity: 1;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		.attribute-label-hidden {
+			max-height: unset;
+			opacity: 1;
+		}
+
+		.attribute-more {
+			display: none;
+		}
+
+		.attribute-arrow {
+			display: none;
+		}
+
+		.filtration-header {
+			padding: 1rem 1.25rem;
+			position: fixed;
+			background-color: #fff;
+			border-bottom: 1px solid #e4e4e4;
+			width: 100%
+		}
+
+		.attribute-label {
+			display: inline-flex;
+			min-height: 35px;
+			min-width: 60px;
+			text-align: center;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.attribute-group {
+			border: 0;
+		}
+
+		.products-filters-attribute-form {
+			margin-top: 4rem;
+			padding-bottom: 40px;
+		}
+
+		.attribute-header {
+			padding-bottom: 0;
+		}
+
+		.attribute-label {
+			padding-top: 0.5rem;
+			padding-bottom: 0.5rem;
+			background-color: #f4f4f4;
+			border-radius: 10px;
+			color: #0F1111;
+			font-size: 1rem;
+			margin-right: 0.5rem;
+			margin-left: 0.5rem;
+		}
+
+
+		.attribute-body input[type="checkbox"] {
+			visibility: hidden;
+			position: absolute;
+		}
+
+		.attribute-body input[type="checkbox"]:checked + .attribute-label {
+			color: var(--text-color-primary-bg, #0F1111);
+			background-color: var(--primary-color, #C0BEBE);
+		}
+
+		.attribute-body {
+			display: flex;
+			flex-wrap: wrap;
+			padding-left: 0.75rem;
+			padding-right: 0.75rem;
+			flex-direction: row;
+		}
+
+		.filter-row {
+			padding: 0;
+		}
+
+		.attribute-body.attribute-price-body {
+			flex-direction: column;
+		}
 	}
 </style>

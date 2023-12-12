@@ -5,47 +5,59 @@
 {% block header %} {{ include('header.twig') }} {% endblock %}
 
 {% block main_content %}
+    <ul class="flex items-center gap-2 py-4 px-8 text-sm max-sm:justify-center border-y border-y-[#f0f0f0]">
+        <li><a href="/">{{ locals.home.title }}</a></li>|
+        <li><a href="{{ categories.url }}">{{ category.name }}</a></li>    
+    </ul>
 
+    {% if 'brands' in category.url %}
+        {% include 'brands-category.twig' with {'category' : category} %}
+    {% else %}
     <section class="py-14 max-w-7xl mx-auto md:px-8 lg:px-14 px-4">
         <div class="flex flex-col gap-3 mb-12 justify-center items-center">
+            
             <h2 class="text-black font-semibold text-xl lg:text-2xl pb-2">{{ category.name }}</h2>
-            {# <p class="lg:text-base text-sm opacity-60 text-center max-w-3xl">{{ category.description}}</p> #}
-            <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
-                <div class="basis-1/2 object-cover" x-html="parts[0]"></div>
-                <div class="basis-1/2 bg-whiteColor-700 md:px-10 md:py-0 p-4 flex flex-col gap-4 justify-center" x-html="parts.slice(1).join('')" ></div>
-            </div>
+            {% if 'TITLE' in category.description %}
+                <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
+                    <div class="basis-1/2 object-cover" x-html="parts[0]"></div>
+                    <div class="basis-1/2 bg-whiteColor-700 md:px-10 md:py-0 p-4 flex flex-col gap-4 justify-center" x-html="parts.slice(1).join('')" ></div>
+                </div>
 
-            <script>
-                function splitText(text) {
-                    const parts = text.split(/__(\w+)__/).filter(Boolean);
-                    const result = [];
-                    for (let i = 0; i < parts.length; i += 2) {
-                        const key = parts[i];
-                        const value = parts[i + 1];
-                        switch (key) {
-                            case 'TITLE':
-                                result.push(`<p class="cat lg:text-2xl text-lg ltr:italic">${value}</p>`);
-                                break;
-                            case 'DESCRIPTION':
-                                result.push(`<p class="md:text-base text-sm">${value}</p>`);
-                                break;
-                            case 'BANNER':
-                                result.unshift(`<img class="banner" src="${value}" alt="Banner">`);
-                                break;
+                <script>
+                    function splitText(text) {
+                        const parts = text.split(/__(\w+)__/).filter(Boolean);
+                        const result = [];
+                        for (let i = 0; i < parts.length; i += 2) {
+                            const key = parts[i];
+                            const value = parts[i + 1];
+                            switch (key) {
+                                case 'TITLE':
+                                    result.push(`<p class="cat lg:text-2xl text-lg ltr:italic">${value}</p>`);
+                                    break;
+                                case 'DESCRIPTION':
+                                    result.push(`<p class="md:text-base text-sm">${value}</p>`);
+                                    break;
+                                case 'BANNER':
+                                    result.unshift(`<img class="banner" src="${value}" alt="Banner">`);
+                                    break;
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
-            </script>
-
+                </script>
+            {% else %}
+                <p class="lg:text-base text-sm opacity-60 text-center max-w-3xl">{{ category.description}}</p>
+            {% endif %}
         </div>
         <span class="md:block hidden text-center">{{ products.total > 0 ? products.total ~ ' ' ~ locals.products.result : locals.products.empty }}</span>
-         <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             {% for product in products.data %}
                 {% include 'product-card.twig' with {'product' : product, 'index': key} %}
             {% endfor %}
         </div>
+
     </section>
+    {% endif %}
 
 {% endblock %}
 {% block footer %} {{ include('footer.twig') }} {% endblock %}
