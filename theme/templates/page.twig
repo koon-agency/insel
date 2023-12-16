@@ -1,0 +1,16 @@
+{% extends "layout.twig" %}
+{% block title %} {{ page.title }} {% endblock %}
+{% block header %} {{ include('header.twig') }} {% endblock %}
+{% block main_content %}
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 lg:px-14 ">
+            <h2 class="text-primary lg:text-2xl font-semibold mb-4 text-xl">{{ page.title }}</h2>
+            <hr>
+            <div class="text-black lg:text-base text-sm mt-4">
+                {{ page.content | raw }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block footer %} {{ include('footer.twig') }} {% endblock %}

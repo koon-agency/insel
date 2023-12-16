@@ -16,6 +16,9 @@
     <section class="py-14 max-w-7xl mx-auto md:px-8 lg:px-14 px-4">
         <div class="flex flex-col gap-3 mb-12 justify-center items-center">
             
+            {% include 'sort-filter.twig' with { 'products' : products } %}
+
+            
             <h2 class="text-black font-semibold text-xl lg:text-2xl pb-2">{{ category.name }}</h2>
             {% if 'TITLE' in category.description %}
                 <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
@@ -38,7 +41,7 @@
                                     result.push(`<p class="md:text-base text-sm">${value}</p>`);
                                     break;
                                 case 'BANNER':
-                                    result.unshift(`<img class="banner" src="${value}" alt="Banner">`);
+                                    result.unshift(`<img class="banner w-full " src="${value}" alt="Banner">`);
                                     break;
                             }
                         }
@@ -49,14 +52,62 @@
                 <p class="lg:text-base text-sm opacity-60 text-center max-w-3xl">{{ category.description}}</p>
             {% endif %}
         </div>
-        <span class="md:block hidden text-center">{{ products.total > 0 ? products.total ~ ' ' ~ locals.products.result : locals.products.empty }}</span>
-        <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-            {% for product in products.data %}
-                {% include 'product-card.twig' with {'product' : product, 'index': key} %}
-            {% endfor %}
+        {% if category.sub_categories | length > 0 %}
+            <div class="splide" id="cat-category">
+                <div class="splide__arrows">
+                    <button class="splide__arrow splide__arrow--prev !-right-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
+                    <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                    </button>
+                    <button class="splide__arrow splide__arrow--next !-left-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
+                    <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                    </button>
+                </div>
+                <div class="splide__track">
+                    <ul class="splide__list h-auto">
+                    {% for item in category.sub_categories %}
+                    <li class="splide__slide">
+                        <a href="{{ item.url }}" class="lg:p-8 p-4 flex flex-col items-center">
+                        <img src="{{ item.image }}" alt="" loading="lazy" class="object-cover">
+                        <p class="py-2">{{item.name}}</p>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        <div>
+            <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                {% for product in products.data %}
+                    {% include 'product-card.twig' with {'product' : product, 'index': key} %}
+                {% endfor %}
+            </div>
+            {% include 'pagination.twig' with { 'totalPages' : products.last_page , 'currentPage' : products.current_page } %}
+
         </div>
 
     </section>
+    <script>
+         document.addEventListener('DOMContentLoaded', function() {
+            new Splide(document.getElementById('cat-category'), {
+                type   : 'slide',
+                direction: 'rtl',
+                perPage: 5,
+                autoplay: true,
+                perMove:1,
+                arrows: true,
+                pagination: false,
+                breakpoints: {
+                720: {
+                    perPage: 2,
+                },
+                991: {
+                    perPage: 4,
+                }
+                }
+            }).mount();
+        });
+    </script>
     {% endif %}
 
 {% endblock %}

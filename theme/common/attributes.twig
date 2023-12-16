@@ -170,14 +170,14 @@
 							</div>
 							<div class="filter-content">
 								<div class="attribute-body attribute-price-body">
-									<div class="form-row">
+									<div class="form-row flex">
 										<div class="form-group col-md-6">
 											<label>
-												<h6>
+												<span>
 													{{locals.products.filter_price_from}}
-												</h6>
+												</span>
 											</label>
-											<input name="from_price" class="form-control" placeholder="0 {{ session.currency.code }}" type="number">
+											<input name="from_price" class="form-control w-full max-w-full" placeholder="0 {{ session.currency.code }}" type="number">
 										</div>
 										<div class="form-group text-right col-md-6">
 											<label>
@@ -185,7 +185,7 @@
 													{{locals.products.filter_price_to}}
 												</span>
 											</label>
-											<input name="to_price" class="form-control" placeholder="1000 {{ session.currency.code }}" type="number">
+											<input name="to_price" class="form-control w-full max-w-full" placeholder="1000 {{ session.currency.code }}" type="number">
 										</div>
 									</div>
 									<div class="attribute-footer">
@@ -421,131 +421,5 @@
 
 	.product-attributes-light-box-top-section {
 		height: auto;
-	}
-
-
-	@media(max-width: 768px) {
-		.product-attributes {
-			min-width: unset;
-			width: 100%;
-			position: fixed;
-			left: 0;
-			top: 100%;
-			padding: 0;
-			z-index: 199;
-		}
-
-		.product-attributes-show-mobile {
-			top: 0;
-		}
-
-
-		.product-attributes-light-box {
-			position: fixed;
-			height: 100vh;
-			background-color: rgba(0, 0, 0, 0.4);
-			justify-content: end;
-			width: 100%;
-		}
-
-		.products-filters-container {
-			transition: all 0.5s;
-			height: 60%;
-			overflow-y: scroll;
-			background-color: #fff;
-			max-height: 0;
-			opacity: 0;
-		}
-
-		.product-attributes-light-box-top-section {
-			height: 40%;
-		}
-
-		.products-filters-container.products-filters-container-show-mobile {
-			max-height: 100%;
-			opacity: 1;
-			-webkit-overflow-scrolling: touch;
-		}
-
-		.attribute-label-hidden {
-			max-height: unset;
-			opacity: 1;
-		}
-
-		.attribute-more {
-			display: none;
-		}
-
-		.attribute-arrow {
-			display: none;
-		}
-
-		.filtration-header {
-			padding: 1rem 1.25rem;
-			position: fixed;
-			background-color: #fff;
-			border-bottom: 1px solid #e4e4e4;
-			width: 100%
-		}
-
-		.attribute-label {
-			display: inline-flex;
-			min-height: 35px;
-			min-width: 60px;
-			text-align: center;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.attribute-group {
-			border: 0;
-		}
-
-		.products-filters-attribute-form {
-			margin-top: 4rem;
-			padding-bottom: 40px;
-		}
-
-		.attribute-header {
-			padding-bottom: 0;
-		}
-
-		.attribute-label {
-			padding-top: 0.5rem;
-			padding-bottom: 0.5rem;
-			background-color: #f4f4f4;
-			border-radius: 10px;
-			color: #0F1111;
-			font-size: 1rem;
-			margin-right: 0.5rem;
-			margin-left: 0.5rem;
-		}
-
-
-		.attribute-body input[type="checkbox"] {
-			visibility: hidden;
-			position: absolute;
-		}
-
-		.attribute-body input[type="checkbox"]:checked + .attribute-label {
-			color: var(--text-color-primary-bg, #0F1111);
-			background-color: var(--primary-color, #C0BEBE);
-		}
-
-		.attribute-body {
-			display: flex;
-			flex-wrap: wrap;
-			padding-left: 0.75rem;
-			padding-right: 0.75rem;
-			flex-direction: row;
-		}
-
-		.filter-row {
-			padding: 0;
-		}
-
-		.attribute-body.attribute-price-body {
-			flex-direction: column;
-		}
 	}
 </style>

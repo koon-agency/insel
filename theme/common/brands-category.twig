@@ -31,17 +31,25 @@
 <script>
     function groupItems() {
     let items = {{ sub_categories | json_encode | raw }};
-    const groupedItems = items.reduce((groups, item) => {
+    const sortedItems = items.sort((a, b) => {
+        const aName = a.name ? a.name.toString() : a.toString();
+        const bName = b.name ? b.name.toString() : b.toString();
+        return aName.localeCompare(bName);
+    });
+
+    const groupedItems = sortedItems.reduce((groups, item) => {
         const itemName = item.name ? item.name.toString() : item.toString();
         const firstLetter = itemName.charAt(0).toLowerCase();
         if (!groups[firstLetter]) {
-        groups[firstLetter] = [];
+            groups[firstLetter] = [];
         }
         groups[firstLetter].push({ name: itemName, url: item.url });
         return groups;
     }, {});
+
     return groupedItems;
-    }
+}
+
 
     function createCategory() {
     const groupedItems = groupItems();

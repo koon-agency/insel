@@ -28,7 +28,7 @@
         {% endif %}
 
         {% for n in rangeN(startPage, endPage) %}
-            <li class="page-item{% if totalPages > 5 and (n - currentPage == 2 or currentPage - n == 2)  %} page-item-n-last {% endif %}" >
+            <li class="page-item{% if totalPages > 5 and (n - currentPage == 2 or currentPage - n == 2)  %} hidden page-item-n-last {% endif %}" >
                 <a class="page-link  border border-[#f0f0f0] w-8 h-8 flex justify-center items-center {% if currentPage == n %}bg-primary font-bold border-primary text-white{% endif %}" {% if currentPage != n %} href="{{ requestAdd({page:n}) }}" {% endif %}>{{ (n) }}</a>
             </li>
         {% endfor %}

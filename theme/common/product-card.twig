@@ -1,22 +1,39 @@
 <div class="product p-2 h-full">
   <div class="flex flex-col justify-center gap-2 h-full">
     <a class="mb-auto h-full relative"  href="{{ product.html_url }}">
-      <img class="w-full h-full m-auto object-cover"
+      <img class="w-full h-full m-auto object-contain"
       src="{{ imageUrl(product.images[0]['image']['large']) }}"
       alt="{{ product.name }}" loading="lazy"/>
-      <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-1 font-medium text-center w-full {{ 'soon' in product.selected_product.keywords ? 'block' : 'hidden' }}">{{locals.product.soon}}</div>
+      {% if product.has_variants %}
+        <div class="{% if 'soon' in product.selected_product.keywords %} hidden {% endif %} absolute text-center bottom-0 text-xs w-full bg-white">{{ locals.product.options }}</div>
+      {% endif %}
+      {% if 'soon' in product.selected_product.keywords %}
+        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full ">{{locals.product.soon}}</div>
+      {% endif %}
     </a>
-    
-    {% set productNameParts = product.name|split('.') %}
-    {% if  productNameParts|length > 1 %}
-      <h3 class="md:text-lg text-base text-center font-bold">{{ productNameParts[0]}}</h3>
-      <p class="text-center text-clip text-sm h-16 overflow-hidden">{{ productNameParts[1] }}</p>
-    {% else %}
-      <h3 class="text-center text-clip text-sm h-16 overflow-hidden">{{ product.name }}</h3>
+
+    {% set found = false %}
+    {% for cat in product.categories %}
+      {% if not found and product.name|slice(0, cat.name|length) == cat.name %}
+          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|slice(0, cat.name|length) }}</h1>
+          <p class="text-center text-clip text-sm h-16 overflow-hidden">
+              {{ product.name|slice(cat.name|length)|trim }}
+          </p>
+          {% set found = true %}
+      {% endif %}
+      <p class="hidden">{{cat.name}}</p>
+    {% endfor %}
+      <p class="hidden">hi</p>
+
+    {% if not found %}
+        <h3 class="text-center text-clip text-sm h-16 overflow-hidden">{{ product.name }}</h3>
     {% endif %}
-    <p class="text-center font-bold {% if product.selected_product.keywords %} hidden {% endif %}">
+
+    <p class="text-center font-bold {% if 'soon' in product.selected_product.keywords %} invisible {% endif %}">
       {{ product.formatted_sale_price is not null ? product.formatted_sale_price : product.formatted_price }}
     </p>
-    <p class="text-red-700 text-center{% if product.selected_product.out_of_stock and not product.selected_product.keywords %} block {% endif %}">{{locals.product.out_of_stock}}</p>
+    {% if product.is_infinite == false and product.quantity <= 0 %}
+      <p class="text-red-700 text-center {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</p>
+    {% endif %}
   </div>
 </div>

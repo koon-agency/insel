@@ -2,13 +2,14 @@
 {% block title %} {{ locals.profile.orders.title }} {% endblock %}
 {% block header %} {{ include('header.twig') }} {% endblock %}
 {% block main_content %}
-    <section class="account account-profile">
+    <section class="account pb-6">
         <div class="w-full border-y  bg-beige-300">
             <div class="p-4 min-h-[60px]">
-                <h1 class="font-black text-black text-xl lg:text-2xl text-center">{{ locals.profile.orders.title }}</h1>
+                <h1 class="font-semibold text-black text-xl lg:text-2xl text-center">{{ locals.profile.orders.title }}</h1>
             </div>
         </div>
-        <div class="flex px-7 md:flex-row flex-col-reverse">
+        <div class="flex px-7 rtl:pr-4 ltr:pl-4">
+            {% include 'profile-links.twig' with { 'active' : locals.profile.orders.title } %}
             <div class="flex-[3] ps-7 py-7 pe-4">
                 <div class="w-full flex items-center justify-between border-b-[0.5px] border-green pb-2">
                     <p class="text-sm text-black font-bold">{{ locals.profile.orders.id }}</p>
@@ -29,7 +30,6 @@
                 {% endfor %}
                 </div>
             </div>
-            {% include 'profile-links.twig' with { 'active' : locals.profile.orders.title } %}
         </div>
     </section>
 {% endblock %}

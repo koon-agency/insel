@@ -8,7 +8,9 @@
     "product":{
         "products": "Products",
         "description": "Description",
-        "ship_details": "Shipping Details",
+        "ship_details": "For shipping and delivery details click :",
+        "here":"here",
+        "ship_title": "Shipping Details",
         "code": "Product Code:",
         "categories": "Categories",
         "related_products": "You May Also Like",
@@ -25,7 +27,11 @@
         "rest":" Only ",
         "pieces":" Pieces left ",
         "ship":"Shipping From SA",
-        "delivery":"1-2 Working days to Riyadh"
+        "delivery":"1-2 Working days to Riyadh",
+        "product_added":"Product Added Successfully",
+        "product_added_error":"Something went wrong",
+        "soon":"Coming Soon",
+        "options":"More options available"
     },
     "products":{
         "sort":"Sort",
@@ -103,5 +109,8 @@
     "side_shop": "For faster checkout",
     "help":"Need help?",
     "call":"Call Us",
-    "whatsapp": "Whatsapp"
+    "whatsapp": "Whatsapp",
+    "save":"Save",
+    "edit":"Edit"
+
 }

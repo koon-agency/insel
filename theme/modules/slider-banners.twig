@@ -11,9 +11,9 @@
             src="{{ imageUrl(slide.mobile) }}" alt="{{ slide.title }}">
           </a>
           <div class="bg-white h-48 flex flex-col items-center justify-center">
-            <h2 class="lg:text-4xl text-3xl rtl:font-semibold ltr:font-medium">{{slide.title}}</h2>
-            <p class="uppercase ltr:tracking-wider lg:text-3xl text-2xl mt-1">{{slide.subtitle}}</p>
-            <a href="{{ slide.url ? slide.url : '/'}}" class="text-xl mt-5 uppercase bg-primary text-white px-8 py-1.5 hover:bg-white hover:text-primary border border-primary transition duration-300 font-semibold">{{slide.urlTitle}}</a>
+            <h2 class="lg:text-4xl text-2xl font-medium">{{slide.title}}</h2>
+            <p class="uppercase ltr:tracking-wider lg:text-3xl text-xl mt-1">{{slide.subtitle}}</p>
+            <a href="{{ slide.url ? slide.url : '/'}}" class="lg:text-xl text-lg mt-5 uppercase bg-primary text-white px-8 py-1.5 hover:bg-white hover:text-primary border border-primary transition duration-300 font-semibold">{{slide.urlTitle}}</a>
           </div>
           </div>
         </li>
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "slider": {
       "type": "list",
       "noLabel": true,
-      "maxItems": 4,
+      "maxItems": 10,
       "settings_label":{
         "ar": "الصورة",
         "en": "Picture"

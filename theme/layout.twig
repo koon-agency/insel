@@ -59,12 +59,14 @@
             display: block;
             background-color: #afb1b0;
             margin: 5px auto 20px;
+            font-weight:600
         }
     </style>
 </head>
 
 <body style="direction:{{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
 
+    {% block top_scripts %}{% endblock %}
     <div class="app {{ session.lang.code == 'ar' ? 'rtl' : 'ltr' }}">
         {% block header %}{% endblock %}
         {% block main_content %}{% endblock %}
@@ -74,6 +76,7 @@
     {{ zidapi_script|raw }}
     {% block footer_scripts %}{% endblock %}
     <script defer src="{{ assetUrl('app.js') }}"></script>
+    <script async src="https://tally.so/widgets/embed.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
 </body>
 

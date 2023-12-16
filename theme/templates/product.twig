@@ -5,15 +5,15 @@
 {% block main_content %}
 
 <div class="md:pt-6 pt-3 lg:px-14">
-    <ul class="flex items-center gap-2 p-4 text-sm justify-center">
+    <ul class="flex gap-2 p-4 text-sm justify-center">
         <li><a href="/">{{ locals.home.title }}</a></li>|
         <li><a href="/products/">{{ locals.product.products }}</a></li>|
-        <li class="truncate text-ellipsis"><a class="font-semibold">{{ product.name }}</a></li>
+        <li><a class="font-semibold">{{ product.name }}</a></li>
     </ul>
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
-                <img class="brand-logo md:w-32 w-28 hidden" src="" alt=""/>
+                <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 invisible" src="" alt="brand"/></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name }}</h3>
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
                         <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
@@ -61,34 +61,30 @@
                             </div>
                             <p class="text-xs ltr:text-left">{{ locals.product.delivery }}</p>
                         </div>
-                        {% if product.low_stock_quantity %}
+                        {# {% if product.low_stock_quantity %}
                             <div id="only_n_remaining" class=" flex text-light-400 px-3 py-2 my-4 rounded-lg text-xs items-center gap-2">
                                 <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path>
                                 </svg>
                                 {{ locals.product.only_n_remaining | format(product.low_stock_quantity) }}
                             </div>
-                        {% endif %}
-                        <div id="notify-me" class=" px-3 py-2 my-4 rounded-lg {% if not product.selected_product.out_of_stock %} hidden {% endif %}">
-                            <div class="flex flex-col gap-2.5 items-end bg-beige-300 p-2.5">
-                                <div class="flex items-center gap-2">
-                                    <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"></path>
-                                    </svg>
-                                    <p class="text-primary-50 text-sm">
-                                       {{ locals.product.notify_me }}
-                                    </p>
-                                </div>
-                                <div>
-                                    <label class="text-sm text-primary opacity-60" for="email">{{ locals.email }}</label>
-                                    <input class="w-full text-sm text-light-200 placeholder:text-light-400 placeholder:opacity-60 outline-none rounded-lg px-3 py-2 transition border focus:border-primary active:border-primary border-primary/30" type="email" placeholder="example@example.com" required>
-                                </div>
-                                <div class="flex items-center pt-2">
-                                    <button class="px-3 py-1.5 text-sm bg-primary-50 text-white rounded-lg">{{ locals.send }}</button>
-                                </div>
+                        {% endif %} #}
+                        <div id="out-of-stock-body" class="px-4 flex flex-col max-w-md justify-center w-full gap-3 mt-4 {{ product.is_infinite == false and product.quantity <= 0 ? 'block' : 'hidden' }}">
+                            <div class="flex items-center gap-2">
+                                <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"></path>
+                                </svg>
+                                <p class="font-light text-sm">{{ locals.product.notify_me }}</p>
                             </div>
+                            <input type="hidden" id="send-notify-product-id" value="{{ product.selected_product.id }}">
+                            <input id="send-notify-email" class="border active:outline-none focus:outline-none bg-white text-sm px-3 py-1.5 w-full"
+                                type="email" name="email" id="" placeholder="{{ locals.email }}">
+                            <button onclick="sendProductNotifyMe()" class="btn text-sm bg-grayColor-100 text-primary uppercase px-8 py-1.5">
+                                {{ locals.send }}
+                            </button>
                         </div>
-                        <div class="flex flex-col items-start w-full gap-4 mt-4 px-4">
+
+                        <div class="flex flex-col items-start w-full gap-4 px-4 {{product.selected_product.quantity > 0 ? 'mt-4' : ''}}">
                             <div class="flex gap-4 w-full">
                                 {% if product.selected_product.is_infinite or product.selected_product.quantity > 0 %}
                                         {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
@@ -105,7 +101,7 @@
                                         </div>
                                 {% endif %}
                                
-                                <div class="product-buttons flex-grow w-full {% if product.selected_product.out_of_stock %}hidden{% else %}block{% endif %}">
+                                <div class="product-buttons flex-grow w-full {{ product.is_infinite == false and product.quantity <= 0 ? 'hidden' : 'block' }}">
                                     <button class="flex justify-center uppercase font-medium items-center gap-1 bg-primary px-10 h-full text-white hover:opacity-60 transition duration-300 ease-in-out md:w-auto w-full" type="button" onclick="productAddToCart()">
                                         <img class="add-to-cart-progress hidden" src="{{ asset_url }}spinner.gif" width="20" height="20"/>
                                         <span class="text-lg">{{ locals.product.add_to_cart }}</span>
@@ -135,13 +131,13 @@
                             <ul class="flex flex-col w-full">
                                 <li class="w-full bg-white border-y border-y-grayColor-100" x-data="accordion(1)">
                                     <h2 @click="handleClick()" class="flex flex-row items-center justify-between py-2.5 px-4 cursor-pointer">
-                                        <span class="text-sm">{{ locals.product.ship_details }}</span>
+                                        <span class="text-sm">{{ locals.product.ship_title }}</span>
                                         <p :class="handlePlus()" class="text-4xl font-thin w-font">+</p>
                                         <p :class="handleMinus()" class="text-4xl font-thin w-font">-</p>
                                     </h2>
                                     <div x-ref="tab" :style="handleToggle()"
                                     class="overflow-hidden transition-all duration-500 max-h-0 px-4">
-                                        <p>{{ locals.product.ship_details }}</p>
+                                        <p>{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p>
                                     </div>
                                 </li>
                             </ul>
@@ -151,8 +147,8 @@
                     <div class="flex border-b border-b-grayColor-100 items-center px-4 py-3 gap-4">
                         <p class="font-semibold">{{ locals.help }}</p>
                         <div class="flex gap-3 items-center">
-                            <a href="tel:+966506578189" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
-                            <a href="https://api.whatsapp.com/send?phone=+966551049400&text=Hello, I am interested in this product : {{ product.name }} (Product Code : {{ product.sku }})" target="_blank"  class="flex items-center gap-1"><img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/e867bd5a-7032-4cc4-8ed6-24a6990a145d.svg" alt="icon"><span>{{ locals.whatsapp }}</span></a>
+                            <a href="tel:+966555702419" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
+                            <a href="https://api.whatsapp.com/send?phone=+966555702419&text=Hello, I am interested in this product : {{ product.name }} (Product Code : {{ product.sku }})" target="_blank"  class="flex items-center gap-1"><img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/e867bd5a-7032-4cc4-8ed6-24a6990a145d.svg" alt="icon"><span>{{ locals.whatsapp }}</span></a>
                         </div>  
                     </div>
                 </div>
@@ -274,6 +270,50 @@
 {% block footer_scripts %}
 {{ product_view_scripts|raw }}
 <script>
+	window.sendNotifyInProgress = false;
+		function sendProductNotifyMe() {
+			if (window.sendNotifyInProgress) 
+				return;
+
+			email = document.getElementById('send-notify-email').value;
+			productId = document.getElementById('send-notify-product-id').value;
+			if (!email || !productId) {
+				return;
+			}
+			
+            window.sendNotifyInProgress = true;
+			document.getElementById('out-of-stock-body').innerHTML = `<img class="h-8" src="{{ asset_url ~ 'spinner.gif' }}" />`
+            zid.store.product.setAvailabilityNotificationEmail(productId, email).then(function (response) {
+                if(response.status  === 'success'){
+                    Alpine.store('toasts').createToast('{{ locals.product.product_added }}', 'success')
+                }else{
+                    Alpine.store('toasts').createToast('{{ locals.product.product_added_error }}', 'error')
+                }
+				window.sendNotifyInProgress = false;
+                resetNotifySection()
+            })
+        }
+</script>
+<script>
+	function resetNotifySection(id) {
+		email = "{{ locals.email }}"
+		notify = "{{ locals.send }}"
+		document.getElementById('out-of-stock-body').innerHTML = `
+        <div class="flex items-center gap-2">
+            <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"></path>
+            </svg>
+            <p class="font-light text-sm">{{ locals.product.notify_me }}</p>
+        </div>
+        <input type="hidden" id="send-notify-product-id" value="${ id }">
+        <input id="send-notify-email" class="border mb-3 active:outline-none focus:outline-none bg-white text-sm px-3 py-1.5 w-full"
+            type="email" name="email" id="" placeholder="${email}">
+        <button onclick="sendProductNotifyMe()" class="btn text-sm bg-grayColor-100 text-primary uppercase px-8 py-1.5">
+            ${notify}
+        </button>`
+	}
+</script>
+<script>
     function accordion(idx){
         return {
             show: false,
@@ -299,7 +339,7 @@
 
         await zid.store.cart.addProduct({ formId: 'product-form' }).then(async (response) => {
             if(response.status  === 'success'){
-                Alpine.store('toasts').createToast('تمت إضافة المنتج للسلة', 'success')
+                Alpine.store('toasts').createToast('{{ locals.product.product_added }}', 'success')
                 progress.classList.add('hidden');
                 setCartBadge(response.data.cart.products_count);
             }
@@ -311,15 +351,17 @@
     async function catImage(name) {
         await zid.store.product.fetchCategories().then(async function (response) {
             await response.data.categories.map((item) => {
-                if(item.slug == 'brands'){
+                if(item.slug.toLowerCase() == 'luxury-brands'){
                     item.sub_categories.map((subItem) => {
-                        const brand = document.querySelector('.product');
-                        if(brand){
-                            const logo = brand.textContent.trim().split('.')
-                            if(logo.length > 0 && subItem.name == logo[0]) {
-                                document.querySelector('.brand-logo').src = subItem.image;
-                                document.querySelector('.brand-logo').classList.remove('hidden')
-                            }
+                        const brand = document.querySelector('.brand');
+                        if (brand && brand.textContent.trim().startsWith(subItem.name)) {
+                            const restOfWords = brand.textContent.trim().substring(subItem.name.length).trim();
+                            brand.textContent = restOfWords;
+                            const brandLogo = document.querySelector('.brand-logo');
+                            const brandUrl = document.querySelector('.brand-url');
+                            brandLogo.src = subItem.image;
+                            brandUrl.href = subItem.url;
+                            brandLogo.classList.remove('invisible');
                         }
                     });
                 }
@@ -383,8 +425,10 @@
                     document.getElementById('product-quantity').max = "0"
                 }
                 document.getElementById('notify-me').classList.add('hidden');
+                resetNotifySection(selected_product.id);
             } else {
                 // Variant is sold out.
+                resetNotifySection(selected_product.id);
                 document.getElementById('notify-me').classList.remove('hidden');
             }
 

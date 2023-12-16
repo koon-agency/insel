@@ -3,7 +3,7 @@
         <div class="flex items-center cursor-pointer" @click="show = !show">
             <div class="flex items-center gap-2 ltr:justify-end">
                 <img src="{{ session.currency.country.flag }}" alt="{{ session.currency.code }}" class="w-6 h-6 rounded-full object-cover" loading="lazy">
-                <p>{{ session.currency.code }}</p>
+                <p class="!mb-0">{{ session.currency.code }}</p>
             </div>
             <i class="fa-solid fa-chevron-down px-1"></i>
         </div>
