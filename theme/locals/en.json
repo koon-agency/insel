@@ -101,9 +101,10 @@
     "send":"Send",
     "cancel":"Cancel",
     "see_all":"See All",
-    "followus": "Follow us",
+    "followus": "Follow INSEL",
     "search": "Search",
     "subscribe": "Subscribe",
+    "newsletter": "Subscribe to our newsletter",
     "contact": "Contact us",
     "no_results": "No results found.",
     "side_shop": "For faster checkout",
@@ -111,6 +112,6 @@
     "call":"Call Us",
     "whatsapp": "Whatsapp",
     "save":"Save",
-    "edit":"Edit"
-
+    "edit":"Edit",
+    "index":"brand index:"
 }

@@ -46,7 +46,7 @@
                 <div class="border-b-2 border-b-zinc-300 !mb-0">
                     <p class="font-semibold pb-2 !mb-0">{{ locals.cart.summary }}</p>
                 </div>
-                <div class="!mt-[1rem]">
+                <div>
                     <ul class="border-b-2 border-b-zinc-300">
                     {% for cartTotal in cart.totals %}
                         <li class="flex ltr:flex-row-reverse items-center justify-between py-3 border-b border-b-[#ececec] {{ cartTotal.code == 'total' ? 'cart__total-item--total' : 'cart__total-item'  }}">

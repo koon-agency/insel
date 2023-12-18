@@ -13,7 +13,7 @@
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
-                <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 invisible" src="" alt="brand"/></a>
+                <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 px-4 invisible" src="" alt="brand"/></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name }}</h3>
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
                         <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
@@ -27,10 +27,10 @@
                     </div>
                     <div class="flex items-center gap-2 pt-2 px-4">
                         <span class="relative flex h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full {{ product.selected_product.quantity <= 3 ? 'bg-red-700' : 'bg-green-500' }} opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 {{ product.selected_product.quantity <= 3 ? 'bg-red-700' : 'bg-green-500' }}"></span>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
                         </span>
-                        <p class="font-medium {{ product.selected_product.quantity <= 3 ? 'text-red-700' : 'text-primary' }}">
+                        <p class="font-medium text-primary">
                             {{ product.selected_product.quantity > 3
                                 ? product.selected_product.quantity ~ locals.product.in_stock
                                 : (product.selected_product.quantity == 0
@@ -52,7 +52,7 @@
                             {% endif %}
                         </div>
 
-                        <div class="py-2">{{ template_for_product_payments_widget }}</div>
+                        <div class="p-4">{{ template_for_product_payments_widget }}</div>
 
                         <div class="p-4 border-y border-grayColor-100">
                             <div class="flex gap-1 items-center">
@@ -137,7 +137,7 @@
                                     </h2>
                                     <div x-ref="tab" :style="handleToggle()"
                                     class="overflow-hidden transition-all duration-500 max-h-0 px-4">
-                                        <p>{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p>
+                                        <p class="capitalize">{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p>
                                     </div>
                                 </li>
                             </ul>

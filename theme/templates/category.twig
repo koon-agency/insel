@@ -5,16 +5,23 @@
 {% block header %} {{ include('header.twig') }} {% endblock %}
 
 {% block main_content %}
-    <ul class="flex items-center gap-2 py-4 px-8 text-sm max-sm:justify-center border-y border-y-[#f0f0f0]">
+    <ul class="flex items-center gap-2 py-4 px-8 text-sm max-sm:justify-center border-y border-y-[#f0f0f0] flex-wrap">
         <li><a href="/">{{ locals.home.title }}</a></li>|
-        <li><a href="{{ categories.url }}">{{ category.name }}</a></li>    
+        {% if category.parent_category.parent_category %}
+            <li><a href="{{ category.parent_category.parent_category.url }}">{{ category.parent_category.parent_category.name }}</a></li>|
+        {% endif %}
+
+        {% if category.parent_category %}
+            <li><a href="{{ category.parent_category.url }}">{{ category.parent_category.name }}</a></li>|
+        {% endif %}
+        <li><a href="{{ categories.url }}" class="font-semibold">{{ category.name }}</a></li>    
     </ul>
 
     {% if 'brands' in category.url %}
         {% include 'brands-category.twig' with {'category' : category} %}
     {% else %}
-    <section class="py-14 max-w-7xl mx-auto md:px-8 lg:px-14 px-4">
-        <div class="flex flex-col gap-3 mb-12 justify-center items-center">
+    <section class="max-w-7xl mx-auto md:px-8 lg:px-14 px-4">
+        <div class="flex flex-col gap-3 justify-center items-center">
             
             {% include 'sort-filter.twig' with { 'products' : products } %}
 
@@ -53,30 +60,63 @@
             {% endif %}
         </div>
         {% if category.sub_categories | length > 0 %}
-            <div class="splide" id="cat-category">
-                <div class="splide__arrows">
-                    <button class="splide__arrow splide__arrow--prev !-right-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
-                    <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
-                    </button>
-                    <button class="splide__arrow splide__arrow--next !-left-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
-                    <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
-                    </button>
+            {% if category.sub_categories | length > 5 %}
+                <div class="splide" id="cat-category">
+                    <div class="splide__arrows">
+                        <button class="splide__arrow splide__arrow--prev !-right-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
+                        <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                        </button>
+                        <button class="splide__arrow splide__arrow--next !-left-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
+                        <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
+                        </button>
+                    </div>
+                    <div class="splide__track">
+                        <ul class="splide__list h-auto">
+                        {% for item in category.sub_categories %}
+                        <li class="splide__slide">
+                            <a href="{{ item.url }}" class="lg:p-8 p-4 flex flex-col items-center">
+                            <img src="{{ item.image }}" alt="" loading="lazy" class="object-cover">
+                            <p class="py-2">{{item.name}}</p>
+                            </a>
+                        </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-                <div class="splide__track">
-                    <ul class="splide__list h-auto">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        new Splide(document.getElementById('cat-category'), {
+                            type   : 'slide',
+                            direction: 'rtl',
+                            perPage: 5,
+                            autoplay: true,
+                            perMove:1,
+                            arrows: true,
+                            pagination: false,
+                            breakpoints: {
+                            720: {
+                                perPage: 2,
+                            },
+                            991: {
+                                perPage: 4,
+                            }
+                            }
+                        }).mount();
+                    });
+                </script>
+            {% else %}
+                <div class="flex justify-center items-center">
                     {% for item in category.sub_categories %}
-                    <li class="splide__slide">
-                        <a href="{{ item.url }}" class="lg:p-8 p-4 flex flex-col items-center">
-                        <img src="{{ item.image }}" alt="" loading="lazy" class="object-cover">
-                        <p class="py-2">{{item.name}}</p>
+                        <a href="{{ item.url }}" class="lg:p-8 p-4 flex flex-col items-center w-1/5">
+                            <img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy" class="object-contain">
+                            <p class="py-2 text-center">{{ item.name }}</p>
                         </a>
-                    </li>
                     {% endfor %}
-                    </ul>
                 </div>
-            </div>
             {% endif %}
-        <div>
+            
+        {% endif %}
+        <div class="py-14">
             <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {% for product in products.data %}
                     {% include 'product-card.twig' with {'product' : product, 'index': key} %}
@@ -87,27 +127,6 @@
         </div>
 
     </section>
-    <script>
-         document.addEventListener('DOMContentLoaded', function() {
-            new Splide(document.getElementById('cat-category'), {
-                type   : 'slide',
-                direction: 'rtl',
-                perPage: 5,
-                autoplay: true,
-                perMove:1,
-                arrows: true,
-                pagination: false,
-                breakpoints: {
-                720: {
-                    perPage: 2,
-                },
-                991: {
-                    perPage: 4,
-                }
-                }
-            }).mount();
-        });
-    </script>
     {% endif %}
 
 {% endblock %}
