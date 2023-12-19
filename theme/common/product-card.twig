@@ -18,7 +18,7 @@
     {% set found = false %}
     {% for cat in product.categories %}
       {% if not found and product.name|slice(0, cat.name|length) == cat.name %}
-          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|slice(0, cat.name|length) }}</h1>
+          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|slice(0, cat.name|length)|raw }}</h1>
           <p class="text-center text-clip text-sm h-16 overflow-hidden">
               {{ product.name|slice(cat.name|length)|trim }}
           </p>
@@ -26,7 +26,6 @@
       {% endif %}
       <p class="hidden">{{cat.name}}</p>
     {% endfor %}
-      <p class="hidden">hi</p>
 
     {% if not found %}
         <h3 class="text-center text-clip text-sm h-16 overflow-hidden">{{ product.name }}</h3>
