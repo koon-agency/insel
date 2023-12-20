@@ -141,7 +141,40 @@
                                     </h2>
                                     <div x-ref="tab" :style="handleToggle()"
                                     class="overflow-hidden transition-all duration-500 max-h-0 px-4">
-                                        <p class="capitalize">{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p>
+
+                                        {# <p class="capitalize">{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p> #}
+                                        {# Shipping Details #}
+                                        {% if 'AL BAHAR' in product.name or 'البحر' in product.name %}
+                                            <p class="capitalize">{{ locals.product.ship_details_BAHAR1 }}</p>
+                                            <p class="capitalize">{{ locals.product.ship_details_BAHAR2 }}</p>
+                                            <br>
+                                            <ul>
+                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                            </ul>
+                                            <br>
+                                        {% elseif 'Planika' in product.name or 'بلانيكا' in product.name %}
+                                            <p class="capitalize">{{ ship_detailsPlanika }}</p>
+                                            <br>
+                                        {% elseif 'ARD' in product.name or 'ارد' in product.name %}
+                                            <p class="capitalize">{{ locals.product.ship_details_ARD1 }}</p>
+                                            <p class="capitalize">{{ locals.product.ship_details_ARD2 }}</p>
+                                            <br>
+                                            <ul>
+                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                            </ul>
+                                            <br>
+                                        {% else %}
+                                            <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
+                                            <p class="capitalize">{{ locals.product.ship_details_All2 }}</p>
+                                            <br>
+                                            <ul>
+                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                            </ul>
+                                            <br>
+                                        {% endif %}
                                     </div>
                                 </li>
                             </ul>
