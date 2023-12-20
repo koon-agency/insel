@@ -72,7 +72,9 @@
         "sorry": "Sorry, Coupon does not exist",
         "sent_successfully":"Coupon Applied Successfully",
         "remove":"Remove",
-        "update":"Update"
+        "update":"Update",
+        "gift":" Add Gift Wrapping For This Order",
+        "gift_details": "Add Luxury Gift Box to your order for SAR 35.00"
     },
     "profile": {
         "title": "Account details",

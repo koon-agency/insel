@@ -11,7 +11,7 @@
         <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full ">{{locals.product.soon}}</div>
       {% endif %}
       {% if product.is_infinite == false and product.quantity <= 0 %}
-        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-500 bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>
+        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>
     {% endif %}
     </a>
 
@@ -20,7 +20,7 @@
       {% if not found and product.name|slice(0, cat.name|length) == cat.name %}
           <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|slice(0, cat.name|length)|raw }}</h1>
           <p class="text-center text-clip text-sm h-16 overflow-hidden">
-              {{ product.name|slice(cat.name|length)|trim }}
+            {{ product.name|slice(cat.name|length)|raw }}
           </p>
           {% set found = true %}
       {% endif %}

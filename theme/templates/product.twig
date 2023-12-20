@@ -13,6 +13,7 @@
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
+                <p class="hidden">{{ product.id }}</p>
                 <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 px-4 invisible" src="" alt="brand"/></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name }}</h3>
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
@@ -48,7 +49,10 @@
                             {{ template_for_product_variants_list }}
                             {% if product.has_custom_input_fields  %}
                                 <div class="border-product" style="margin-top: 25px"></div>
+                                <div class="flex flex-col gap-1 px-4">
                                 {{ template_for_product_custom_input_fields }}
+                                
+                                </div>
                             {% endif %}
                         </div>
 
@@ -147,8 +151,8 @@
                     <div class="flex border-b border-b-grayColor-100 items-center px-4 py-3 gap-4">
                         <p class="font-semibold">{{ locals.help }}</p>
                         <div class="flex gap-3 items-center">
-                            <a href="tel:+966555702419" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
-                            <a href="https://api.whatsapp.com/send?phone=+966555702419&text=Hello, I am interested in this product : {{ product.name }} (Product Code : {{ product.sku }})" target="_blank"  class="flex items-center gap-1"><img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/e867bd5a-7032-4cc4-8ed6-24a6990a145d.svg" alt="icon"><span>{{ locals.whatsapp }}</span></a>
+                            <a href="tel:{{ store.phone }}" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
+                            <a href="https://api.whatsapp.com/send?phone={{ store.phone }}&text=Hello, I am interested in this product : {{ product.name }} (Product Code : {{ product.sku }})" target="_blank"  class="flex items-center gap-1"><img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/e867bd5a-7032-4cc4-8ed6-24a6990a145d.svg" alt="icon"><span>{{ locals.whatsapp }}</span></a>
                         </div>  
                     </div>
                 </div>
@@ -501,6 +505,19 @@
         border: none !important;
         max-height: 100px;
     } */
+    #product-custom-user-input-fields .input-label{
+        padding-bottom:5px
+    }
+    #product-custom-user-input-fields .input-text{
+        width:100%;
+        max-width:20rem
+    }
+    #product-custom-user-input-fields .input-text input{
+        width:100%;
+        border:1px solid #000;
+        border-radius:3px;
+        padding: 1px 8px;
+    }
 </style>
 
 {% endblock %}
