@@ -11,7 +11,7 @@
   <template x-for="(toast, index) in $store.toasts.list" :key="toast.id">
     <div x-show="toast.visible" x-transition:enter="transition ease-in duration-200" x-transition:enter-start="transform opacity-0 translate-y-2" x-transition:enter-end="transform opacity-100" x-transition:leave="transition ease-out duration-500" x-transition:leave-start="transform translate-x-0 opacity-100" x-transition:leave-end="transform -translate-y-2 opacity-0" class="bg-gray-900 bg-gradient-to-r text-white rounded-t mb-3 shadow-lg flex items-center" :class="{
       'from-blue-500 to-blue-600': toast.type === 'info',
-      'from-green-500 to-green-600': toast.type === 'success',
+      'from-black to-gray-800': toast.type === 'success',
       'from-yellow-400 to-yellow-500': toast.type === 'warning',
       'from-red-500 to-pink-500': toast.type === 'error'}">
       <div class="flex flex-col w-full">

@@ -7,12 +7,12 @@
             </div>
             <i class="fa-solid fa-chevron-down px-1"></i>
         </div>
-        <ul x-show="show" @click.away="show = false" class="absolute left-0 right-0 mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-md z-10 lg:bottom-auto bottom-9 hidden" :class="show ? '!block' : 'hidden'">
+        <ul x-show="show" @click.away="show = false" class="absolute left-0 right-0 h-60 overflow-y-auto mt-1 w-48 bg-white border border-gray-300 rounded-md shadow-md z-10 lg:bottom-auto bottom-9 hidden" :class="show ? '!block' : 'hidden'">
         {% for storeCurrency in store.currencies %}
             <li @click="languageChange('{{ storeCurrency.code }}')" class="cursor-pointer">
                 <div class="py-2 px-3 flex items-center gap-2">
                     <img src="{{ storeCurrency.country.flag }}" alt="{{ storeCurrency.code }}" loading="lazy" class="w-6 h-6 rounded-full object-cover mr-2">
-                    <p>{{ storeCurrency.code }}</p>
+                    <p class="!mb-0">{{ storeCurrency.code }}</p>
                 </div>
             </li>
         {% endfor %}
@@ -20,7 +20,7 @@
     </div>
 </div>
 <span>|</span>
-<button href="" class="language-button flex items-end justify-center gap-1" x-data="language('{{ session.lang.code }}')" @click="change('{{ to }}')">{{ title }}</button>
+<button style="outline:none !important" class="language-button flex items-end justify-center gap-1" x-data="language('{{ session.lang.code }}')" @click="change('{{ to }}')">{{ title }}</button>
 <div class="hidden">
     {% include 'template_for_shipping_destination_currency_lang' with { 'hideDestination' : true, 'hideLanguage' : false , 'hideCurrency' : false  } %}
 </div>

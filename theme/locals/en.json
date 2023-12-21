@@ -83,7 +83,8 @@
         "remove":"Remove",
         "update":"Update",
         "gift":" Add Gift Wrapping For This Order",
-        "gift_details": "Add Luxury Gift Box to your order for SAR 35.00"
+        "gift_details": "Add Luxury Gift Box to your order for SAR 35.00",
+        "gift_title": "gift wrapping"
     },
     "profile": {
         "title": "Account details",

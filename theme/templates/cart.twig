@@ -37,7 +37,7 @@
 <section class="!py-[15px] !px-[1rem] lg:!px-[50px] cart">
       <div class="max-w-7xl px-2 lg:px-0 mx-auto">
         <h2 class="text-primary-50 font-semibold text-2xl lg:text-3xl mb-2 rtl:text-right {{ cart.products_count <= 0 ? 'hidden' : '' }}">{{ locals.cart.title }}</h2>
-        <div class="cart__empty mt-5 {{ cart.products_count <= 0 ? 'flex flex-col justify-center items-center' : 'hidden'}}">
+        <div class="cart__empty !my-[2rem] {{ cart.products_count <= 0 ? 'flex flex-col justify-center items-center' : 'hidden'}}">
             <h1 class="cart__empty-text my-3 text-primary-50 text-xl">{{ locals.cart.empty_cart }}</h1>
             <a href="/" class="bg-black !no-underline px-6 !py-[0.5rem] rounded text-white hover:opacity-60 transition duration-300 cart__empty-btn !my-[1.25rem]">{{ locals.cart.back_to_store }}</a>
        </div>
@@ -49,7 +49,10 @@
                 </div>
                 <div>
                     <ul class="border-b-2 border-b-zinc-300">
-                    
+                    <li class="{{ checked ? 'flex': 'hidden'}} flex-row-reverse items-center justify-between py-3 border-b border-b-[#ececec] {{ cartTotal.code == 'total' ? 'cart__total-item--total' : 'cart__total-item'  }}">
+                        <p class="font-bold text-sm text-black !mb-0">35 {{ session.currency.code }}</p>
+                        <p class="text-sm text-black !mb-0 capitalize"> {{ locals.cart.gift_title }} </p>
+                    </li>
                     {% for cartTotal in cart.totals %}
                         <li class="flex flex-row-reverse items-center justify-between py-3 border-b border-b-[#ececec] {{ cartTotal.code == 'total' ? 'cart__total-item--total' : 'cart__total-item'  }}">
                             <p class="font-bold text-sm text-black !mb-0"> {{ cartTotal.value_string }} </p>
@@ -117,15 +120,15 @@
             <div class="lg:col-span-7 col-span-12 ltr:lg:border-l rtl:lg:border-r rtl:lg:pr-7 lg:border-l-beige-200 pt-2.5 ltr:lg:pl-7 pb-7 -order-1 lg:order-1">
                 {% for product in cart.products %}
                     {% if product.sku == 'Z.434642.17030570385063863' %}
-                        {% set checked = true %}
+                        {% set checked = true %}                        
                     {% else %}
                         {% set checked = false %}
                     {% endif %}
-                <div class="flex items-center justify-between border border-[#e1e1e1] !mb-[0.75rem] !px-[.875rem] !py-[2rem] relative lg:gap-5 rtl:lg:flex-row-reverse ltr:lg:flex-row flex-col-reverse !gap-[.625rem] {{product.sku == 'Z.434642.17030570385063863'? 'hidden' : ''}}">
+                <div class="flex items-center justify-between border border-[#e1e1e1] !mb-[0.75rem] !px-[.875rem] !py-[2rem] relative lg:gap-5 rtl:lg:flex-row-reverse ltr:lg:flex-row flex-col-reverse !gap-[.625rem]">
                    {# <div class="cart-product-delete absolute top-2 left-2">
                         <a onclick="cartProductRemove(this)" data-cart-product-id="{{ product.id }}" data-product-id="{{ product.product_id }}" data-template="template_for_cart_products_list" class="border-2 cursor-pointer border-red-500 rounded-full text-red-500 h-5 w-5 text-sm font-bold flex items-center justify-center mb-auto align-middle">×</a>
                     </div> #}
-                    <div class="flex items-center gap-2 flex-grow w-full justify-between ltr:flex-row-reverse" id="{{ product.sku }}">
+                    <div class="flex items-center gap-2 flex-grow w-full justify-between ltr:flex-row-reverse" id="{{ product.id }}">
                         
                         <div class="flex items-center !gap-[0.5rem]">
                             <p class="!mb-0 cart-product-total-before-price text-black text-sm font-bold">{{ product.total_string }} {{ locals.cart.subtotal }}</p>
@@ -148,8 +151,9 @@
                             </div>
                         </div>
                         <div class="flex flex-col items-center w-24 gap-1 text-xs">
-                            <button class="bg-[#c3c3c3] w-full p-1">{{ locals.cart.update }}</button>
-                            <button class="bg-[#e6e6e6] w-full p-1" onclick="cartProductRemove(this)" data-cart-product-id="{{ product.id }}" data-product-id="{{ product.product_id }}" data-template="template_for_cart_products_list">{{ locals.cart.remove }}</button>
+                            <button class="bg-[#c3c3c3] w-full p-1" style="outline:none !important">{{ locals.cart.update }}</button>
+                            <button class="bg-[#e6e6e6] w-full p-1" onclick="cartProductRemove(this)" style="outline:none !important" data-cart-product-id="{{ product.id }}" data-product-id="{{ product.product_id }}" data-template="template_for_cart_products_list">{{ locals.cart.remove }}</button>
+
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-grow w-full justify-end rtl:flex-row-reverse">
@@ -184,36 +188,6 @@
                                 <label class="text-sm font-bold !mb-0">{{ locals.cart.gift_details }}</label>
                             </div>
                         </div>
-
-                        <script>
-                            async function AddToCart(id) {
-                                await zid.store.cart.addProduct({ productId: id, quantity: 1 })
-                                window.location.reload();
-                            }
-
-                            async function addWrapping() {
-                                const sku = "Z.434642.17030570385063863";
-                                let productFound = {};
-
-                                try {
-                                    const response = await zid.store.cart.fetch();
-                                    response.data.cart.products.forEach((product) => {
-                                        if (product.sku === sku) {
-                                            productFound = product;
-                                        }
-                                    });
-
-                                    if (Object.keys(productFound).length !== 0 or ) {
-                                        zid.store.cart.removeProduct(productFound.id, productFound.product_id).then(function (response) { console.log(response); });
-                                        window.location.reload();
-                                    } else {
-                                        AddToCart("7bae97a6-b3d4-4c91-a0e8-501dbd109c6a");
-                                    }
-                                } catch (error) {
-                                    console.error('Error fetching cart:', error);
-                                }
-                            }
-                        </script>
                     </div>
                 {% endif %}
             </div>
@@ -224,8 +198,37 @@
 {% block footer_scripts %}
 
     {{ cart_view_scripts|raw }}
+    
+    <script>
+        async function AddToCart(id) {
+            await zid.store.cart.addProduct({ productId: id, quantity: 1 })
+            window.location.reload();
+        }
 
+        async function addWrapping() {
+            const sku = "Z.434642.17030570385063863";
+            let productFound = {};
 
+            try {
+                const response = await zid.store.cart.fetch();
+                response.data.cart.products.forEach((product) => {
+                    if (product.sku === sku) {
+                        productFound = product;
+                    }
+                });
+
+                if (Object.keys(productFound).length !== 0 ) {
+                    zid.store.cart.removeProduct(productFound.id, productFound.product_id);
+                    window.location.reload();
+
+                } else {
+                    AddToCart("7bae97a6-b3d4-4c91-a0e8-501dbd109c6a");
+                }
+            } catch (error) {
+                console.error('Error fetching cart:', error);
+            }
+        }
+    </script>
 
     <script>
     function sendCoupon() {
@@ -312,9 +315,20 @@
             document.querySelector('.cart_page .cart__total-list').innerHTML = strCartTotals;
         }
     }
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function () {
+        const cart = JSON.parse('{{ cart|json_encode|raw }}');
 
-      })
+        if (cart.products_count === 1) {
+            const productToDelete = cart.products.find(product => product.product_id === "7bae97a6b3d44c91a0e8501dbd109c6a");
+
+            if (productToDelete) {
+                console.log('Product found. Deleting...');
+                await zid.store.cart.removeProduct(productToDelete.id, productToDelete.product_id);
+                window.location.reload();
+            }
+        }
+    });
+
     </script>
 {% endblock %}
 {% block footer %} {{ include('footer.twig') }} {% endblock %}

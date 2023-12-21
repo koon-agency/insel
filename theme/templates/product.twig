@@ -8,14 +8,14 @@
     <ul class="flex gap-2 p-4 text-sm justify-center">
         <li><a href="/">{{ locals.home.title }}</a></li>|
         <li><a href="/products/">{{ locals.product.products }}</a></li>|
-        <li><a class="font-semibold">{{ product.name }}</a></li>
+        <li><a class="font-semibold">{{ product.name|raw}}</a></li>
     </ul>
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
                 <p class="hidden">{{ product.id }}</p>
                 <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 px-4 invisible" src="" alt="brand"/></a>
-                <h3 class="text-lg text-primary brand px-4">{{ product.name }}</h3>
+                <h3 class="text-lg text-primary brand px-4">{{ product.name|raw }}</h3>
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
                         <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
                             {{ product.selected_product.formatted_sale_price ? product.selected_product.formatted_sale_price :  product.selected_product.formatted_price }}
