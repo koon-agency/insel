@@ -1,7 +1,7 @@
 
     <div class="flex max-w-5xl mx-auto justify-between items-center my-6 px-4 w-full">
         <div x-data="{ open: false }">
-            <button class="w-36 flex items-center justify-center gap-2 p-2 outline-none border border-primary" x-on:click="open = !open">
+            <button aria-label="filter" class="w-36 flex items-center justify-center gap-2 p-2 outline-none border border-primary" x-on:click="open = !open">
                 <span class="uppercase text-sm">{{ locals.products.filter }}</span>
                 <svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.03061 7.00003C5.26616 8.13273 6.28299 9 7.47925 9C8.7097 9 9.7009 8.13271 9.9295 7H20.5581C20.796 7 21 6.76923 21 6.5C21 6.23077 20.796 6 20.5581 6H9.92789C9.69236 4.86729 8.67552 4 7.47925 4C6.28296 4 5.26612 4.8673 5.0306 6.00003H3.46245C3.21344 6.00003 3 6.2308 3 6.50003C3 6.76926 3.21344 7.00003 3.46245 7.00003H5.03061ZM5.99487 6.5C5.99487 5.67969 6.65894 5.01562 7.47925 5.01562C8.29956 5.01562 8.96362 5.67969 8.96362 6.5C8.96362 7.32031 8.29956 7.98438 7.47925 7.98438C6.65894 7.98438 5.99487 7.32031 5.99487 6.5ZM20.6518 12.5H18.6795C18.4509 13.6327 17.4597 14.5 16.2292 14.5C15.033 14.5 14.0161 13.6327 13.7806 12.5H3.46245C3.21344 12.5 3 12.2692 3 12C3 11.7308 3.21344 11.5 3.46245 11.5H13.7806C14.0161 10.3673 15.033 9.5 16.2292 9.5C17.4255 9.5 18.4424 10.3673 18.6779 11.5H20.6518C20.8393 11.5 21 11.7308 21 12C21 12.2692 20.8393 12.5 20.6518 12.5ZM16.2292 10.5156C15.4089 10.5156 14.7449 11.1797 14.7449 12C14.7449 12.8203 15.4089 13.4844 16.2292 13.4844C17.0496 13.4844 17.7136 12.8203 17.7136 12C17.7136 11.1797 17.0496 10.5156 16.2292 10.5156ZM9.93963 18H20.5581C20.796 18 21 17.7692 21 17.5C21 17.2308 20.796 17 20.5581 17H9.927C9.69167 15.8673 8.67493 15 7.47876 15C6.27871 15 5.25927 15.8428 5.02825 17H3.46245C3.21344 17 3 17.2222 3 17.5185C3 17.7778 3.21344 18 3.46245 18H5.03071C5.26643 19.1322 6.28292 19.999 7.47876 19.999C8.70876 19.999 9.72952 19.1322 9.93963 18ZM5.99467 17.4995C5.99467 16.6794 6.65861 16.0154 7.47876 16.0154C8.29891 16.0154 8.96284 16.6794 8.96284 17.4995C8.96284 18.3197 8.29891 18.9836 7.47876 18.9836C6.65861 18.9836 5.99467 18.3197 5.99467 17.4995Z"></path></svg>            
             </button>
@@ -19,11 +19,11 @@
                 class="flex-col shadow-lg overflow-y-auto items-start px-4 pt-2 pb-28 hidden ltr fixed left-0 md:w-[400px] w-full h-full top-14 md:top-[4.5rem]  bg-white z-50">
                 <div class="flex items-center justify-between w-full">
                     <h2 class="font-semibold text-lg">{{ locals.products.filter }}</h2>
-                    <button @click="open = false">
+                    <button aria-label="open" @click="open = false">
                         <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
-                {% include 'attributes.twig' with { 'async' : true } %}
+                {% include 'attributes.twig' with { 'async' : true, 'products': products } %}
                                 {# {% include 'template_for_products_attributes' %} #}
 
             </div>
@@ -33,7 +33,7 @@
         <div x-data="{ open: false, selectedSort: '{{ requestGet('sort_by', 'created_at') }}-{{ requestGet('order', 'desc') }}', updateURL() { const url = new URL(window.location.href); url.searchParams.set('sort_by', this.selectedSort.split('-')[0]); url.searchParams.set('order', this.selectedSort.split('-')[1]); history.pushState(null, document.title, url.toString()); } }" 
                 class="inline-block filter-block-width sort-block-width">
             <div class="sort relative">
-                <button class="w-36 flex items-center justify-center gap-2 p-2 outline-none border border-primary" x-on:click="open = !open">
+                <button aria-label="sort" class="w-36 flex items-center justify-center gap-2 p-2 outline-none border border-primary" x-on:click="open = !open">
                     <span class="uppercase text-sm">{{ locals.products.sort }}</span>
                     <svg width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.3353 6.02692C11.8882 6.4454 11.8882 6.85733 12.3353 7.27548C12.7817 7.69461 13.1203 7.69396 13.567 7.27548L15.75 5.45139V16H16.5033H17.25V5.45139L19.4383 7.27548C19.8853 7.69396 20.2183 7.6895 20.6647 7.27102C21.1118 6.85254 21.1118 6.44351 20.6647 6.02536L17.3146 3.31589C17.3146 3.31589 16.944 3 16.5036 3C16.0632 3 15.6895 3.31882 15.6895 3.31882L12.3353 6.02692ZM3.33531 17.9731C2.88823 17.5546 2.88823 17.1427 3.33531 16.7245C3.7817 16.3054 4.12026 16.306 4.567 16.7245L6.75 18.5486V8H7.50327H8.25V18.5486L10.4383 16.7245C10.8853 16.306 11.2183 16.3105 11.6647 16.729C12.1118 17.1475 12.1118 17.5565 11.6647 17.9746L8.31462 20.6841C8.31462 20.6841 7.94399 21 7.50361 21C7.06324 21 6.68947 20.6812 6.68947 20.6812L3.33531 17.9731Z"></path></svg>
                 </button>

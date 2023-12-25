@@ -17,12 +17,16 @@
 
     {% set found = false %}
     {% for cat in product.categories %}
-      {% if not found and product.name|slice(0, cat.name|length) == cat.name %}
-          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|slice(0, cat.name|length)|raw }}</h1>
+        <p class="hidden text-green">{{product.name|slice(0, cat.name|length)}}</p>
+
+      {% if not found %}
+        {% if product.name|trim|slice(0, cat.name|length) == cat.name  %}
+          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|trim|slice(0, cat.name|length)|raw }}</h1>
           <p class="text-center text-clip text-sm h-16 overflow-hidden">
-            {{ product.name|slice(cat.name|length)|raw }}
+            {{ product.name|trim|slice(cat.name|length)|raw }}
           </p>
           {% set found = true %}
+        {% endif %}
       {% endif %}
       <p class="hidden">{{cat.name}}</p>
     {% endfor %}

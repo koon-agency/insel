@@ -26,10 +26,10 @@
     class="top-0 z-40 flex items-center w-full lg:px-12 bg-white md:px-8 px-4">
     {# Submenu #}
     {% include 'side-menu.twig' %}
-    
+
     {# Logo #}
-    <div class="flex items-center max-md:flex-1 lg:w-1/5">
-      <a class="py-2" href = "/"><img src="{{ store.logo }}" alt="" class="lg:h-14 w-full h-12"></a>
+    <div class="flex items-center max-md:flex-1 lg:w-1/5 text-center">
+      <a class="py-2 max-md:w-full" href = "/"><img src="{{ session.lang.code == 'en' ? 'https://media.zid.store/e9f9a835-2bd9-4324-9b35-0f8cb7f6cb60/f7995d9c-c7fb-40d3-a598-219d40a572fb-200x.png' : 'https://media.zid.store/e9f9a835-2bd9-4324-9b35-0f8cb7f6cb60/d599a38b-23f2-4b9f-b38f-20691866e1ff-200x.png' }}" alt="" class="lg:h-14 w-full h-10"></a>
     </div>
 
     {# Search #}
@@ -50,7 +50,7 @@
                 </a>
                 {# Search in mobile #}
                 <div class="lg:hidden flex">
-                    <button style="outline:none !important" type="button" data-te-toggle="modal" data-te-target="#searchModal">
+                    <button aria-label="search" style="outline:none !important" type="button" data-te-toggle="modal" data-te-target="#searchModal">
                         <svg width="22" height="22" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18.3333 17.4499L16.6667 15.7833M9.58333 16.6166C10.623 16.6166 11.6524 16.4118 12.6129 16.014C13.5734 15.6161 14.4461 15.033 15.1813 14.2979C15.9164 13.5627 16.4995 12.69 16.8974 11.7295C17.2952 10.769 17.5 9.73956 17.5 8.69993C17.5 7.6603 17.2952 6.63085 16.8974 5.67035C16.4995 4.70986 15.9164 3.83713 15.1813 3.102C14.4461 2.36687 13.5734 1.78373 12.6129 1.38588C11.6524 0.988035 10.623 0.783264 9.58333 0.783264C7.4837 0.783264 5.47006 1.61734 3.9854 3.102C2.50074 4.58666 1.66666 6.6003 1.66666 8.69993C1.66666 10.7996 2.50074 12.8132 3.9854 14.2979C5.47006 15.7825 7.4837 16.6166 9.58333 16.6166Z" stroke="#2E3059" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -90,6 +90,19 @@
   </nav>
    {% include 'header-mega.twig' %}
   <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sortableLists = document.querySelectorAll('.sort');
+    if(sortableLists){
+      sortableLists.forEach(sortableList => {
+        const items = [...sortableList.children];
+  
+        items.sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim()));
+        items.forEach(item => sortableList.appendChild(item));
+      });
+      
+    }
+    
+  })
     function language(code) {
       return {
         open: false,

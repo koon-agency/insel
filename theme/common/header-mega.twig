@@ -7,12 +7,12 @@
                     <a href="{{ menu.url }}" class="block h-full text-white hover:!bg-white hover:!text-black !no-underline transition border-b-2 !border-b-black hover:!border-b-whiteColor-600 duration-300 !py-[0.5rem] !px-[0.75rem] font-semibold"><span class="ltr:text-sm">{{ menu.name }}</span></a>
                     {% if menu.items | length > 0 %}
                         <div class="absolute z-50 hidden top-full group-hover:lg:block w-full right-0">
-                          <ul class="bg-white border p-4 w-full grid grid-cols-3">
+                          <ul class="bg-white border p-4 w-full h-full sort {{ menu.items | length < 4 ? 'grid grid-cols-3' : 'flex flex-col flex-wrap max-h-[370px]'}}">
                             {% for subitem in menu.items %}
                               {% if subitem.items | length > 0 %}
                                 <div>
                                     <li><a class="!text-black !no-underline font-semibold" href="{{ subitem.url }}">{{ subitem.name }}</a></li>
-                                    <ul>
+                                    <ul class="sort">
                                         {% for sub in subitem.items %}
                                         <li><a class="!text-black !no-underline" href="{{ sub.url }}">{{ sub.name }}</a></li>
                                         {% endfor %}

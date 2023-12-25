@@ -76,7 +76,7 @@
                 <div class="!mt-[1rem]">
                     <form>
                         <input class="send-coupon border border-[#cbc9d1] !mb-[1rem] bg-white w-full text-gray-700 text-sm !py-[0.5rem] !px-[0.75rem]" type="text" name="coupon" id="" placeholder="{{ locals.cart.coupon_code }}"/>
-                        <button type="button" class="bg-[#373435] px-2 py-2.5 text-white w-full hover:!bg-white hover:!text-[#373435] border border-white hover:!border-[#373435] transition duration-300 text-center flex justify-center items-center gap-1" onclick="sendCoupon()">
+                        <button aria-label="coupon" type="button" class="bg-[#373435] px-2 py-2.5 text-white w-full hover:!bg-white hover:!text-[#373435] border border-white hover:!border-[#373435] transition duration-300 text-center flex justify-center items-center gap-1" onclick="sendCoupon()">
                         <img class="send-coupon-progress hidden" src="{{ asset_url }}spinner.gif" width="15" height="15"/>
                             {{ locals.cart.apply_coupon }}
                         </button>
@@ -92,30 +92,7 @@
                             </div>
                         {% endif %}
                 </div>
-                {# Gift Feature #}
-                {% if store.gift_order_settings.is_gift_order_enabled == '1' %}
-                <div class="card border-0 mt-3 text-body">
-                    {{ template_for_cart_gifts_widget }}
-                </div>
-                {% endif %}
                 
-                {% if cart.gift_card_details | length > 0 %}
-                <div class="cart-gift-card py-4 px-2 rt:text-right">
-                    <p class="font-weight-bold mb-2">
-                        {{ locals.cart_send_as_gift_info }}
-                    </p>
-                    <p class="mb-2">
-                        <span>{{ locals.products_list_filter_price_from }}: {{cart.gift_card_details.sender_name}}</span>
-                        <span class="mx-2">{{ locals.products_list_filter_price_to }}: {{cart.gift_card_details.receiver_name}}</span>
-                    </p>
-                    {% if cart.gift_card_details.gift_message | length > 0 %}
-                        <p class="mb-0">
-                            <span>{{ locals.cart_gift_card_info_message }}: </span> {{ cart.gift_card_details.gift_message }}
-                        </p>
-                    {% endif %}
-                </div>
-
-                {% endif %}
             </div>
             <div class="lg:col-span-7 col-span-12 ltr:lg:border-l rtl:lg:border-r rtl:lg:pr-7 lg:border-l-beige-200 pt-2.5 ltr:lg:pl-7 pb-7 -order-1 lg:order-1">
                 {% for product in cart.products %}
@@ -189,6 +166,30 @@
                             </div>
                         </div>
                     </div>
+                {% endif %}
+                {# Gift Feature #}
+                {% if store.gift_order_settings.is_gift_order_enabled == '1' %}
+                <div class="card border-0 max-w-[5rem] text-body">
+                    {{ template_for_cart_gifts_widget }}
+                </div>
+                {% endif %}
+                
+                {% if cart.gift_card_details | length > 0 %}
+                <div class="cart-gift-card py-4 px-2 rt:text-right">
+                    <p class="font-weight-bold mb-2">
+                        {{ locals.cart_send_as_gift_info }}
+                    </p>
+                    <p class="mb-2">
+                        <span>{{ locals.products_list_filter_price_from }}: {{cart.gift_card_details.sender_name}}</span>
+                        <span class="mx-2">{{ locals.products_list_filter_price_to }}: {{cart.gift_card_details.receiver_name}}</span>
+                    </p>
+                    {% if cart.gift_card_details.gift_message | length > 0 %}
+                        <p class="mb-0">
+                            <span>{{ locals.cart_gift_card_info_message }}: </span> {{ cart.gift_card_details.gift_message }}
+                        </p>
+                    {% endif %}
+                </div>
+
                 {% endif %}
             </div>
         </div>

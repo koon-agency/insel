@@ -110,6 +110,7 @@
 				</div>
 				<div class="products-filters-attribute-form">
 					<form method="get" id="attribute_form" action="{{ requestUri() }}">
+						<p class="hidden">{{products.filters|length}}</p>
 						{% for key, input in requestInputs() %}
 							{% if 'attribute_values' not in key %}
 								<input type="hidden" name="{{ key }}" value="{{ input }}">

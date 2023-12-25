@@ -1,9 +1,9 @@
 {# Submenu #}
 <div x-data="{show: false}" class="lg:hidden flex flex-1">
-    <button style="outline:none !important" x-show="!show" @click="show = !show">
+    <button aria-label="open" style="outline:none !important" x-show="!show" @click="show = !show">
         <svg class="fill-current inline-block text-almost-black" width="26" height="26" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 4.5C3 4.22386 3.22386 4 3.5 4H20.5C20.7761 4 21 4.22386 21 4.5C21 4.77614 20.7761 5 20.5 5H3.5C3.22386 5 3 4.77614 3 4.5ZM3 11.5C3 11.2239 3.22386 11 3.5 11H20.5C20.7761 11 21 11.2239 21 11.5C21 11.7761 20.7761 12 20.5 12H3.5C3.22386 12 3 11.7761 3 11.5ZM3.5 18C3.22386 18 3 18.2239 3 18.5C3 18.7761 3.22386 19 3.5 19H20.5C20.7761 19 21 18.7761 21 18.5C21 18.2239 20.7761 18 20.5 18H3.5Z" fill="#1E1E1E"></path></svg>
     </button>
-    <button style="outline:none !important" :class="show ? '!block' : 'hidden'" class="hidden" @click="show = false">
+    <button aria-label="close" style="outline:none !important" :class="show ? '!block' : 'hidden'" class="hidden" @click="show = false">
         <svg class="" width="24" height="24" viewBox="0 0 24 24">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M20 4.8927L19.1073 4L12 11.1073L4.8927 4L4 4.8927L11.1073 12L4 19.1073L4.8927 20L12 12.8927L19.1073 20L20 19.1073L12.8927 12L20 4.8927Z"></path>
         </svg>    
@@ -98,43 +98,43 @@
                             <li @click="open = false" class="back font-normal p-2.5 w-full relative uppercase ltr:text-left rtl:pr-5 border-b ltr:pl-5">
                             {{ menu.name }}</li>
                         </div>
-                            <ul class="w-full pb-28">
-                        {% for menu_sub in menu.items %}
-                            {% if menu_sub.items | length > 0 %}
-                            <div x-data="{sub: false}">
-                                <li class="slide-menu-ul-li font-normal p-2.5 w-full relative uppercase ltr:text-left flex">
-                                    <a href="{{ menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
-                                    <div class="w-full cursor-pointer" @click="sub = true" x-show="!sub"></div>
-                                </li>
-                                <div x-show="sub" 
-                                    x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="transform rtl:origin-right ltr:origin-left rtl:translate-x-full ltr:-translate-x-full"
-                                    x-transition:enter-end="transform rtl:origin-right ltr:origin-left translate-x-0"
-                                    x-transition:leave="transition ease-in duration-300"
-                                    x-transition:leave-start="transform rtl:origin-right ltr:origin-left ltr:translate-x-0"
-                                    x-transition:leave-end="transform rtl:origin-right ltr:origin-left rtl:translate-x-full ltr:-translate-x-full"
-                                        x-init="() => { $el.classList.remove('hidden');$el.classList.add('flex') }"
-                                    class="flex-col items-start hidden rtl px-4 py-2 fixed rtl:right-0 ltr:left-0 w-full h-full top-14  md:top-20 bg-white z-50 overflow-auto">
-                                    <div class="flex items-center justify-between w-full">
-                                        <li @click="sub = false" class="back font-normal p-2.5 w-full relative uppercase ltr:text-left rtl:pr-5 border-b ltr:pl-5">
-                                        {{ menu_sub.name }}</li>
+                            <ul class="w-full pb-28 sort">
+                            {% for menu_sub in menu.items %}
+                                {% if menu_sub.items | length > 0 %}
+                                <div x-data="{sub: false}">
+                                    <li class="slide-menu-ul-li font-normal p-2.5 w-full relative uppercase ltr:text-left flex">
+                                        <a href="{{ menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
+                                        <div class="w-full cursor-pointer" @click="sub = true" x-show="!sub"></div>
+                                    </li>
+                                    <div x-show="sub" 
+                                        x-transition:enter="transition ease-out duration-300"
+                                        x-transition:enter-start="transform rtl:origin-right ltr:origin-left rtl:translate-x-full ltr:-translate-x-full"
+                                        x-transition:enter-end="transform rtl:origin-right ltr:origin-left translate-x-0"
+                                        x-transition:leave="transition ease-in duration-300"
+                                        x-transition:leave-start="transform rtl:origin-right ltr:origin-left ltr:translate-x-0"
+                                        x-transition:leave-end="transform rtl:origin-right ltr:origin-left rtl:translate-x-full ltr:-translate-x-full"
+                                            x-init="() => { $el.classList.remove('hidden');$el.classList.add('flex') }"
+                                        class="flex-col items-start hidden rtl px-4 py-2 fixed rtl:right-0 ltr:left-0 w-full h-full top-14  md:top-20 bg-white z-50 overflow-auto">
+                                        <div class="flex items-center justify-between w-full">
+                                            <li @click="sub = false" class="back font-normal p-2.5 w-full relative uppercase ltr:text-left rtl:pr-5 border-b ltr:pl-5">
+                                            {{ menu_sub.name }}</li>
+                                        </div>
+                                        <ul class="w-full pb-28 sort">
+                                        {% for sub_menu_sub in menu_sub.items %}
+                                            <li class="font-normal p-2.5 w-full relative uppercase ltr:text-left">
+                                                <a href="{{ sub_menu_sub.url }}" class="!text-black !no-underline">{{ sub_menu_sub.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
                                     </div>
-                                    <ul class="w-full pb-28">
-                                    {% for sub_menu_sub in menu_sub.items %}
-                                        <li class="font-normal p-2.5 w-full relative uppercase ltr:text-left">
-                                            <a href="{{ sub_menu_sub.url }}" class="!text-black !no-underline">{{ sub_menu_sub.name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                    </ul>
                                 </div>
-                            </div>
-                            {% else %}
-                            <li class="font-normal p-2.5 w-full relative uppercase ltr:text-left">
-                                <a href="{{ menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
-                            </li>
-                            {% endif %}
-                        {% endfor %}
-                        </ul>
+                                {% else %}
+                                <li class="font-normal p-2.5 w-full relative uppercase ltr:text-left">
+                                    <a href="{{ menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
                     </div>
                 </div>
                 {% else %}
