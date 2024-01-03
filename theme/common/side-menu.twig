@@ -75,7 +75,7 @@
     <h2 class="font-semibold text-lg p-2.5 ltr:text-left w-full uppercase">{{ locals.home.shop }}</h2>
     <ul class="flex flex-col-reverse w-full">
         <li class="slide-menu-ul-li font-normal p-2.5 w-full relative uppercase ltr:text-left">
-            <a href="/#services" class="w-full !text-black !no-underline"><span class="ltr:text-sm">{{ locals.home.services }}</span></a>      
+            <a target="_top" href="/#services" @click="show = false" class="w-full !text-black !no-underline"><span class="ltr:text-sm">{{ locals.home.services }}</span></a>      
         </li>
         {% for menu in main_navigation_menu.items %}
             {% if menu.name not in ['جميع المنتجات', 'الصفحة الرئيسية', 'homepage', 'all products'] %}                

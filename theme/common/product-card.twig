@@ -11,28 +11,29 @@
         <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full ">{{locals.product.soon}}</div>
       {% endif %}
       {% if product.is_infinite == false and product.quantity <= 0 %}
-        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>
+        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-1 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>
     {% endif %}
     </a>
 
     {% set found = false %}
-    {% for cat in product.categories %}
-        <p class="hidden text-green">{{product.name|slice(0, cat.name|length)}}</p>
-
-      {% if not found %}
-        {% if product.name|trim|slice(0, cat.name|length) == cat.name  %}
-          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|trim|slice(0, cat.name|length)|raw }}</h1>
+    {% if not found %}
+      {% for cat in product.categories %}
+      {% if cat.name|length > 0 %}
+        {% if product.name|trim|slice(0, cat.name|trim|length) == cat.name|trim  %}
+          <p class="hidden text-green">{{product.name|slice(0, cat.name|length)}}</p>
+          <h1 class="md:text-lg text-base text-center font-bold">{{ product.name|trim|slice(0, cat.name|trim|length)|raw }}</h1>
           <p class="text-center text-clip text-sm h-16 overflow-hidden">
-            {{ product.name|trim|slice(cat.name|length)|raw }}
+            {{ product.name|trim|slice(cat.name|trim|length)|raw }}
           </p>
           {% set found = true %}
         {% endif %}
+        
       {% endif %}
-      <p class="hidden">{{cat.name}}</p>
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
 
     {% if not found %}
-        <h3 class="text-center text-clip text-sm h-16 overflow-hidden">{{ product.name }}</h3>
+      <h3 class="text-center text-clip text-sm h-16 overflow-hidden">{{ product.name|raw  }}</h3>
     {% endif %}
 
     <p class="text-center font-bold {% if 'soon' in product.selected_product.keywords %} invisible {% endif %}">

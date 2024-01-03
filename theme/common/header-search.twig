@@ -23,14 +23,12 @@
     </div>
     <div
         x-show="query.length > 0 && products.length"
-        :class="'autocomplete-items z-50 max-h-60 overflow-y-auto absolute bg-white lg:min-w-[29.7rem] lg:w-auto lg:top-16 lg:right-auto top-20 right-0 border border-primary p-2.5 w-full'"
-    >
+        :class="'autocomplete-items z-50 max-h-60 overflow-y-auto absolute bg-white lg:min-w-[29.7rem] lg:w-auto lg:top-16 lg:right-auto top-20 right-0 border border-primary p-2.5 w-full'">
         <template x-for="(product, index) in products" :key="product.id">
             <a
                 :href="product.html_url"
                 class="flex items-center gap-2 p-1.5"
-                :class="{ 'border-b border-b-[#ccc]': index < products.length - 1 }"
-            >
+                :class="{ 'border-b border-b-[#ccc]': index < products.length - 1 }">
                 <img
                     :src="product.images[0]['image']['large']"
                     :alt="product.name"

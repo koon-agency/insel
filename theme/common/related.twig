@@ -4,9 +4,11 @@
         <div class="splide__track">
             <div class="splide__list justify-center">
                 {% for product in product.related_products %}
+                    {% if product.quantity > 0 %}
                     <div class="splide__slide">
                         {% include 'product-card.twig' with {'product' : product, 'index': key} %}
                     </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

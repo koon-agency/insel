@@ -5,7 +5,7 @@
 {% block main_content %}
 
 <div class="md:pt-6 pt-3 lg:px-14">
-    <ul class="flex gap-2 p-4 text-sm justify-center">
+    <ul class="flex gap-2 p-4 text-sm justify-center lg:text-base">
         <li><a href="/">{{ locals.home.title }}</a></li>|
         <li><a href="/products/">{{ locals.product.products }}</a></li>|
         <li><a class="font-semibold">{{ product.name|raw}}</a></li>
@@ -14,8 +14,11 @@
         <div class="product-details flex-1 pt-6">
             <div>
                 <p class="hidden">{{ product.id }}</p>
-                <a href="" class="brand-url"><img class="brand-logo md:w-32 w-28 px-4 invisible" src="" alt="brand"/></a>
+                <a href="" class="brand-url"><div class="brand-logo md:w-32 w-28 h-24 px-4 invisible bg-contain bg-center bg-no-repeat" alt="brand"></div></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name|raw }}</h3>
+
+                <div class="{{ product.slug == 'Gift-Card' ? 'block' : 'hidden'}} px-4 product-description lg:text-base ltr:text-left">{{ product.description | raw }}</div>
+
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
                         <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
                             {{ product.selected_product.formatted_sale_price ? product.selected_product.formatted_sale_price :  product.selected_product.formatted_price }}
@@ -27,16 +30,20 @@
                         {% endif %}
                     </div>
                     <div class="flex items-center gap-2 pt-2 px-4">
-                        <span class="relative flex h-3 w-3">
+                        <span class="relative flex justify-center items-center h-3 w-3">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-black"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                         </span>
                         <p class="font-medium text-primary">
-                            {{ product.selected_product.quantity > 3
-                                ? product.selected_product.quantity ~ locals.product.in_stock
-                                : (product.selected_product.quantity == 0
-                                    ? locals.product.out_of_stock
-                                    : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                            {{
+                                product.selected_product.quantity > 3
+                                    ? product.selected_product.quantity ~ locals.product.in_stock
+                                    : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
+                                        ? locals.product.out_of_stock
+                                        : (product.selected_product.is_infinite
+                                            ? locals.product.in_stock
+                                            : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                                    )
                             }}
                         </p>
                     </div>
@@ -49,31 +56,23 @@
                             {{ template_for_product_variants_list }}
                             {% if product.has_custom_input_fields  %}
                                 <div class="border-product" style="margin-top: 25px"></div>
-                                <div class="flex flex-col gap-1 px-4">
+                                <div class="flex flex-col gap-1 px-4 pb-4">
                                 {{ template_for_product_custom_input_fields }}
                                 
                                 </div>
                             {% endif %}
                         </div>
 
-                        <div class="p-4">{{ template_for_product_payments_widget }}</div>
+                        <div class="p-4 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">{{ template_for_product_payments_widget }}</div>
 
-                        <div class="p-4 border-y border-grayColor-100">
+                        <div class="p-4 border-y border-grayColor-100 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">
                             <div class="flex gap-1 items-center">
                                 <svg class="text-primary inline-block" width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.6884 9.33167C19.2936 8.5155 18.48 8.00037 17.5908 8.00355H14.26V5.43521C14.26 5.31977 14.2152 5.20906 14.1355 5.12744C14.0558 5.04582 13.9478 4.99998 13.8351 5H4.35849C4.20647 4.99964 4.06585 5.08252 3.98973 5.21732C3.91362 5.35212 3.91362 5.51831 3.98973 5.65311C4.06585 5.78791 4.20647 5.87079 4.35849 5.87043H13.4101V16.2885H9.04254C8.83962 15.2193 7.92542 14.4473 6.86207 14.4473C5.79872 14.4473 4.88451 15.2193 4.68159 16.2885H4.56911C4.41709 16.2881 4.27646 16.371 4.20035 16.5058C4.12424 16.6406 4.12424 16.8068 4.20035 16.9416C4.27646 17.0764 4.41709 17.1593 4.56911 17.1589H4.68159C4.88457 18.2281 5.79875 19 6.86207 19C7.92538 19 8.83957 18.2281 9.04254 17.1589H14.7989C15.0018 18.2281 15.916 19 16.9793 19C18.0426 19 18.9568 18.2281 19.1598 17.1589H20.575C20.6877 17.159 20.7958 17.1131 20.8755 17.0315C20.9552 16.9499 21 16.8392 21 16.7237V12.1209C20.9999 12.0533 20.9845 11.9867 20.955 11.9263L19.6884 9.33167ZM6.8622 18.1296C6.30706 18.1297 5.80655 17.7872 5.59406 17.2618C5.38157 16.7364 5.49897 16.1317 5.89149 15.7296C6.28402 15.3275 6.87437 15.2072 7.38725 15.4248C7.90013 15.6424 8.23453 16.1551 8.23451 16.7237C8.23366 17.4997 7.61977 18.1286 6.8622 18.1296ZM18.9284 9.72075C18.6766 9.20035 18.1578 8.87191 17.5908 8.87394H14.26V12.5229H20.15V12.2237L18.9284 9.72075ZM16.9794 18.1296C16.4242 18.1297 15.9237 17.7872 15.7112 17.2618C15.4988 16.7364 15.6162 16.1317 16.0087 15.7296C16.4012 15.3275 16.9916 15.2072 17.5044 15.4248C18.0173 15.6424 18.3517 16.1551 18.3517 16.7237C18.3508 17.4997 17.737 18.1286 16.9794 18.1296ZM16.9793 14.4473C18.0427 14.4473 18.9569 15.2193 19.1598 16.2885H20.15V13.3934H14.26V16.2885H14.7988C15.0018 15.2193 15.916 14.4473 16.9793 14.4473ZM4.62115 8.32037H10.7018C10.8538 8.32002 10.9945 8.40289 11.0706 8.53769C11.1467 8.67249 11.1467 8.83868 11.0706 8.97348C10.9945 9.10828 10.8538 9.19116 10.7018 9.1908H4.62115C4.46913 9.19116 4.32851 9.10828 4.2524 8.97348C4.17628 8.83868 4.17628 8.67249 4.2524 8.53769C4.32851 8.40289 4.46913 8.32002 4.62115 8.32037ZM3.12448 11.5251C3.04478 11.6067 3 11.7174 3 11.8328C3 11.9483 3.04478 12.059 3.12448 12.1406C3.20418 12.2222 3.31227 12.2681 3.42497 12.268H8.68933C8.84135 12.2684 8.98197 12.1855 9.05808 12.0507C9.1342 11.9159 9.1342 11.7497 9.05808 11.6149C8.98197 11.4801 8.84135 11.3973 8.68933 11.3976H3.42497C3.31228 11.3976 3.20418 11.4434 3.12448 11.5251Z"></path></svg>
                                 <p class="font-semibold text-sm">{{ locals.product.ship }}</p>
                             </div>
                             <p class="text-xs ltr:text-left">{{ locals.product.delivery }}</p>
                         </div>
-                        {# {% if product.low_stock_quantity %}
-                            <div id="only_n_remaining" class=" flex text-light-400 px-3 py-2 my-4 rounded-lg text-xs items-center gap-2">
-                                <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"></path>
-                                </svg>
-                                {{ locals.product.only_n_remaining | format(product.low_stock_quantity) }}
-                            </div>
-                        {% endif %} #}
-                        <div id="out-of-stock-body" class="px-4 flex flex-col max-w-md justify-center w-full gap-3 mt-4 {{ product.is_infinite == false and product.quantity <= 0 ? 'block' : 'hidden' }}">
+                        <div id="out-of-stock-body" class="flex flex-col max-w-md justify-center w-full gap-3 {{ product.is_infinite == false and product.quantity <= 0 ? 'block p-4' : 'hidden' }}">
                             <div class="flex items-center gap-2">
                                 <svg class="text-light-400 h-5 w-auto" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0M3.124 7.5A8.969 8.969 0 015.292 3m13.416 0a8.969 8.969 0 012.168 4.5"></path>
@@ -88,7 +87,7 @@
                             </button>
                         </div>
 
-                        <div class="flex flex-col items-start w-full gap-4 px-4 {{product.selected_product.quantity > 0 ? 'mt-4' : ''}}">
+                        <div class="flex flex-col items-start w-full gap-4 {{ product.slug == 'Gift-Card' ? 'border-y border-grayColor-100' : ''}} {{product.selected_product.quantity > 0 or product.selected_product.is_infinite ? 'p-4' : ''}}">
                             <div class="flex gap-4 w-full">
                                 {% if product.selected_product.is_infinite or product.selected_product.quantity > 0 %}
                                         {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
@@ -115,7 +114,7 @@
                             </div>   
                         </div>
                     </form>
-                    <div class="pt-4">
+                    <div class="{{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">
                         <div class="accordions flex flex-col w-full">
                             <ul class="flex flex-col w-full">
                                 <li class="w-full bg-white border-t border-t-grayColor-100" x-data="accordion(1)">
@@ -144,9 +143,10 @@
 
                                         {# <p class="capitalize">{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p> #}
                                         {# Shipping Details #}
-                                        {% if 'AL BAHAR' in product.name or 'البحر' in product.name or 'INLIGHT' in product.name or 'ان لايت' in product.name %}
-                                            <p class="capitalize">{{ locals.product.ship_details_BAHAR1 }}</p>
+                                        {% if 'AL BAHAR' in product.name or 'البحر' in product.name or 'INLIGHT' in product.name or 'ان لايت' or 'زوما' in product.name or 'Zuma' %}
+                                            <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_BAHAR2 }}</p>
+                                            <p class="capitalize">{{ locals.product.ship_details_BAHAR3 }}</p>
                                             <br>
                                             <ul>
                                                <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
@@ -158,7 +158,6 @@
                                             <br>
                                         {% elseif 'ARD' in product.name or 'ارد' in product.name %}
                                             <p class="capitalize">{{ locals.product.ship_details_ARD1 }}</p>
-                                            <p class="capitalize">{{ locals.product.ship_details_ARD2 }}</p>
                                             <br>
                                             <ul>
                                                <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
@@ -168,6 +167,7 @@
                                         {% else %}
                                             <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_All2 }}</p>
+                                            <p class="capitalize">{{ locals.product.ship_details_BAHAR3 }}</p>
                                             <br>
                                             <ul>
                                                <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
@@ -180,8 +180,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="bg-gray-100 px-4 py-6 ltr:text-left"><p>{{ locals.product.code }} {{ product.selected_product.sku }}</p></div>
-                    <div class="flex border-b border-b-grayColor-100 items-center px-4 py-3 gap-4">
+                    <div class="bg-gray-100 px-4 py-6 ltr:text-left {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}"><p>{{ locals.product.code }} {{ product.selected_product.sku }}</p></div>
+                    <div class="flex border-b border-b-grayColor-100 items-center px-4 py-3 gap-4 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">
                         <p class="font-semibold">{{ locals.help }}</p>
                         <div class="flex gap-3 items-center">
                             <a href="tel:{{ store.phone }}" target="_blank"  class="flex items-center gap-1"> <img src="https://media.zid.store/2a2a811a-ee46-493d-b2e9-47d91a4ed5a8/ae148707-036c-48ca-9cd3-d4ae0bac30fc.svg" alt="icon"><span>{{ locals.call }}</span></a>
@@ -213,7 +213,7 @@
                     </div>
                 </div>
 
-                <div class="splide mt-4 !mx-4 md:block hidden" id="product-thumbnails" role="group">
+                <div class="splide mt-4 !mx-4 md:block hidden {{ product.slug == 'Gift-Card' ? '!hidden' : ''}}" id="product-thumbnails" role="group">
                     <div class="splide__track">
                         <ul class="splide__list pswp-gallery pswp-gallery--single-column">
                         {% for key, image in product.selected_product.images %}
@@ -396,7 +396,7 @@
                             brand.textContent = restOfWords;
                             const brandLogo = document.querySelector('.brand-logo');
                             const brandUrl = document.querySelector('.brand-url');
-                            brandLogo.src = subItem.image;
+                            brandLogo.style.backgroundImage =  `url('${subItem.image}')`;
                             brandUrl.href = subItem.url;
                             brandLogo.classList.remove('invisible');
                         }
@@ -416,7 +416,7 @@
                 const element = selected_product.images[i];
                 let thumbImg = '<li class="splide__slide px-2 lg:px-4"><div class="flex flex-col w-full items-center justify-center h-full"><img class="h-full w-full object-cover" src='+`${element.image.small}`+' alt=""></div></li>'
                 thumbnails.add(thumbImg)
-                let mainImg = '<li class="splide__slide px-0 lg:px-4 max-h-96 lg:max-h-[30rem]"><a href='+`${element.image.full_size}`+' class="block w-full h-full"><div class="flex flex-col w-full h-full items-center justify-center"><img class="w-full h-full object-cover" src='+`${element.image.large}`+' alt=""></div></a></li>'
+                let mainImg = '<li class="splide__slide px-0 lg:px-4 max-h-96 lg:max-h-[30rem]"><a href='+`${element.image.full_size}`+' class="block w-full h-full"><div class="flex flex-col w-full h-full items-center justify-center"><img class="w-full h-full object-contain" src='+`${element.image.large}`+' alt=""></div></a></li>'
                 main.add(mainImg)
             }
             main.sync(thumbnails)
@@ -539,7 +539,8 @@
         max-height: 100px;
     } */
     #product-custom-user-input-fields .input-label{
-        padding-bottom:5px
+        padding-bottom:5px;
+        display:block
     }
     #product-custom-user-input-fields .input-text{
         width:100%;
@@ -549,7 +550,12 @@
         width:100%;
         border:1px solid #000;
         border-radius:3px;
-        padding: 1px 8px;
+        padding: 3px 8px;
+    }
+    #product-custom-user-dropdown-fields select{
+        border:1px solid #000;
+        border-radius:3px;
+        padding:3px
     }
 </style>
 

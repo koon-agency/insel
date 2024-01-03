@@ -97,45 +97,52 @@
 	</div>
 </div> #}
 
-
-
-
-<div class="product-attributes {% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}">
+<div class="product-attributes px-6 {% if session.lang.code == 'ar' %}rtl{% else %}ltr{% endif %}">
 	<div class="product-attributes-light-box">
-		<div class="product-attributes-light-box-top-section" onclick="toggleProductAttributeMobile()"></div>
 		<div class="products-filters-container mt-4">
 			<div class="attribute">
-				<div class="filtration-header">
-					
-				</div>
 				<div class="products-filters-attribute-form">
 					<form method="get" id="attribute_form" action="{{ requestUri() }}">
-						<p class="hidden">{{products.filters|length}}</p>
 						{% for key, input in requestInputs() %}
 							{% if 'attribute_values' not in key %}
 								<input type="hidden" name="{{ key }}" value="{{ input }}">
 							{% endif %}
 						{% endfor %}
+
+						{# price #}
+						<div class="attribute-group mb-6 py-3 border-b">
+							<div class="attribute-header flex justify-between">
+								<span class="attribute-name lg:text-base text-sm">{{locals.products.filter_price}}</span>
+								<span class="attribute-arrow attribute-arrow-expand" onclick="toggleAttributeBodyOfId(this, '120')"><i class="fa-solid fa-chevron-down px-1 text-sm"></i></span>
+							</div>
+							<div class="filter-content">
+								<div class="attribute-body attribute-body-120">
+									<div class="form-row flex gap-2">
+										<div class="form-group col-md-6 ltr:text-left">
+											<label><span class="lg:text-sm text-xs pb-1">{{locals.products.filter_price_from}}</span></label>
+											<input name="from_price" min="0" class="form-control w-full max-w-full border border-black text-sm" placeholder="0 {{ session.currency.code }}" type="number">
+										</div>
+										<div class="form-group text-right col-md-6 ltr:text-left">
+											<label><span class="lg:text-sm text-xs pb-1">{{locals.products.filter_price_to}}</span></label>
+											<input name="to_price" min="0" class="form-control w-full max-w-full border border-black text-sm" placeholder="1000 {{ session.currency.code }}" type="number">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						
 						{% for  key1, attribute in products.filters.attributes %}
-							<div class="attribute-group">
-								<div class="attribute-header">
-									<span class="attribute-name">
-										{{ attribute.name }}
-									</span>
-
-									<span class="attribute-arrow attribute-arrow-expand" onclick="toggleAttributeBodyOfId(this, '{{ key1 }}')">
-										<svg width="11" height="8" viewbox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M0.444716 3.12066L4.32972 7.00566C4.91472 7.59066 5.85972 7.59066 6.44472 7.00566L10.3297 3.12066C11.2747 2.17566 10.5997 0.555664 9.26472 0.555664H1.49472C0.159716 0.555664 -0.500284 2.17566 0.444716 3.12066Z" fill="#494949"/>
-										</svg>
-									</span>
+							<div class="attribute-group mb-6 py-3 border-b">
+								<div class="attribute-header flex justify-between">
+									<span class="attribute-name lg:text-base text-sm">{{ attribute.name }}</span>
+									<span class="attribute-arrow attribute-arrow-expand" onclick="toggleAttributeBodyOfId(this, '{{ key1 }}')"><i class="fa-solid fa-chevron-down px-1 text-sm"></i></span>
 								</div>
-								<div class="filter-content" style="">
+								<div class="filter-content">
 									<div class="attribute-body attribute-body-{{ key1 }}">
 										{% for  key2, item in attribute.data %}
-											<div class="filter-row {% if key2 > 3 %}attribute-label-hidden{% endif %}" data-attribute-index="{{ key1 }}">
-												<input class="checkbox {% if async %}checkbox-async{% endif %}" type="checkbox" name="attribute_values[]" id="{{ item.value }}" value="{{ item.value }}" {% if item.value in requestGet('attribute_values') %} checked {% endif %}>
-												<label class="attribute-label"  for="{{ item.value }}">
+											<div class="filter-row flex items-center {% if key2 > 3 %}attribute-label-hidden{% endif %}" data-attribute-index="{{ key1 }}">
+												<input class="checkbox {% if async %}checkbox-async{% endif %} {{ item.type == 'color' }}" type="checkbox" name="attribute_values[]" id="{{ item.value }}" value="{{ item.value }}" {% if item.value in requestGet('attribute_values') %} checked {% endif %}>
+												<label class="flex items-center px-2 my-1.5 cursor-pointer max-h-[20vh] opacity-1 transition-all duration-500"  for="{{ item.value }}">
 													<div class="attribute-label-extra">
 														{% if item.type == 'icon' %}
 															<img class="attribute-image" src="{{ imageUrl(item.type_value.full_size) }}">
@@ -144,65 +151,28 @@
 														{% endif %}
 													</div>
 													<div>
-													<span>
-														{{ item.value }}
-													</span>
+														<span class="lg:text-sm text-xs ">{{ item.value }}</span>
 													</div>
 												</label>
 											</div>
 										{% endfor %}
-
-										{% if attribute.data | length > 3 %}
-											<div class="attribute-more">
-												<span onclick="showAttributesOfId(this, '{{ key1 }}')">المزيد</span>
-											</div>
+										{% if attribute.data | length > 5 %}
+											<span onclick="showAttributesOfId(this, '{{ key1 }}')" class="text-sm cursor-pointer pt-1">+{{ locals.products.filter_show_more }}</span>
 										{% endif %}
 
 									</div>
 								</div>
 							</div>
-
-
 						{% endfor %}
-
-						<div class="attribute-group">
-							<div class="attribute-header">
-								<span class="attribute-name">{{locals.products_list_filter_price}}</span>
-							</div>
-							<div class="filter-content">
-								<div class="attribute-body attribute-price-body">
-									<div class="form-row flex">
-										<div class="form-group col-md-6 ltr:text-left">
-											<label>
-												<span>
-													{{locals.products.filter_price_from}}
-												</span>
-											</label>
-											<input name="from_price" class="form-control w-full max-w-full" placeholder="0 {{ session.currency.code }}" type="number">
-										</div>
-										<div class="form-group text-right col-md-6 ltr:text-left">
-											<label>
-												<span>
-													{{locals.products.filter_price_to}}
-												</span>
-											</label>
-											<input name="to_price" class="form-control w-full max-w-full" placeholder="1000 {{ session.currency.code }}" type="number">
-										</div>
-									</div>
-									<div class="attribute-footer">
-										
-										<a href="{{ requestUri() }}" class="px-6 w-full py-2 border-2 border-primary text-primary text-center uppercase text-base">{{ locals.products.clear }}</a>
-										<button type="submit" class="highlight-button btn btn-sm px-6 w-full py-2 border-2 border-primary bg-primary text-white text-center uppercase text-base" data-abc="true">{{ locals.products.apply }}</button>
-									</div>
-								</div>
-							</div>
+						
+						
+						<div class="attribute-footer">	
+							<button type="submit" class="highlight-button btn btn-sm w-full py-2 border-2 border-primary bg-primary text-white text-center uppercase text-sm  {{ requestInputs()|length == 0 ? 'opacity-60' : '' }}>" data-abc="true"  {{ requestInputs()|length == 0 ? 'disabled' : '' }}>{{ locals.products.apply }}</button>
+							<a href="{{ requestInputs()|length > 0 ? requestUri() : '#' }}" class="w-full py-2 border-2 border-primary text-primary text-center uppercase text-sm {{ requestInputs()|length == 0 ? 'opacity-60 cursor-none' : '' }}">{{ locals.products.clear }}</a>
 						</div>
-
 					</form>
 				</div>
-
 			</div>
-
 		</div>
 	</div>
 </div>
@@ -211,28 +181,6 @@
 
 	.products-filters-container {
 		font-size: 1.167rem
-	}
-
-	.filtration-header {
-		display: flex;
-		justify-content: space-between;
-		padding-bottom: 7px;
-	}
-
-	.filter-row {
-		display: flex;
-		padding: 0rem 1.25rem;
-	}
-
-	.attribute-name {
-		font-weight: bold;
-	}
-
-	.attribute-group {
-		border: 1px solid #e4e4e4;
-		border-radius: 8px;
-		margin-bottom: 25px;
-		text-align: right;
 	}
 
 	.attribute {
@@ -249,15 +197,6 @@
 		background-clip: border-box;
 	}
 
-	.attribute-header {
-		padding: 0.75rem 1.25rem;
-		margin-bottom: 0;
-		background-color: #fff;
-		border-radius: 10px;
-		display: flex;
-		justify-content: space-between;
-	}
-
 	.attribute-footer {
 		display: flex;
 		justify-content: end;
@@ -269,13 +208,8 @@
 		cursor: pointer;
 	}
 
-	.attribute-arrow-expand {
-		transform: rotate(0deg);
-	}
-
-	.attribute-arrow-collapse {
-		transform: rotate(180deg);
-	}
+	.attribute-arrow-expand {transform: rotate(180deg)}
+	.attribute-arrow-collapse {transform: rotate(0deg)}
 
 	.attribute-body {
 		transition: all 0.5s;
@@ -283,14 +217,15 @@
 		opacity: 1;
 		display: flex;
 		flex-direction: column;
+		
 	}
 
 	.attribute-body-collapse {
+
 		max-height: 0;
 		opacity: 0;
 		z-index: -1;
 	}
-
 
 	.attribute-body.attribute-price-body {
 		padding: 0 1.25rem;
@@ -317,8 +252,8 @@
 	}
 
 	.checkbox-btn input:checked ~ .btn {
-		border-color: #3167eb;
-		background-color: #3167eb;
+		border-color: #000;
+		background-color: #000;
 		color: #fff;
 	}
 
@@ -329,16 +264,7 @@
 		padding-left: 1.5rem;
 	}
 
-	.attribute-label {
-		display: flex;
-		align-items: center;
-		padding: 0 0.5rem;
-		margin: 0.75rem 0;
-		cursor: pointer;
-		max-height: 20vh;
-		opacity: 1;
-		transition: all 0.5s;
-	}
+
 
 	.attribute-label-hidden {
 		max-height: 0;
@@ -385,26 +311,10 @@
 		padding-inline-start: 8px;
 	}
 
-	.attribute-more {
-		display: flex;
-		justify-content: center
-	}
-
-	.attribute-more {
-		position: relative;
-		bottom: 10px;
-	}
-
-	.attribute-more > span {
-		text-decoration: underline;
-		cursor: pointer;
-	}
-
 
 	.product-attributes {
 		min-width: 100%;
 		width: 100%;
-		padding-inline-end: 25px;
 	}
 
 	.product-attributes-light-box {
@@ -424,3 +334,4 @@
 		height: auto;
 	}
 </style>
+
