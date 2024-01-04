@@ -1,14 +1,14 @@
 <section class="pt-10 brands">
-  <div class="max-w-7xl mx-auto px-2">
+  <div class="px-2">
     <div class="splide" id="section-{{sectionId}}">
-      <div class="splide__arrows">
+      {# <div class="splide__arrows">
         <button aria-label="prev" class="splide__arrow splide__arrow--prev !-right-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
         <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
         </button>
         <button aria-label="next" class="splide__arrow splide__arrow--next !-left-px !w-[24px] lg:!w-[30px] bg-[#d6d6d6] !rounded !p-1.5">
         <svg class="flickity-button-icon text-primary h-4" fill="currentColor" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg>
         </button>
-      </div>
+      </div> #}
       <div class="splide__track">
         <ul class="splide__list h-auto">
         {% for item in settings.brand_list %}
@@ -28,10 +28,10 @@
     new Splide(document.getElementById('section-{{sectionId}}'), {
 	    type   : 'slide',
 		  direction: 'rtl',
-		  perPage: 6,
+		  perPage: 8,
       autoplay: true,
       perMove:1,
-		  arrows: true,
+		  arrows: false,
 		  pagination: false,
 		  breakpoints: {
 			720: {
@@ -39,7 +39,7 @@
         arrows: false,
 			},
       991: {
-				perPage: 4,
+				perPage: 5,
 			}
 		}
   }).mount();

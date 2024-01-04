@@ -167,7 +167,7 @@
 						
 						
 						<div class="attribute-footer">	
-							<button type="submit" class="highlight-button btn btn-sm w-full py-2 border-2 border-primary bg-primary text-white text-center uppercase text-sm  {{ requestInputs()|length == 0 ? 'opacity-60' : '' }}>" data-abc="true"  {{ requestInputs()|length == 0 ? 'disabled' : '' }}>{{ locals.products.apply }}</button>
+							<button type="submit" class="highlight-button btn btn-sm w-full py-2 border-2 border-primary bg-primary text-white text-center uppercase text-sm  {{ requestInputs()|length == 0 ? 'opacity-60' : '' }}>" data-abc="true">{{ locals.products.apply }}</button>
 							<a href="{{ requestInputs()|length > 0 ? requestUri() : '#' }}" class="w-full py-2 border-2 border-primary text-primary text-center uppercase text-sm {{ requestInputs()|length == 0 ? 'opacity-60 cursor-none' : '' }}">{{ locals.products.clear }}</a>
 						</div>
 					</form>

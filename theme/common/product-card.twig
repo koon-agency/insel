@@ -1,4 +1,4 @@
-<div class="product p-2 h-full">
+<div class="product h-full">
   <div class="flex flex-col justify-center gap-2 h-full">
     <a class="mb-auto h-full relative"  href="{{ product.html_url }}">
       <img class="w-full h-full m-auto object-contain"
@@ -8,7 +8,7 @@
         <div class="{% if 'soon' in product.selected_product.keywords %} hidden {% endif %} absolute text-center bottom-0 text-xs w-full bg-white">{{ locals.product.options }}</div>
       {% endif %}
       {% if 'soon' in product.selected_product.keywords %}
-        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-0.5 text-xs font-medium text-center w-full ">{{locals.product.soon}}</div>
+        <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-1 text-xs font-medium text-center w-full ">{{locals.product.soon}}</div>
       {% endif %}
       {% if product.is_infinite == false and product.quantity <= 0 %}
         <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-1 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>

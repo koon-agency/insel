@@ -1,6 +1,6 @@
 {% extends "layout.twig" %}
 
-{% block title %} {{ product.name }} {% endblock %}
+{% block title %} {{ product.name|raw }} {% endblock %}
 {% block header %} {{ include('header.twig') }} {% endblock %}
 {% block main_content %}
 
@@ -8,15 +8,13 @@
     <ul class="flex gap-2 p-4 text-sm justify-center lg:text-base">
         <li><a href="/">{{ locals.home.title }}</a></li>|
         <li><a href="/products/">{{ locals.product.products }}</a></li>|
-        <li><a class="font-semibold">{{ product.name|raw}}</a></li>
+        <li><a class="font-semibold">{{ product.name|raw }}</a></li>
     </ul>
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
-                <p class="hidden">{{ product.id }}</p>
-                <a href="" class="brand-url"><div class="brand-logo md:w-32 w-28 h-24 px-4 invisible bg-contain bg-center bg-no-repeat" alt="brand"></div></a>
+                <a href="" class="brand-url px-4 flex items-center"><div class="brand-logo md:w-32 w-28 h-24 invisible bg-contain bg-center bg-no-repeat" alt="brand"></div></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name|raw }}</h3>
-
                 <div class="{{ product.slug == 'Gift-Card' ? 'block' : 'hidden'}} px-4 product-description lg:text-base ltr:text-left">{{ product.description | raw }}</div>
 
                     <div class="flex items-center w-full gap-2 pt-2 px-4">
@@ -484,9 +482,9 @@
     #product-variants-options ul{
         display: flex;
         flex-wrap:wrap;
-        gap:0.5rem;
+        column-gap: 0.5rem;
+        row-gap: 0;
         color: #E9D3C2;
-        justify-content: center;
         align-items: center;
     }
     #product-variants-options{
@@ -556,6 +554,10 @@
         border:1px solid #000;
         border-radius:3px;
         padding:3px
+    }
+    .tamara-product-widget{
+        font-size:12px !important;
+        font-weight: 700;
     }
 </style>
 

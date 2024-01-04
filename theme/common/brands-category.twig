@@ -55,9 +55,10 @@
     const groupedItems = groupItems();
     const categories = document.getElementById('categoriesLetters');
     const letters = document.getElementById('letters');
-    letters.innerHTML = `<div class="flex flex-col"><h2 class="capitalize pb-2 font-semibold">{{ locals.index }}</h2><div class="flex items-center gap-y-4 gap-x-2 flex-wrap pb-4">${Object.keys(groupedItems).map(key => `<h2 class="">${key.toUpperCase()}</h2>`).join('')}</div></div>`;
+    letters.innerHTML = `<div class="flex flex-col"><h2 class="capitalize pb-2 font-semibold">{{ locals.index }}</h2><div class="flex items-center gap-x-4 gap-y-2 flex-wrap pb-4 lg:justify-between">${Object.keys(groupedItems).map(key => `<h2 class=""><a href="#${key}">${key.toUpperCase()}</a></h2>`).join('')}</div></div>`;
     for (const [letter, items] of Object.entries(groupedItems)) {
         const categoryCon = document.createElement('div');
+        categoryCon.id = letter;
         categoryCon.classList.add('border-b', 'pb-2.5')
         categoryCon.innerHTML = `<div class="max-md:px-4"><h1 class="text-2xl font-semibold">${letter.toUpperCase()}</h1><ul>${items.map(item => `<li><a href="${item.url}" class="hover:underline">${item.name}</a></li>`).join('')}</ul></div>`;
         categories.append(categoryCon);
