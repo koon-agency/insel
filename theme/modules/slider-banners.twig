@@ -4,13 +4,13 @@
       {% for slide in settings.slider %}
         <li class="splide__slide">
         <div class="flex flex-col">
-          <a href="{{ slide.url ? slide.url : '/'}}">
+          <a href="{{ slide.url ? slide.url : '/'}}" class="lg: max-h-[400px]">
             <img class="w-full h-full object-cover lg:block hidden" 
             src="{{ imageUrl(slide.desktop) }}" alt="{{ slide.title }}">
             <img class="w-full h-full object-cover lg:hidden block" 
             src="{{ imageUrl(slide.mobile) }}" alt="{{ slide.title }}">
           </a>
-          <div class="bg-white h-48 flex flex-col items-center justify-center">
+          <div class="bg-white h-44 flex flex-col items-center justify-center">
             <h2 class="lg:text-4xl text-2xl font-medium">{{slide.title}}</h2>
             <p class="uppercase ltr:tracking-wider lg:text-3xl text-xl mt-1">{{slide.subtitle}}</p>
             <a href="{{ slide.url ? slide.url : '/'}}" class="lg:text-xl text-lg mt-5 uppercase bg-primary text-white px-8 py-1.5 hover:bg-white hover:text-primary border border-primary transition duration-300 font-semibold">{{slide.urlTitle}}</a>
