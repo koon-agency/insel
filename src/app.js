@@ -1,10 +1,14 @@
 import "./index.css";
 import "@splidejs/splide/dist/css/splide.min.css";
 import Alpine from "alpinejs";
+import intersect from "@alpinejs/intersect";
 import Splide from "@splidejs/splide";
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 
 window.Alpine = Alpine;
+window.intersect = intersect;
+Alpine.plugin(intersect);
+
 window.Splide = Splide;
 window.PhotoSwipeLightbox = PhotoSwipeLightbox;
 
