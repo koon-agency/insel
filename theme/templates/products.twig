@@ -10,73 +10,52 @@
         <li><a href="/products/" class="font-semibold">{{ locals.product.products }}</a></li>    
     </ul>
     <section class="products md:px-8 lg:px-14 px-4">
-        <div class="py-10 max-w-5xl mx-auto">
+        <div class="py-10 max-w-5xl mx-auto" x-data="productList()" x-init="init">
             {% include 'sort-filter.twig' with { 'products' : products } %}
 
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 products-list">
                 {% for product in products.data %}
                     {% include 'product-card.twig' with {'product': product} %}
                 {% endfor %}
-            </div>
-            <button class="hidden" x-on:click="loadProducts()">load</button>
+            </div> 
+            <div class="flex justify-center items-center py-2" x-intersect="loadProducts()"><img id="loading-spinner" class="loading hidden" src="{{ asset_url }}spinner.gif" width="20" height="20"/></div>
+
             <script>
-                let currentPage = {{ products.current_page }}
-                let lastPage = {{ products.last_page }}
-                // let filters = {{ products.filters | json_encode }}
-                // console.log(filters)
-                let requestPending = false
-                let allProducts = document.querySelector('.products-list');
+                function productList() {
+                    return {
+                        currentPage: {{ products.current_page }},
+                        lastPage: {{ products.last_page }},
+                        requestPending: false,
+                        async loadProducts() {
+                            try {
+                                document.getElementById('loading-spinner').classList.remove('hidden');
 
-                // window.onscroll = function (e) {
-                //     console.log(e)
-                //     var distanceToBottom = allProducts.offsetHeight - (window.innerHeight + window.scrollY);
+                                let response = await zid.store.product.fetchAll(null, { page: this.currentPage + 1 });
 
-                //     if (distanceToBottom <= 900) {
-                //         console.log('scroll end');
-                //         loadProducts();
-                //     } else {
-                //         console.log('scroll');
-                //     }
-                // };
+                                if (response.status === 'success') {
+                                    let products = response.data.products.data;
+                                    this.currentPage++;
 
-                async function loadProducts() {
-                    // Check if a request is already pending or if we've reached the last page
-                    // if (requestPending || currentPage >= lastPage) {
-                    //     requestPending = false;
-                    //     return false;
-                    // }
+                                    let productsIds = [];
+                                    products.forEach((product) => {
+                                        if (!productsIds.includes(product.id)) {
+                                            productsIds.push(product.id);
+                                            document.querySelector('.products-list').appendChild(createProductBox(product));
+                                        }
+                                    });
 
-                    // requestPending = true;
-
-                    try {
-                        document.getElementById('loading-spinner').classList.remove('hidden');
-
-                        let response = await zid.store.product.fetchAll(null, { page: currentPage + 1 });
-
-                        if (response.status === 'success') {
-                            let products = response.data.products.data;
-                            currentPage++;
-
-                            let productsIds = [];
-                            products.forEach((product) => {
-                                if(!productsIds.includes(product.id)){
-                                    productsIds.push(product.id)
-                                    allProducts.appendChild(createProductBox(product))
+                                    if (this.currentPage >= this.lastPage) {
+                                        document.getElementById('loading-spinner').classList.add('hidden');
+                                    }
                                 }
-                            })
-
-                            if (currentPage >= lastPage) {
+                            } catch (error) {
+                                console.error('An unexpected error occurred:', error);
+                            } finally {
                                 document.getElementById('loading-spinner').classList.add('hidden');
                             }
-                        } 
-                    } catch (error) {
-                        console.error('An unexpected error occurred:', error);
-                    } finally {
-                        document.getElementById('loading-spinner').classList.add('hidden');
-                        // requestPending = false;
-                    }
+                        }
+                    };
                 }
-
                 function createProductBox(product) {
                     let newDiv = document.createElement('div');
                     newDiv.classList.add('product', 'h-full');
@@ -124,7 +103,6 @@
                     return newDiv;
                 }
             </script>
-
             {# {% include 'pagination.twig' with { 'totalPages' : products.last_page , 'currentPage' : products.current_page } %} #}
         </div>
 
