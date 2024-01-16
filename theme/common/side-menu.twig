@@ -130,7 +130,7 @@
                                 </div>
                                 {% else %}
                                 <li class="font-normal p-2.5 w-full relative uppercase ltr:text-left">
-                                    <a href="{{ menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
+                                    <a href="{{ 'gift-card' in menu_sub.url ? '/products/Gift-Card' :  menu_sub.url }}" class="w-full !text-black !no-underline">{{ menu_sub.name }}</a>
                                 </li>
                                 {% endif %}
                             {% endfor %}

@@ -32,6 +32,7 @@
         "write_comment":"Write comment here ...",
         "reviews_submit_success": "Thanks you for your review",
         "in_stock":" In Stock ",
+        "in_stock_ard":" By Order ",
         "out_of_stock":"Out of Stock",
         "rest":" Only ",
         "pieces":" Pieces left ",

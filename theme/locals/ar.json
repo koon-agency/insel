@@ -32,6 +32,7 @@
         "write_comment":"... اكتب تعليقك هنا",
         "reviews_submit_success": "شكرًا لتقييمك، سيتم مراجعة التقييم ونشره على المتجر",
         "in_stock":" متوفر ",
+        "in_stock_ard":" بالطلب ",
         "out_of_stock":"غير متوفر",
         "rest":" متبقي ",
         "pieces":" قطع فقط ",

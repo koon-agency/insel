@@ -13,7 +13,7 @@
     <section class="product flex flex-col-reverse md:flex-row ltr:md:flex-row-reverse justify-between gap-4 md:gap-0">
         <div class="product-details flex-1 pt-6">
             <div>
-                <a href="" class="brand-url px-4 flex items-center"><div class="brand-logo md:w-32 w-28 h-24 invisible bg-contain bg-center bg-no-repeat" alt="brand"></div></a>
+                <a href="" class=" {{ product.slug == 'Gift-Card' ? 'hidden' : ''}} brand-url px-4 flex items-center"><div class="brand-logo md:w-32 w-28 h-24 invisible bg-contain bg-center bg-no-repeat" alt="brand"></div></a>
                 <h3 class="text-lg text-primary brand px-4">{{ product.name|raw }}</h3>
                 <div class="{{ product.slug == 'Gift-Card' ? 'block' : 'hidden'}} px-4 product-description lg:text-base ltr:text-left">{{ product.description | raw }}</div>
 
@@ -33,16 +33,27 @@
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                         </span>
                         <p class="font-medium text-primary">
-                            {{
-                                product.selected_product.quantity > 3
-                                    ? product.selected_product.quantity ~ locals.product.in_stock
-                                    : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
-                                        ? locals.product.out_of_stock
-                                        : (product.selected_product.is_infinite
-                                            ? locals.product.in_stock
-                                            : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
-                                    )
+                        {% if 'ARD' in product.name or 'ارد' in product.name %}
+                            {{ product.selected_product.quantity > 3
+                                ? product.selected_product.quantity ~ locals.product.in_stock_ard
+                                : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
+                                    ? locals.product.out_of_stock
+                                    : (product.selected_product.is_infinite
+                                        ? locals.product.in_stock_ard
+                                        : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                                )
                             }}
+                        {% else %}
+                            {{ product.selected_product.quantity > 3
+                                ? product.selected_product.quantity ~ locals.product.in_stock
+                                : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
+                                    ? locals.product.out_of_stock
+                                    : (product.selected_product.is_infinite
+                                        ? locals.product.in_stock
+                                        : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                                )
+                            }}
+                        {% endif %}
                         </p>
                     </div>
 
@@ -63,7 +74,7 @@
 
                         <div class="p-4 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">{{ template_for_product_payments_widget }}</div>
 
-                        <div class="p-4 border-y border-grayColor-100 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">
+                        <div class="p-4 border-y border-grayColor-100 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}} {% if 'ARD' in product.name or 'ارد' in product.name %} hidden {% endif %}">
                             <div class="flex gap-1 items-center">
                                 <svg class="text-primary inline-block" width="24" height="24" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.6884 9.33167C19.2936 8.5155 18.48 8.00037 17.5908 8.00355H14.26V5.43521C14.26 5.31977 14.2152 5.20906 14.1355 5.12744C14.0558 5.04582 13.9478 4.99998 13.8351 5H4.35849C4.20647 4.99964 4.06585 5.08252 3.98973 5.21732C3.91362 5.35212 3.91362 5.51831 3.98973 5.65311C4.06585 5.78791 4.20647 5.87079 4.35849 5.87043H13.4101V16.2885H9.04254C8.83962 15.2193 7.92542 14.4473 6.86207 14.4473C5.79872 14.4473 4.88451 15.2193 4.68159 16.2885H4.56911C4.41709 16.2881 4.27646 16.371 4.20035 16.5058C4.12424 16.6406 4.12424 16.8068 4.20035 16.9416C4.27646 17.0764 4.41709 17.1593 4.56911 17.1589H4.68159C4.88457 18.2281 5.79875 19 6.86207 19C7.92538 19 8.83957 18.2281 9.04254 17.1589H14.7989C15.0018 18.2281 15.916 19 16.9793 19C18.0426 19 18.9568 18.2281 19.1598 17.1589H20.575C20.6877 17.159 20.7958 17.1131 20.8755 17.0315C20.9552 16.9499 21 16.8392 21 16.7237V12.1209C20.9999 12.0533 20.9845 11.9867 20.955 11.9263L19.6884 9.33167ZM6.8622 18.1296C6.30706 18.1297 5.80655 17.7872 5.59406 17.2618C5.38157 16.7364 5.49897 16.1317 5.89149 15.7296C6.28402 15.3275 6.87437 15.2072 7.38725 15.4248C7.90013 15.6424 8.23453 16.1551 8.23451 16.7237C8.23366 17.4997 7.61977 18.1286 6.8622 18.1296ZM18.9284 9.72075C18.6766 9.20035 18.1578 8.87191 17.5908 8.87394H14.26V12.5229H20.15V12.2237L18.9284 9.72075ZM16.9794 18.1296C16.4242 18.1297 15.9237 17.7872 15.7112 17.2618C15.4988 16.7364 15.6162 16.1317 16.0087 15.7296C16.4012 15.3275 16.9916 15.2072 17.5044 15.4248C18.0173 15.6424 18.3517 16.1551 18.3517 16.7237C18.3508 17.4997 17.737 18.1286 16.9794 18.1296ZM16.9793 14.4473C18.0427 14.4473 18.9569 15.2193 19.1598 16.2885H20.15V13.3934H14.26V16.2885H14.7988C15.0018 15.2193 15.916 14.4473 16.9793 14.4473ZM4.62115 8.32037H10.7018C10.8538 8.32002 10.9945 8.40289 11.0706 8.53769C11.1467 8.67249 11.1467 8.83868 11.0706 8.97348C10.9945 9.10828 10.8538 9.19116 10.7018 9.1908H4.62115C4.46913 9.19116 4.32851 9.10828 4.2524 8.97348C4.17628 8.83868 4.17628 8.67249 4.2524 8.53769C4.32851 8.40289 4.46913 8.32002 4.62115 8.32037ZM3.12448 11.5251C3.04478 11.6067 3 11.7174 3 11.8328C3 11.9483 3.04478 12.059 3.12448 12.1406C3.20418 12.2222 3.31227 12.2681 3.42497 12.268H8.68933C8.84135 12.2684 8.98197 12.1855 9.05808 12.0507C9.1342 11.9159 9.1342 11.7497 9.05808 11.6149C8.98197 11.4801 8.84135 11.3973 8.68933 11.3976H3.42497C3.31228 11.3976 3.20418 11.4434 3.12448 11.5251Z"></path></svg>
                                 <p class="font-semibold text-sm">{{ locals.product.ship }}</p>
@@ -141,38 +152,49 @@
 
                                         {# <p class="capitalize">{{ locals.product.ship_details }}<a href="https://inlight.sa.com/blogs/%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84-%D8%A7%D9%84%D8%B4%D8%AD%D9%86-%D9%88-%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84">{{ locals.product.here }}</a></p> #}
                                         {# Shipping Details #}
-                                        {% if 'AL BAHAR' in product.name or 'البحر' in product.name or 'INLIGHT' in product.name or 'ان لايت' or 'زوما' in product.name or 'Zuma' %}
+                                        <p class="hidden">{{product.name}}</p>
+                                        
+                                        {% if 'AL BAHAR' in product.name or 'البحر' in product.name or 'INLIGHT' in product.name or 'ان لايت' in product.name or 'زوما' in product.name or 'Zuma' in product.name %}
                                             <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_BAHAR2 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_BAHAR3 }}</p>
                                             <br>
                                             <ul>
-                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
-                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                            <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                            <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
                                             </ul>
                                             <br>
-                                        {% elseif 'PLANIKA' in product.name or 'بلانيكا' in product.name %}
+                                        {% endif %}
+                                        {% if 'PLANIKA' in product.name or 'بلانيكا' in product.name %}
                                             <p class="capitalize">{{ locals.product.ship_details_Planika }}</p>
                                             <br>
-                                        {% elseif 'ARD' in product.name or 'ارد' in product.name %}
-                                            <p class="capitalize">{{ locals.product.ship_details_ARD1 }}</p>
-                                            <br>
-                                            <ul>
-                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
-                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
-                                            </ul>
-                                            <br>
+                                        {% endif %}
+                                        {% if 'ARD' in product.name or 'ارد' in product.name %}
+                                            {% if product.sku in ['ADC001', 'ADC0028', 'AD0160', 'AD0161', 'ADL001', 'ADL003', 'ADL007', 'ADL013'] %}
+                                                <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
+                                                <p class="capitalize">{{ locals.product.ship_details_All2 }}</p>
+                                                <p class="capitalize">{{ locals.product.ship_details_BAHAR3 }}</p>
+                                            {% else %}
+                                                <p class="capitalize">{{ locals.product.ship_details_ARD1 }}</p>
+                                                <br>
+                                                <ul>
+                                                    <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                                    <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                                </ul>
+                                                <br>
+                                            {% endif %}
                                         {% else %}
                                             <p class="capitalize">{{ locals.product.ship_details_All1 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_All2 }}</p>
                                             <p class="capitalize">{{ locals.product.ship_details_BAHAR3 }}</p>
                                             <br>
                                             <ul>
-                                               <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
-                                               <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
+                                            <li class="capitalize">{{ locals.product.ship_details_note1 }} </li>
+                                            <li class="capitalize">{{ locals.product.ship_details_note2 }}</li>
                                             </ul>
                                             <br>
                                         {% endif %}
+
                                     </div>
                                 </li>
                             </ul>

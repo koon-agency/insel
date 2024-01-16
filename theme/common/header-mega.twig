@@ -1,6 +1,5 @@
 <div class="lg:block hidden !bg-black">
     <ul class="main-nav flex flex-row flex-wrap justify-center max-w-7xl mx-auto relative gap-4">
-        
         {% for menu in main_navigation_menu.items %}
             {% if menu.name not in ['جميع المنتجات', 'الصفحة الرئيسية', 'homepage', 'all products'] %}                
                 <li class="group uppercase ">
@@ -19,7 +18,7 @@
                                     </ul>
                                 </div>
                                 {% else %}
-                                <li><a class="!text-black !no-underline font-semibold" href="{{ subitem.url }}">{{ subitem.name }}</a></li>
+                                <li><a class="!text-black !no-underline font-semibold" href="{{ 'gift-card' in subitem.url ? '/products/Gift-Card' :  subitem.url }}">{{ subitem.name }}</a></li>
                               {% endif %}
                             {% endfor %}
                           </ul>

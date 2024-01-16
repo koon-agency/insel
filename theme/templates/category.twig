@@ -21,53 +21,51 @@
         {% include 'brands-category.twig' with {'category' : category} %}
     {% else %}
     <section class="md:px-8 lg:px-14 px-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col gap-3 justify-center items-center">
-                
-                <h2 class="text-black font-semibold text-xl lg:text-2xl pt-4 pb-2">{{ category.name }}</h2>
-                {% if 'DESCRIPTION' in category.description %}
-                    {% if 'TITLE' in category.description %}
-                        <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse min-h-[200px] md:max-h-[250px]" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
-                            <div class="basis-1/2 object-cover h-auto" x-html="parts[0]"></div>
-                            <div class="basis-1/2 bg-whiteColor-700 md:px-10 md:py-0 p-6 flex flex-col gap-4 justify-center h-auto" x-html="parts.slice(1).join('')"></div>
-                        </div>
-                    {% else %}
-                        <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse min-h-[200px] md:max-h-[250px]" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
-                            <div class="basis-1/4 object-contain h-auto md:p-6 p-14"><img class="w-full h-full max-h[250px]" src="{{ category.image }}" alt="{{ category.name }}"></div>
-                            <div class="basis-3/4 bg-whiteColor-700 md:px-10 md:py-0 p-4 flex flex-col gap-4 justify-center h-auto">
-                                <p class="lg:text-2xl text-lg ltr:italic cat capitalize">{{ category.name }}</p>
-                                <p class="md:text-base text-sm" x-html="parts[0]"></p>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <p class="lg:text-base text-sm opacity-60 text-center max-w-3xl">{{ category.description }}</p>
-                {% endif %}
-                    <script>
-                function splitText(text) {
-                    const parts = text.split(/__(\w+)__/).filter(Boolean);
-                    const result = [];
-                    for (let i = 0; i < parts.length; i += 2) {
-                        const key = parts[i];
-                        const value = parts[i + 1];
-                        switch (key) {
-                            case 'TITLE':
-                                result.push(`<p class="cat lg:text-2xl text-lg ltr:italic capitalize">${value}</p>`);
-                                break;
-                            case 'DESCRIPTION':
-                                result.push(`<p class="md:text-base text-sm">${value}</p>`);
-                                break;
-                            case 'BANNER':
-                                result.unshift(`<img class="banner max-md:max-h-[220px] w-full h-full object-contain" src="${value}" alt="Banner">`);
-                                break;
-                        }
-                    }
-                    return result;
-                }
-            </script>
-            </div>
-        </div>
         <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col gap-3 justify-center items-center">
+                    
+                    <h2 class="text-black font-semibold text-xl lg:text-2xl pt-4 pb-2">{{ category.name }}</h2>
+                    {% if 'DESCRIPTION' in category.description %}
+                        {% if 'TITLE' in category.description %}
+                            <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse min-h-[200px] md:max-h-[250px]" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
+                                <div class="basis-1/2 object-cover h-auto" x-html="parts[0]"></div>
+                                <div class="basis-1/2 bg-whiteColor-700 md:px-10 md:py-0 p-6 flex flex-col gap-4 justify-center h-auto" x-html="parts.slice(1).join('')"></div>
+                            </div>
+                        {% else %}
+                            <div class="flex flex-col md:flex-row ltr:md:flex-row-reverse min-h-[200px] md:max-h-[250px]" x-data="{ parts: splitText(`{{ category.description | raw }}`) }">
+                                <div class="basis-1/4 object-contain h-auto md:p-6 p-14"><img class="w-full h-full max-h[250px]" src="{{ category.image }}" alt="{{ category.name }}"></div>
+                                <div class="basis-3/4 bg-whiteColor-700 md:px-10 md:py-0 p-4 flex flex-col gap-4 justify-center h-auto">
+                                    <p class="lg:text-2xl text-lg ltr:italic cat capitalize">{{ category.name }}</p>
+                                    <p class="md:text-base text-sm" x-html="parts[0]"></p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="lg:text-base text-sm opacity-60 text-center max-w-3xl">{{ category.description }}</p>
+                    {% endif %}
+                        <script>
+                    function splitText(text) {
+                        const parts = text.split(/__(\w+)__/).filter(Boolean);
+                        const result = [];
+                        for (let i = 0; i < parts.length; i += 2) {
+                            const key = parts[i];
+                            const value = parts[i + 1];
+                            switch (key) {
+                                case 'TITLE':
+                                    result.push(`<p class="lg:text-2xl text-lg capitalize">${value}</p>`);
+                                    break;
+                                case 'DESCRIPTION':
+                                    result.push(`<p class="md:text-base text-sm">${value}</p>`);
+                                    break;
+                                case 'BANNER':
+                                    result.unshift(`<img class="banner max-md:max-h-[220px] w-full h-full object-contain" src="${value}" alt="Banner">`);
+                                    break;
+                            }
+                        }
+                        return result;
+                    }
+                </script>
+                </div>
             {% if category.sub_categories | length > 0 %}
                 {% if category.sub_categories | length > 2 %}
                     <div class="splide px-10 pt-5 {{ category.sub_categories | length > 5 ? 'lg:block': 'lg:hidden' }}" id="cat-category">
@@ -136,19 +134,16 @@
                 {% endif %}
                 
             {% endif %}
-        </div>
-
-        <div class="py-10 max-w-5xl mx-auto">
-            {% include 'sort-filter.twig' with { 'products' : products } %}
-            <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                {% for product in products.data %}
-                    {% include 'product-card.twig' with {'product' : product, 'index': key} %}
-                {% endfor %}
+            <div class="py-10">
+                {% include 'sort-filter.twig' with { 'products' : products } %}
+                <div  div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 products-list">
+                    {% for product in products.data %}
+                        {% include 'product-card.twig' with {'product' : product, 'index': key} %}
+                    {% endfor %}
+                </div>
+                {% include 'infinite-load.twig' with { 'products' : products, 'id': category.id } %}
             </div>
-            {% include 'pagination.twig' with { 'totalPages' : products.last_page , 'currentPage' : products.current_page } %}
-
         </div>
-
     </section>
     {% endif %}
 
