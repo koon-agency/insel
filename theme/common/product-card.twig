@@ -14,7 +14,7 @@
       {% endif %}
       {% if product.is_infinite == false and product.quantity <= 0 %}
         <div class="absolute uppercase top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary bg-[#ffffffab] py-1 text-xs font-medium text-center w-full {% if 'soon' in product.selected_product.keywords %} hidden {% endif %}">{{ locals.product.out_of_stock}}</div>
-    {% endif %}
+      {% endif %}
     </a>
 
     {% set found = false %}
