@@ -329,6 +329,14 @@
             }
         }
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const gift = document.querySelector('.cart-gift-card')
+        const wrapping = document.querySelector('#wrapping')
+        if (gift && wrapping && !wrapping.checked) {
+            console.log('gift')
+            wrapping.click()
+        }
+    })
 
     </script>
 {% endblock %}

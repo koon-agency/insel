@@ -17,45 +17,45 @@
                 <h3 class="text-lg text-primary brand px-4">{{ product.name|raw }}</h3>
                 <div class="{{ product.slug == 'Gift-Card' ? 'block' : 'hidden'}} px-4 product-description lg:text-base ltr:text-left">{{ product.description | raw }}</div>
 
-                    <div class="flex items-center w-full gap-2 pt-2 px-4">
-                        <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
-                            {{ product.selected_product.formatted_sale_price ? product.selected_product.formatted_sale_price :  product.selected_product.formatted_price }}
-                        </div>
-                        {% if product.selected_product.formatted_sale_price %}
-                        <div class="text-sm text-light-400 opacity-60" id="old-price">
-                            {{ product.selected_product.formatted_sale_price }}
-                        </div>
-                        {% endif %}
+                <div class="flex items-center w-full gap-2 pt-2 px-4">
+                    <div class="text-base lg:text-lg text-primary-50 font-bold" id="price" style="direction:rtl">
+                        {{ product.selected_product.formatted_sale_price ? product.selected_product.formatted_sale_price :  product.selected_product.formatted_price }}
                     </div>
-                    <div class="flex items-center gap-2 pt-2 px-4">
-                        <span class="relative flex justify-center items-center h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
-                        </span>
-                        <p class="font-medium text-primary">
-                        {% if 'ARD' in product.name or 'ارد' in product.name %}
-                            {{ product.selected_product.quantity > 3
-                                ? product.selected_product.quantity ~ locals.product.in_stock_ard
-                                : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
-                                    ? locals.product.out_of_stock
-                                    : (product.selected_product.is_infinite
-                                        ? locals.product.in_stock_ard
-                                        : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
-                                )
-                            }}
-                        {% else %}
-                            {{ product.selected_product.quantity > 3
-                                ? product.selected_product.quantity ~ locals.product.in_stock
-                                : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
-                                    ? locals.product.out_of_stock
-                                    : (product.selected_product.is_infinite
-                                        ? locals.product.in_stock
-                                        : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
-                                )
-                            }}
-                        {% endif %}
-                        </p>
+                    {% if product.selected_product.formatted_sale_price %}
+                    <div class="text-sm text-light-400 opacity-60" id="old-price">
+                        {{ product.selected_product.formatted_sale_price }}
                     </div>
+                    {% endif %}
+                </div>
+                <div class="flex items-center gap-2 pt-2 px-4">
+                    <span class="relative flex justify-center items-center h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
+                    </span>
+                    <p class="font-medium text-primary">
+                    {% if 'ARD' in product.name or 'ارد' in product.name %}
+                        {{ product.selected_product.quantity > 3
+                            ? product.selected_product.quantity ~ locals.product.in_stock_ard
+                            : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
+                                ? locals.product.out_of_stock
+                                : (product.selected_product.is_infinite
+                                    ? locals.product.in_stock_ard
+                                    : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                            )
+                        }}
+                    {% else %}
+                        {{ product.selected_product.quantity > 3
+                            ? product.selected_product.quantity ~ locals.product.in_stock
+                            : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
+                                ? locals.product.out_of_stock
+                                : (product.selected_product.is_infinite
+                                    ? locals.product.in_stock
+                                    : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                            )
+                        }}
+                    {% endif %}
+                    </p>
+                </div>
 
                 <div>
                     <form id="product-form" class="w-full">
@@ -70,6 +70,7 @@
                                 
                                 </div>
                             {% endif %}
+                            </div>
                         </div>
 
                         <div class="p-4 {{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">{{ template_for_product_payments_widget }}</div>
@@ -99,18 +100,18 @@
                         <div class="flex flex-col items-start w-full gap-4 {{ product.slug == 'Gift-Card' ? 'border-y border-grayColor-100' : ''}} {{product.selected_product.quantity > 0 or product.selected_product.is_infinite ? 'p-4' : ''}}">
                             <div class="flex gap-4 w-full">
                                 {% if product.selected_product.is_infinite or product.selected_product.quantity > 0 %}
-                                        {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
-                                            {% set maxQuantity = 100 %}
-                                        {% else %}
-                                            {% set maxQuantity = product.selected_product.quantity %}
-                                        {% endif %}
-                                        <div class="h-full flex flex-col">
-                                            <div class="flex flex-row h-full text-primary-50 border-2 border-primary py-0.5 px-2" x-data="{count: 1}">
-                                                <button type="button" x-on:click="count++" class="text-2xl py-1 px-2">+</button>
-                                                <input x-model="count" id="product-quantity" name="quantity" type="text" max="{{ maxQuantity }}" min="1" pattern="^([0-9])+$" class="text-center text-xl w-5" style="outline: none;">
-                                                <button type="button" x-on:click="count > 1 && count--" class="text-2xl py-1 px-2">-</button>
-                                            </div>
+                                    {% if product.selected_product.is_infinite or product.selected_product.quantity > 100 %}
+                                        {% set maxQuantity = 100 %}
+                                    {% else %}
+                                        {% set maxQuantity = product.selected_product.quantity %}
+                                    {% endif %}
+                                    <div class="h-full flex flex-col">
+                                        <div class="flex flex-row h-full text-primary-50 border-2 border-primary py-0.5 px-2" x-data="{count: 1}">
+                                            <button type="button" x-on:click="count++" class="text-2xl py-1 px-2">+</button>
+                                            <input x-model="count" id="product-quantity" name="quantity" type="text" max="{{ maxQuantity }}" min="1" pattern="^([0-9])+$" class="text-center text-xl w-5" style="outline: none;">
+                                            <button type="button" x-on:click="count > 1 && count--" class="text-2xl py-1 px-2">-</button>
                                         </div>
+                                    </div>
                                 {% endif %}
                                
                                 <div class="product-buttons flex-grow w-full {{ product.is_infinite == false and product.quantity <= 0 ? 'hidden' : 'block' }}">
@@ -120,7 +121,6 @@
                                     </button>
                                 </div>
                             </div>
-                            </div>   
                         </div>
                     </form>
                     <div class="{{ product.slug == 'Gift-Card' ? 'hidden' : ''}}">
@@ -243,68 +243,68 @@
                     </div>
                 </div>
                 <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    main = new Splide(document.getElementById('product-images'), {
-                    type   : 'loop',
-                    direction: 'rtl',
-                    perPage: 1,
-                    perMove: 1,
-                    snap   : true,
-                    padding: {
-                        right: 0,
-                        left: 0
-                    },
-                    arrows: false,
-                    pagination: false,
-                    autoScroll: {
-                        speed: 0.35,
-                        pauseOnHover: false,
-                        pauseOnFocus: false
-                    },
-                });
-                const bar = main.root.querySelector('.progress-bar');
-                main.on('mounted move', function () {
-                const end = main.Components.Controller.getEnd() + 1;
-                    const rate = Math.min((main.index + 1) / end, 1);
-                    bar.style.width = String(100 * rate) + '%';
-                });
+                    document.addEventListener('DOMContentLoaded', function() {
+                        main = new Splide(document.getElementById('product-images'), {
+                        type   : 'loop',
+                        direction: 'rtl',
+                        perPage: 1,
+                        perMove: 1,
+                        snap   : true,
+                        padding: {
+                            right: 0,
+                            left: 0
+                        },
+                        arrows: false,
+                        pagination: false,
+                        autoScroll: {
+                            speed: 0.35,
+                            pauseOnHover: false,
+                            pauseOnFocus: false
+                        },
+                    });
+                    const bar = main.root.querySelector('.progress-bar');
+                    main.on('mounted move', function () {
+                    const end = main.Components.Controller.getEnd() + 1;
+                        const rate = Math.min((main.index + 1) / end, 1);
+                        bar.style.width = String(100 * rate) + '%';
+                    });
 
-                thumbnails = new Splide(document.getElementById('product-thumbnails'), {
-                    type   : 'slide',
-                    direction: 'rtl',
-                    perPage: 4,
-                    snap   : true,
-                    focus: 'center',
-                    isNavigation    : true,
-                    padding: {
-                        right: 0,
-                        left: 0
-                    },
-                    breakpoints: {
-                        720: {
-                            perPage: 3
-                        }
-                    },
-                    arrows: false,
-                    pagination: false,
-                    cover: true,
-                    autoScroll: {
-                        speed: 0.35,
-                        pauseOnHover: false,
-                        pauseOnFocus: false
-                    },
-                });
+                    thumbnails = new Splide(document.getElementById('product-thumbnails'), {
+                        type   : 'slide',
+                        direction: 'rtl',
+                        perPage: 4,
+                        snap   : true,
+                        focus: 'center',
+                        isNavigation    : true,
+                        padding: {
+                            right: 0,
+                            left: 0
+                        },
+                        breakpoints: {
+                            720: {
+                                perPage: 3
+                            }
+                        },
+                        arrows: false,
+                        pagination: false,
+                        cover: true,
+                        autoScroll: {
+                            speed: 0.35,
+                            pauseOnHover: false,
+                            pauseOnFocus: false
+                        },
+                    });
 
-                main.sync( thumbnails );
-                main.mount();
-                thumbnails.mount();
+                    main.sync( thumbnails );
+                    main.mount();
+                    thumbnails.mount();
 
-                const lightbox = new PhotoSwipeLightbox({
-                    gallery: '#product-images',
-                    children: 'li > a',
-                });
-                lightbox.init();
-                });
+                    const lightbox = new PhotoSwipeLightbox({
+                        gallery: '#product-images',
+                        children: 'li > a',
+                    });
+                    lightbox.init();
+                    });
 
                 </script>
             </div>
