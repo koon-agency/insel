@@ -33,14 +33,11 @@
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                     </span>
                     <p class="font-medium text-primary">
-                    {% if 'ARD' in product.name or 'ارد' in product.name %}
-                        {{ product.selected_product.quantity > 3
-                            ? product.selected_product.quantity ~ locals.product.in_stock_ard
+                    {% if product.name|trim|slice(0, 3) == 'ARD' or product.name|trim|slice(0, 3) == 'ارد' %}
+                        {{ product.selected_product.quantity > 0 ? locals.product.in_stock_ard
                             : (product.selected_product.quantity == 0 and product.selected_product.is_infinite == false
                                 ? locals.product.out_of_stock
-                                : (product.selected_product.is_infinite
-                                    ? locals.product.in_stock_ard
-                                    : locals.product.rest ~ product.selected_product.quantity ~ locals.product.pieces)
+                                : locals.product.in_stock_ard
                             )
                         }}
                     {% else %}
@@ -408,6 +405,7 @@
                     item.sub_categories.map((subItem) => {
                         const brand = document.querySelector('.brand');
                         if (brand && brand.textContent.trim().startsWith(subItem.name)) {
+                            console.log('yes')
                             const restOfWords = brand.textContent.trim().substring(subItem.name.length).trim();
                             brand.textContent = restOfWords;
                             const brandLogo = document.querySelector('.brand-logo');
@@ -415,6 +413,9 @@
                             brandLogo.style.backgroundImage =  `url('${subItem.image}')`;
                             brandUrl.href = subItem.url;
                             brandLogo.classList.remove('invisible');
+                        }else{
+                            console.log('no', subItem)
+
                         }
                     });
                 }
@@ -490,7 +491,10 @@
             updateProductImages(selected_product);
         }
     }
-    document.addEventListener('DOMContentLoaded', catImage);
+    window.addEventListener('load', function() {
+        console.log('hi')
+        catImage()
+    });
 
 </script>
 <style>
